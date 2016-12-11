@@ -1,4 +1,4 @@
-package com.hitomi.basic.Adapter.abslistview;
+package com.hitomi.basic.adapter.abslistview;
 
 import android.content.Context;
 

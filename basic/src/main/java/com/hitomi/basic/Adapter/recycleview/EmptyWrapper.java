@@ -1,4 +1,4 @@
-package com.hitomi.basic.Adapter.recycleview;
+package com.hitomi.basic.adapter.recycleview;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;

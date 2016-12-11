@@ -1,4 +1,4 @@
-package com.hitomi.basic.Adapter.recycleview;
+package com.hitomi.basic.adapter.recycleview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
