@@ -3,14 +3,8 @@ package com.hitomi.basic.Adapter.recycleview;
 import android.content.Context;
 import android.view.LayoutInflater;
 
-import com.hitomi.basic.Adapter.recycleview.base.ItemViewDelegate;
-import com.hitomi.basic.Adapter.recycleview.base.ViewHolder;
-
 import java.util.List;
 
-/**
- * Created by zhy on 16/4/9.
- */
 public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T> {
     protected Context mContext;
     protected int mLayoutId;

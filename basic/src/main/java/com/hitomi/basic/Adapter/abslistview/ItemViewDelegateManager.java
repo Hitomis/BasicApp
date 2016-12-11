@@ -3,9 +3,6 @@ package com.hitomi.basic.Adapter.abslistview;
 import android.support.v4.util.SparseArrayCompat;
 
 
-/**
- * Created by zhy on 16/6/22.
- */
 public class ItemViewDelegateManager<T> {
     SparseArrayCompat<ItemViewDelegate<T>> delegates = new SparseArrayCompat();
 

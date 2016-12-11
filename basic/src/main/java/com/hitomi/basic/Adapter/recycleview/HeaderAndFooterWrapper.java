@@ -1,4 +1,4 @@
-package com.hitomi.basic.Adapter.recycleview.wrapper;
+package com.hitomi.basic.Adapter.recycleview;
 
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -6,13 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hitomi.basic.Adapter.recycleview.base.ViewHolder;
-import com.hitomi.basic.Adapter.recycleview.utils.WrapperUtils;
 
-
-/**
- * Created by zhy on 16/6/23.
- */
 public class HeaderAndFooterWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int BASE_ITEM_TYPE_HEADER = 100000;
     private static final int BASE_ITEM_TYPE_FOOTER = 200000;

@@ -5,15 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hitomi.basic.Adapter.recycleview.base.ItemViewDelegate;
-import com.hitomi.basic.Adapter.recycleview.base.ItemViewDelegateManager;
-import com.hitomi.basic.Adapter.recycleview.base.ViewHolder;
-
 import java.util.List;
 
-/**
- * Created by zhy on 16/4/9.
- */
 public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     protected Context mContext;
     protected List<T> mDatas;

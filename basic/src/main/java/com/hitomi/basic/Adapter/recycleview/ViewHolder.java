@@ -1,4 +1,4 @@
-package com.hitomi.basic.Adapter.recycleview.base;
+package com.hitomi.basic.Adapter.recycleview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

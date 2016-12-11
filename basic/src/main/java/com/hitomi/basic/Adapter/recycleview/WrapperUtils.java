@@ -1,13 +1,10 @@
-package com.hitomi.basic.Adapter.recycleview.utils;
+package com.hitomi.basic.Adapter.recycleview;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.ViewGroup;
 
-/**
- * Created by zhy on 16/6/28.
- */
 public class WrapperUtils {
     public interface SpanSizeCallback {
         int getSpanSize(GridLayoutManager layoutManager, GridLayoutManager.SpanSizeLookup oldLookup, int position);

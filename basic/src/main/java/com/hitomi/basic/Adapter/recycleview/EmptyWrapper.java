@@ -1,17 +1,11 @@
-package com.hitomi.basic.Adapter.recycleview.wrapper;
+package com.hitomi.basic.Adapter.recycleview;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hitomi.basic.Adapter.recycleview.base.ViewHolder;
-import com.hitomi.basic.Adapter.recycleview.utils.WrapperUtils;
 
-
-/**
- * Created by zhy on 16/6/23.
- */
 public class EmptyWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int ITEM_TYPE_EMPTY = Integer.MAX_VALUE - 1;
 
