@@ -18,6 +18,10 @@ import java.util.Stack;
 public class ActivityManager implements Application.ActivityLifecycleCallbacks {
     private static Stack<Activity> activityStack;
 
+    public void init(Application app) {
+        app.registerActivityLifecycleCallbacks(this);
+    }
+
     private static class SingletonHolder {
         public final static ActivityManager instance = new ActivityManager();
     }

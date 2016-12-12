@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.hitomi.basic.manager.NetworkManager;
 import com.hitomi.basic.model.AppExitEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,7 +25,28 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
             setViewListener();
             dealLogic(savedInstanceState);
         }
+        processNetwork();
     }
+
+    private void processNetwork() {
+        NetworkManager.getInstance().setNetworkChangeListener(new NetworkManager.OnNetworkStatusChangeListener() {
+            @Override
+            public void onWifiAvailable() {
+
+            }
+
+            @Override
+            public void onMobileNetAvailable() {
+
+            }
+
+            @Override
+            public void onNetworkUnavailable() {
+
+            }
+        });
+    }
+
 
     protected void PostExitApp() {
         EventBus.getDefault().post(new AppExitEvent());

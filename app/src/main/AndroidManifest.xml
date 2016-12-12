@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hitomi.basicapp">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!--允许读取网络状态-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <!--允许读取wifi网络状态-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
