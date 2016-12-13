@@ -24,11 +24,11 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
             initView();
             setViewListener();
             dealLogic(savedInstanceState);
+            observeNetwork();
         }
-        processNetwork();
     }
 
-    private void processNetwork() {
+    private void observeNetwork() {
         NetworkManager.getInstance().setNetworkChangeListener(new NetworkManager.OnNetworkStatusChangeListener() {
             @Override
             public void onWifiAvailable() {
@@ -48,7 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
     }
 
 
-    protected void PostExitApp() {
+    protected void postExitApp() {
         EventBus.getDefault().post(new AppExitEvent());
     }
 
