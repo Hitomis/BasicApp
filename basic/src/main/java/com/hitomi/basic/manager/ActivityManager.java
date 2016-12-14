@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * Activity 栈管理类
+ * Activity 栈管理
  * Created by hitomi on 2016/12/11.
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

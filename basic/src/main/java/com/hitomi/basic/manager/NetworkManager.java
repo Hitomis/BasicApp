@@ -32,6 +32,7 @@ public class NetworkManager {
     private Context mContext;
     private ConnectivityManager connManager;
     private OnNetworkStatusChangeListener networkListener;
+    private NetWorkChangeReceiver netWorkChangeReceiver;
 
     private int lastConnType;
 
@@ -113,7 +114,8 @@ public class NetworkManager {
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         filter.addAction("android.net.wifi.STATE_CHANGE");
-        mContext.registerReceiver(new NetWorkChangeReceiver(), filter);
+        netWorkChangeReceiver = new NetWorkChangeReceiver();
+        mContext.registerReceiver(netWorkChangeReceiver, filter);
     }
 
     private static class SingletonHolder {
@@ -133,6 +135,10 @@ public class NetworkManager {
 
     public void setNetworkChangeListener(OnNetworkStatusChangeListener listener) {
         networkListener = listener;
+    }
+
+    public void destroy() {
+        networkListener = null;
     }
 
     /**
