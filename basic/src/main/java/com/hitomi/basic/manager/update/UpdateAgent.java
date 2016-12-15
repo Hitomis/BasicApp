@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class UpdateAgent {
+class UpdateAgent {
 
     private static final String PREFS = "hitomi.update.prefs";
     private static final String PREFS_IGNORE = "hitomi.update.prefs.ignore";
@@ -34,13 +34,12 @@ public class UpdateAgent {
     private boolean mIsWifiOnly = false;
 
     private UpdateInfo mInfo;
-    private UpdateError mError = null;
+    private UpdateError mError;
 
     private InfoParser mParser;
 
     private OnFailureListener mOnFailureListener;
     private OnPromptListener mOnPromptListener;
-
     private OnProgressListener mOnProgressListener;
 
     public UpdateAgent(Context context, String url, boolean isManual, boolean isWifiOnly) {
@@ -56,18 +55,6 @@ public class UpdateAgent {
 
     public String getUrl() {
         return mUrl;
-    }
-
-    public UpdateInfo getInfo() {
-        return mInfo;
-    }
-
-    public void setInfo(UpdateInfo info) {
-        mInfo = info;
-    }
-
-    public UpdateError getError() {
-        return mError;
     }
 
     public void setError(UpdateError error) {
@@ -99,22 +86,21 @@ public class UpdateAgent {
     public void clean() {
         SharedPreferences sp = mContext.getSharedPreferences(PREFS, 0);
         File file = new File(mContext.getExternalCacheDir(), sp.getString(PREFS_UPDATE, "") + ".apk");
-        if (file.exists()) {
-            file.delete();
-        }
+        if (file.exists()) file.delete();
+        File tempFile = new File(mContext.getExternalCacheDir(),  sp.getString(PREFS_UPDATE, ""));
+        if (tempFile.exists()) tempFile.delete();
         sp.edit().clear().apply();
     }
 
     public void parse(InputStream inputStream) {
-
         try {
-            setInfo(mParser.parse(inputStream));
+            mInfo = mParser.parse(inputStream);
         } catch (Exception e) {
             setError(new UpdateError(UpdateError.CHECK_PARSE));
         }
     }
 
-    public void prepareUpdate() {
+    private void prepareUpdate() {
         String md5 = mInfo.getMd5();
         if (TextUtils.isEmpty(md5)) {
             return;
@@ -141,24 +127,22 @@ public class UpdateAgent {
     }
 
     public void checkFinish() {
-        UpdateError error = getError();
-        if (error != null) {
-            onFailure(error);
+        if (mError != null) {
+            onFailure(mError);
         } else {
-            UpdateInfo info = getInfo();
-            if (info == null) {
+            if (mInfo == null) {
                 onFailure(new UpdateError(UpdateError.CHECK_UNKNOWN));
-            } else if (!info.isNeedUpdate(mContext)) { // 最新版本
+            } else if (!mInfo.isNeedUpdate(mContext)) { // 最新版本
                 onFailure(new UpdateError(UpdateError.UPDATE_NO_NEWER));
             } else if (isIgnore()) { // 该版本已经忽略
                 onFailure(new UpdateError(UpdateError.UPDATE_IGNORED));
             } else {
                 prepareUpdate();
-                mTmpFile = new File(mContext.getExternalCacheDir(), info.getMd5());
-                mApkFile = new File(mContext.getExternalCacheDir(), info.getMd5() + ".apk");
+                mTmpFile = new File(mContext.getExternalCacheDir(), mInfo.getMd5());
+                mApkFile = new File(mContext.getExternalCacheDir(), mInfo.getMd5() + ".apk");
                 if (UpdateUtil.verify(mApkFile, mInfo.getMd5())) {
                     onInstall();
-                }  else {
+                } else {
                     mOnPromptListener.onPrompt(this);
                 }
             }
@@ -178,7 +162,7 @@ public class UpdateAgent {
         mContext.getSharedPreferences(PREFS, 0).edit().putString(PREFS_IGNORE, mInfo.getMd5()).apply();
     }
 
-    public boolean isIgnore() {
+    private boolean isIgnore() {
         return !TextUtils.isEmpty(mInfo.getMd5()) &&
                 mInfo.getMd5().equals(mContext.getSharedPreferences(PREFS, 0).getString(PREFS_IGNORE, ""));
     }
@@ -227,15 +211,15 @@ public class UpdateAgent {
         }
     }
 
-    protected void onCheck() {
+    private void onCheck() {
         new UpdateChecker(this).execute();
     }
 
-    protected void onDownload() {
+    private void onDownload() {
         new UpdateDownloader(this, mContext, mInfo.getUrl(), mTmpFile).execute();
     }
 
-    public void onInstall() {
+    private void onInstall() {
         String md5 = mContext.getSharedPreferences(PREFS, 0).getString(PREFS_UPDATE, "");
         File apk = new File(mContext.getExternalCacheDir(), md5 + ".apk");
         if (UpdateUtil.verify(apk, md5)) {
@@ -243,7 +227,7 @@ public class UpdateAgent {
         }
     }
 
-    public void onInstall(File file) {
+    private void onInstall(File file) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
@@ -303,7 +287,7 @@ public class UpdateAgent {
 
         @Override
         public void onPrompt(UpdateAgent agent) {
-            final UpdateInfo info = agent.getInfo();
+            final UpdateInfo info = mInfo;
             String size = Formatter.formatShortFileSize(mContext, info.getSize());
             String content = String.format("最新版本：%1$s\n新版本大小：%2$s\n\n更新内容\n%3$s", info.getVersionName(), size, info.getUpdateContent());
 
@@ -341,7 +325,7 @@ public class UpdateAgent {
         }
     }
 
-    public class OnPromptClick implements DialogInterface.OnClickListener {
+    private class OnPromptClick implements DialogInterface.OnClickListener {
         private final UpdateAgent mAgent;
         private final boolean mIsAutoDismiss;
 

@@ -39,9 +39,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void dealLogic(Bundle savedInstanceState) {
 
         updateManager = new UpdateManager.Builder(this)
-                .setProgressStyle(UpdateManager.BEHAVIRO_NOTIFY)
+                .setProgressStyle(UpdateManager.BEHAVIRO_DIALOG)
                 .setUrl(mCheckUrl)
-                .setManual(false)
+                .setManual(true)
                 .setWifiOnly(true)
                 .setChannel("baidu")
                 .create();

@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class UpdateInfo {
+class UpdateInfo {
     // 是否强制安装：不安装无法使用app
     private boolean isForce = false;
     // 是否下载完成后自动跳转到安装界面

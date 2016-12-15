@@ -1,8 +1,6 @@
 package com.hitomi.basic.manager.update;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
@@ -18,42 +16,27 @@ import java.security.MessageDigest;
 
 public class UpdateUtil {
 
-    public static boolean verify(File apk, String md5) {
-        if (!apk.exists()) {
-            return false;
-        }
-        String _md5 = md5(apk);
-        if (TextUtils.isEmpty(_md5)) {
-            return false;
-        }
-        boolean result = _md5 != null && _md5.equalsIgnoreCase(md5);
-        if (!result) {
-            apk.delete();
-        }
-        return result;
-    }
-
-    public static String toCheckUrl(Context context, String url, String channel) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(url);
-        builder.append(url.indexOf("?") < 0 ? "?" : "&");
-        builder.append("package=");
-        builder.append(context.getPackageName());
-        builder.append("&version=");
-        builder.append(getVersionCode(context));
-        builder.append("&channel=");
-        builder.append(channel);
-        return builder.toString();
-    }
-
-    public static int getVersionCode(Context context) {
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            return info.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            return 0;
-        }
-    }
+//    public static String toCheckUrl(Context context, String url, String channel) {
+//        StringBuilder builder = new StringBuilder();
+//        builder.append(url);
+//        builder.append(url.indexOf("?") < 0 ? "?" : "&");
+//        builder.append("package=");
+//        builder.append(context.getPackageName());
+//        builder.append("&version=");
+//        builder.append(getVersionCode(context));
+//        builder.append("&channel=");
+//        builder.append(channel);
+//        return builder.toString();
+//    }
+//
+//    public static int getVersionCode(Context context) {
+//        try {
+//            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+//            return info.versionCode;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            return 0;
+//        }
+//    }
 
     public static boolean checkWifi(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -71,6 +54,21 @@ public class UpdateUtil {
         }
         NetworkInfo info = connectivity.getActiveNetworkInfo();
         return info != null && info.isConnected();
+    }
+
+    public static boolean verify(File apk, String md5) {
+        if (!apk.exists()) {
+            return false;
+        }
+        String _md5 = md5(apk);
+        if (TextUtils.isEmpty(_md5)) {
+            return false;
+        }
+        boolean result = _md5 != null && _md5.equalsIgnoreCase(md5);
+        if (!result) {
+            apk.delete();
+        }
+        return result;
     }
 
     public static String md5(File file) {

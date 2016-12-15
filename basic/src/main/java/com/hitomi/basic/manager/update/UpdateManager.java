@@ -33,7 +33,7 @@ public class UpdateManager {
         private Context context;
         private String url;
         private String channel;
-        private boolean isManual; // true：手动检查，所有类型的错误，都会提示，false：只会提醒 2000 以下的错误
+        private boolean isManual; // true：手动检查，所有类型的错误，都会提示，false：只会提醒 2000 以上的错误
         private boolean isWifiOnly;
         private int progressStyle;
         private OnProgressListener progressBehavior;
