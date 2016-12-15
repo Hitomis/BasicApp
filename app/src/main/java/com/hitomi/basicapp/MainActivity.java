@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.hitomi.basic.manager.update.UpdateManager;
 import com.hitomi.basic.ui.BaseActivity;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private Button btnJumpNext;
+
+    String mCheckUrl = "http://img3.fdc.com.cn/app_download/android_upgrade.xml";
 
     @Override
     public int getContentViewID() {
@@ -28,6 +31,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void dealLogic(Bundle savedInstanceState) {
+
+        new UpdateManager.Builder(this)
+                .setUrl(mCheckUrl)
+                .setManual(false)
+                .setWifiOnly(true)
+                .setChannel("baidu")
+                .check();
+
+
     }
 
     @Override

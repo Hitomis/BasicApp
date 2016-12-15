@@ -1,16 +1,14 @@
 package com.hitomi.basic.manager.update;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.format.Formatter;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hitomi.basic.manager.update.behavior.OnProgressListener;
 
 import java.io.File;
 import java.io.InputStream;
@@ -31,8 +29,8 @@ public class UpdateAgent {
 
     private OnFailureListener mOnFailureListener;
     private OnPromptListener mOnPromptListener;
+
     private OnProgressListener mOnProgressListener;
-    private OnProgressListener mOnNotificationListener;
 
     public UpdateAgent(Context context, String url, boolean isManual, boolean isWifiOnly) {
         mContext = context;
@@ -114,9 +112,7 @@ public class UpdateAgent {
                 mApkFile = new File(mContext.getExternalCacheDir(), info.getMd5() + ".apk");
                 if (UpdateUtil.verify(mApkFile, mInfo.getMd5())) {
                     onInstall();
-                } else if (info.isSilent()) {
-                    onDownload();
-                } else {
+                }  else {
                     mOnPromptListener.onPrompt(this);
                 }
             }
@@ -138,27 +134,15 @@ public class UpdateAgent {
     }
 
     public void downloadStart() {
-        if (mInfo.isSilent()) {
-            mOnNotificationListener.onStart();
-        } else {
-            mOnProgressListener.onStart();
-        }
+        mOnProgressListener.onStart();
     }
 
     public void downloadProgress(int progress) {
-        if (mInfo.isSilent()) {
-            mOnNotificationListener.onProgress(progress);
-        } else {
-            mOnProgressListener.onProgress(progress);
-        }
+        mOnProgressListener.onProgress(progress);
     }
 
     public void downloadFinish() {
-        if (mInfo.isSilent()) {
-            mOnNotificationListener.onFinish();
-        } else {
-            mOnProgressListener.onFinish();
-        }
+        mOnProgressListener.onFinish();
         if (mError != null) {
             mOnFailureListener.onFailure(mError);
         } else {
@@ -166,13 +150,6 @@ public class UpdateAgent {
             if (mInfo.isAutoInstall()) {
                 onInstall();
             }
-        }
-
-    }
-
-    public void setNotifyListener(OnProgressListener listener) {
-        if (listener != null) {
-            mOnNotificationListener = listener;
         }
     }
 
@@ -205,20 +182,25 @@ public class UpdateAgent {
     }
 
     protected void onDownload() {
-        if (mOnNotificationListener == null) {
-            mOnNotificationListener = new EmptyProgress();
-        }
-        if (mOnProgressListener == null) {
-            mOnProgressListener = new DialogProgress(mContext);
-        }
         new UpdateDownloader(this, mContext, mInfo.getUrl(), mTmpFile).execute();
     }
 
     protected void onInstall() {
-
         UpdateUtil.install(mContext, mApkFile, mInfo.isForce());
     }
 
+
+    public interface OnFailureListener {
+        void onFailure(UpdateError error);
+    }
+
+    public interface OnPromptListener {
+        void onPrompt(UpdateAgent agent);
+    }
+
+    public interface InfoParser {
+        UpdateInfo parse(InputStream is) throws Exception;
+    }
 
     private class DefaultParser implements InfoParser {
         @Override
@@ -289,104 +271,6 @@ public class UpdateAgent {
         }
     }
 
-    public class EmptyProgress implements UpdateAgent.OnProgressListener {
-        @Override
-        public void onStart() {
-
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
-
-        @Override
-        public void onProgress(int progress) {
-
-        }
-    }
-
-    public class DialogProgress implements UpdateAgent.OnProgressListener {
-        private Context mContext;
-        private ProgressDialog mDialog;
-
-        public DialogProgress(Context context) {
-            mContext = context;
-        }
-
-        @Override
-        public void onStart() {
-            mDialog = new ProgressDialog(mContext);
-            mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mDialog.setMessage("下载中...");
-            mDialog.setIndeterminate(false);
-            mDialog.setCancelable(false);
-            mDialog.show();
-        }
-
-        @Override
-        public void onProgress(int i) {
-            if (mDialog != null) {
-                mDialog.setProgress(i);
-            }
-        }
-
-        @Override
-        public void onFinish() {
-            if (mDialog != null) {
-                mDialog.dismiss();
-                mDialog = null;
-            }
-        }
-    }
-
-    public static class NotificationProgress implements UpdateAgent.OnProgressListener {
-        private Context mContext;
-        private int mNotifyId;
-        private NotificationCompat.Builder mBuilder;
-
-        public NotificationProgress(Context context, int notifyId) {
-            mContext = context;
-            mNotifyId = notifyId;
-        }
-
-        @Override
-        public void onStart() {
-            if (mBuilder == null) {
-                String title = "下载中 - " + mContext.getString(mContext.getApplicationInfo().labelRes);
-                mBuilder = new NotificationCompat.Builder(mContext);
-                mBuilder.setOngoing(true)
-                        .setAutoCancel(false)
-                        .setPriority(Notification.PRIORITY_MAX)
-                        .setDefaults(Notification.DEFAULT_VIBRATE)
-                        .setSmallIcon(mContext.getApplicationInfo().icon)
-                        .setTicker(title)
-                        .setContentTitle(title);
-            }
-            onProgress(0);
-        }
-
-        @Override
-        public void onProgress(int progress) {
-            if (mBuilder != null) {
-                if (progress > 0) {
-                    mBuilder.setPriority(Notification.PRIORITY_DEFAULT);
-                    mBuilder.setDefaults(0);
-                }
-                mBuilder.setProgress(100, progress, false);
-
-                NotificationManager nm = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-                nm.notify(mNotifyId, mBuilder.build());
-            }
-        }
-
-        @Override
-        public void onFinish() {
-            NotificationManager nm = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.cancel(mNotifyId);
-        }
-    }
-
     public class OnPromptClick implements DialogInterface.OnClickListener {
         private final UpdateAgent mAgent;
         private final boolean mIsAutoDismiss;
@@ -400,40 +284,19 @@ public class UpdateAgent {
         public void onClick(DialogInterface dialog, int which) {
 
             switch (which) {
-            case DialogInterface.BUTTON_POSITIVE:
-                mAgent.update();
-                break;
-            case DialogInterface.BUTTON_NEUTRAL:
-                mAgent.ignore();
-                break;
-            case DialogInterface.BUTTON_NEGATIVE:
-                // not now
-                break;
+                case DialogInterface.BUTTON_POSITIVE:
+                    mAgent.update();
+                    break;
+                case DialogInterface.BUTTON_NEUTRAL:
+                    mAgent.ignore();
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    // not now
+                    break;
             }
             if (mIsAutoDismiss) {
                 dialog.dismiss();
             }
         }
-    }
-
-    public interface OnProgressListener {
-
-        void onStart();
-
-        void onProgress(int progress);
-
-        void onFinish();
-    }
-
-    public interface OnFailureListener {
-        void onFailure(UpdateError error);
-    }
-
-    public interface OnPromptListener {
-        void onPrompt(UpdateAgent agent);
-    }
-
-    public interface InfoParser {
-        UpdateInfo parse(InputStream is) throws Exception;
     }
 }
