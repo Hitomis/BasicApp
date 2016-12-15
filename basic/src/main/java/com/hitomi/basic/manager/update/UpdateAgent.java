@@ -2,7 +2,13 @@ package com.hitomi.basic.manager.update;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
@@ -11,9 +17,14 @@ import android.widget.Toast;
 import com.hitomi.basic.manager.update.behavior.OnProgressListener;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class UpdateAgent {
+
+    private static final String PREFS = "hitomi.update.prefs";
+    private static final String PREFS_IGNORE = "hitomi.update.prefs.ignore";
+    private static final String PREFS_UPDATE = "hitomi.update.prefs.update";
 
     private Context mContext;
     private String mUrl;
@@ -85,12 +96,47 @@ public class UpdateAgent {
         }
     }
 
+    public void clean() {
+        SharedPreferences sp = mContext.getSharedPreferences(PREFS, 0);
+        File file = new File(mContext.getExternalCacheDir(), sp.getString(PREFS_UPDATE, "") + ".apk");
+        if (file.exists()) {
+            file.delete();
+        }
+        sp.edit().clear().apply();
+    }
+
     public void parse(InputStream inputStream) {
 
         try {
             setInfo(mParser.parse(inputStream));
         } catch (Exception e) {
             setError(new UpdateError(UpdateError.CHECK_PARSE));
+        }
+    }
+
+    public void prepareUpdate() {
+        String md5 = mInfo.getMd5();
+        if (TextUtils.isEmpty(md5)) {
+            return;
+        }
+        SharedPreferences sp = mContext.getSharedPreferences(PREFS, 0);
+        String old = sp.getString(PREFS_UPDATE, "");
+        if (md5.equals(old)) {
+            return;
+        }
+        File oldFile = new File(mContext.getExternalCacheDir(), old);
+        if (oldFile.exists()) {
+            oldFile.delete();
+        }
+        sp.edit().putString(PREFS_UPDATE, md5).apply();
+        File file = new File(mContext.getExternalCacheDir(), md5);
+        if (!file.exists()) {
+            try {
+                // 创建 apk 临时文件
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -102,12 +148,12 @@ public class UpdateAgent {
             UpdateInfo info = getInfo();
             if (info == null) {
                 onFailure(new UpdateError(UpdateError.CHECK_UNKNOWN));
-            } else if (!info.isNeedUpdate(mContext)) {
+            } else if (!info.isNeedUpdate(mContext)) { // 最新版本
                 onFailure(new UpdateError(UpdateError.UPDATE_NO_NEWER));
-            } else if (UpdateUtil.isIgnore(mContext, info.getMd5())) {
+            } else if (isIgnore()) { // 该版本已经忽略
                 onFailure(new UpdateError(UpdateError.UPDATE_IGNORED));
             } else {
-                UpdateUtil.setUpdate(mContext, mInfo.getMd5());
+                prepareUpdate();
                 mTmpFile = new File(mContext.getExternalCacheDir(), info.getMd5());
                 mApkFile = new File(mContext.getExternalCacheDir(), info.getMd5() + ".apk");
                 if (UpdateUtil.verify(mApkFile, mInfo.getMd5())) {
@@ -117,7 +163,6 @@ public class UpdateAgent {
                 }
             }
         }
-
     }
 
     public void update() {
@@ -130,7 +175,12 @@ public class UpdateAgent {
     }
 
     public void ignore() {
-        UpdateUtil.setIgnore(mContext, getInfo().getMd5());
+        mContext.getSharedPreferences(PREFS, 0).edit().putString(PREFS_IGNORE, mInfo.getMd5()).apply();
+    }
+
+    public boolean isIgnore() {
+        return !TextUtils.isEmpty(mInfo.getMd5()) &&
+                mInfo.getMd5().equals(mContext.getSharedPreferences(PREFS, 0).getString(PREFS_IGNORE, ""));
     }
 
     public void downloadStart() {
@@ -185,8 +235,28 @@ public class UpdateAgent {
         new UpdateDownloader(this, mContext, mInfo.getUrl(), mTmpFile).execute();
     }
 
-    protected void onInstall() {
-        UpdateUtil.install(mContext, mApkFile, mInfo.isForce());
+    public void onInstall() {
+        String md5 = mContext.getSharedPreferences(PREFS, 0).getString(PREFS_UPDATE, "");
+        File apk = new File(mContext.getExternalCacheDir(), md5 + ".apk");
+        if (UpdateUtil.verify(apk, md5)) {
+            onInstall(apk);
+        }
+    }
+
+    public void onInstall(File file) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        } else {
+            Uri uri = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".updatefileprovider", file);
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+        if (mInfo.isForce()) {
+            System.exit(0);
+        }
     }
 
 

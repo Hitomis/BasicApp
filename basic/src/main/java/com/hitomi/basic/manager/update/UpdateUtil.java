@@ -1,15 +1,10 @@
 package com.hitomi.basic.manager.update;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Build;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -22,74 +17,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 
 public class UpdateUtil {
-    private static final String PREFS = "hitomi.update.prefs";
-    private static final String PREFS_IGNORE = "hitomi.update.prefs.ignore";
-    private static final String PREFS_UPDATE = "hitomi.update.prefs.update";
-
-    public static void clean(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(PREFS, 0);
-        File file = new File(context.getExternalCacheDir(), sp.getString(PREFS_UPDATE, "") + ".apk");
-        if (file.exists()) {
-            file.delete();
-        }
-        sp.edit().clear().apply();
-    }
-
-    public static void setUpdate(Context context, String md5) {
-        if (TextUtils.isEmpty(md5)) {
-            return;
-        }
-        SharedPreferences sp = context.getSharedPreferences(PREFS, 0);
-        String old = sp.getString(PREFS_UPDATE, "");
-        if (md5.equals(old)) {
-            return;
-        }
-        File oldFile = new File(context.getExternalCacheDir(), old);
-        if (oldFile.exists()) {
-            oldFile.delete();
-        }
-        sp.edit().putString(PREFS_UPDATE, md5).apply();
-        File file = new File(context.getExternalCacheDir(), md5);
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static void setIgnore(Context context, String md5) {
-        context.getSharedPreferences(PREFS, 0).edit().putString(PREFS_IGNORE, md5).apply();
-    }
-
-    public static boolean isIgnore(Context context, String md5) {
-        return !TextUtils.isEmpty(md5) && md5.equals(context.getSharedPreferences(PREFS, 0).getString(PREFS_IGNORE, ""));
-    }
-
-    public static void install(Context context, boolean force) {
-        String md5 = context.getSharedPreferences(PREFS, 0).getString(PREFS_UPDATE, "");
-        File apk = new File(context.getExternalCacheDir(), md5 + ".apk");
-        if (UpdateUtil.verify(apk, md5)) {
-            install(context, apk, force);
-        }
-    }
-
-    public static void install(Context context, File file, boolean force) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-        } else {
-            Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".updatefileprovider", file);
-            intent.setDataAndType(uri, "application/vnd.android.package-archive");
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-        if (force) {
-            System.exit(0);
-        }
-    }
 
     public static boolean verify(File apk, String md5) {
         if (!apk.exists()) {
@@ -105,7 +32,6 @@ public class UpdateUtil {
         }
         return result;
     }
-
 
     public static String toCheckUrl(Context context, String url, String channel) {
         StringBuilder builder = new StringBuilder();

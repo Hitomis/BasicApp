@@ -6,10 +6,6 @@ package com.hitomi.basic.manager.update.behavior;
 
 public interface OnProgressListener {
 
-    int BEHAVIRO_EMPT = 1;
-    int BEHAVIRO_NOTIFY = 1 << 1;
-    int BEHAVIRO_DIALOG = 1 << 2;
-
     void onStart();
 
     void onProgress(int progress);

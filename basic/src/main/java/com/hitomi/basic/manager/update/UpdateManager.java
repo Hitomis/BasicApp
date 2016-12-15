@@ -11,6 +11,10 @@ import java.io.File;
 
 public class UpdateManager {
 
+    public static final int BEHAVIRO_EMPT = 1;
+    public static final int BEHAVIRO_NOTIFY = 1 << 1;
+    public static final int BEHAVIRO_DIALOG = 1 << 2;
+
     private UpdateAgent agent;
 
     private void setAgent(UpdateAgent agent) {
@@ -19,6 +23,10 @@ public class UpdateManager {
 
     public void check() {
         agent.check();
+    }
+
+    public void reset() {
+        agent.clean();
     }
 
     public static class Builder {
@@ -83,7 +91,7 @@ public class UpdateManager {
             return this;
         }
 
-        private UpdateManager create() {
+        public UpdateManager create() {
             // 创建 apk 文件目录[该路径被 Android 系统认定为应用程序的缓存路径，当程序被卸载的时候，会一起被清除]
             File file = new File(context.getExternalFilesDir("").getParentFile(), "cache");
             if (file != null && !file.exists())
@@ -97,9 +105,9 @@ public class UpdateManager {
             // 设定文件下载的进度提醒方式
             if (progressBehavior != null) { // 用户自定义了进度提醒方式，就使用用户自定义的
                 agent.setProgressListener(progressBehavior);
-            } else if (progressStyle == OnProgressListener.BEHAVIRO_NOTIFY) {
+            } else if (progressStyle == BEHAVIRO_NOTIFY) {
                 agent.setProgressListener(new NotificationProgressBehavior(context, 655));
-            } else if (progressStyle == OnProgressListener.BEHAVIRO_DIALOG) {
+            } else if (progressStyle == BEHAVIRO_DIALOG) {
                 agent.setProgressListener(new DialogProgressBehavior(context));
             } else {
                 agent.setProgressListener(new EmptyProgressBehavior());
@@ -111,11 +119,6 @@ public class UpdateManager {
             UpdateManager updateManager = new UpdateManager();
             updateManager.setAgent(agent);
             return updateManager;
-        }
-
-        public void check() {
-            UpdateManager updateManager = create();
-            updateManager.check();
         }
     }
 
