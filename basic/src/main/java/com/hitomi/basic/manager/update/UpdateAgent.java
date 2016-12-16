@@ -256,6 +256,7 @@ public class UpdateAgent {
                 onInstall();
             }
         }
+        mError = null;
     }
 
     public void setProgressListener(OnProgressListener listener) {

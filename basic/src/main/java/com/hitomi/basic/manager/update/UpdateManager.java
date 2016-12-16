@@ -14,9 +14,9 @@ import java.io.InputStream;
 
 public class UpdateManager {
 
-    public static final int BEHAVIRO_EMPT = 1;
-    public static final int BEHAVIRO_NOTIFY = 1 << 1;
-    public static final int BEHAVIRO_DIALOG = 1 << 2;
+    public static final int PROGRESS_EMPT = 1;
+    public static final int PROGRESS_NOTIFY = 1 << 1;
+    public static final int PROGRESS_DIALOG = 1 << 2;
 
     private UpdateAgent agent;
 
@@ -126,6 +126,11 @@ public class UpdateManager {
             if (file != null && !file.exists())
                 file.mkdirs();
 
+            if ("".equals(channel) || null == channel) {
+                url = String.format(url, "");
+            } else {
+                url = String.format(url, "_" + channel);
+            }
             // 创建代理
             UpdateAgent agent = new UpdateAgent(context, url, isManual, isWifiOnly);
             // 设置解析器
@@ -134,15 +139,16 @@ public class UpdateManager {
             // 设定文件下载的进度提醒方式
             if (onProgressListener != null) { // 用户自定义了进度提醒方式，就使用用户自定义的
                 agent.setProgressListener(onProgressListener);
-            } else if (progressStyle == BEHAVIRO_NOTIFY) {
+            } else if (progressStyle == PROGRESS_NOTIFY) {
                 agent.setProgressListener(new NotificationProgressBehavior(context, 655));
-            } else if (progressStyle == BEHAVIRO_DIALOG) {
+            } else if (progressStyle == PROGRESS_DIALOG) {
                 agent.setProgressListener(new DialogProgressBehavior(context));
             } else {
                 agent.setProgressListener(new EmptyProgressBehavior());
             }
-
+            // 设置出错时的回调
             agent.setFailureListener(onFailureListener);
+            // 设置检查完成后的回调
             agent.setPromptListener(onPromptListener);
 
             UpdateManager updateManager = new UpdateManager();

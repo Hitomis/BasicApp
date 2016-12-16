@@ -42,12 +42,9 @@ public class UpdateInfo {
                     if ("appInfo".equals(parser.getName())) {
                         info = new UpdateInfo();
                     } else if ("version".equals(parser.getName())) {
-                        // TODO : 这里为了测试先写一个确定数字
-                        info.versionCode = 2;
+                        info.versionCode = Integer.parseInt(parser.nextText());
                     } else if ("downloadUrl".equals(parser.getName())) {
                         info.url = parser.nextText();
-                        // TODO : 这里为了测试先固定住MD5
-                        info.md5 = "97b311cf068f3b24e7fc755a7cd3277d";
                     } else if ("desc".equals(parser.getName())) {
                         info.updateContent = parser.nextText();
                     } else if ("size".equals(parser.getName())) {
