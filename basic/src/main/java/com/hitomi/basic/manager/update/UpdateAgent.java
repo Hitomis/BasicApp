@@ -140,6 +140,11 @@ public class UpdateAgent {
         return result;
     }
 
+    /**
+     * 获取文件的 md5 码
+     * @param file
+     * @return
+     */
     public String md5(File file) {
         MessageDigest digest;
         FileInputStream fis;
