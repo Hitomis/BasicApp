@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
@@ -17,8 +19,11 @@ import android.widget.Toast;
 import com.hitomi.basic.manager.update.behavior.OnProgressListener;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 
 class UpdateAgent {
 
@@ -69,13 +74,13 @@ class UpdateAgent {
 
     public void check() {
         if (mIsWifiOnly) {
-            if (UpdateUtil.checkWifi(mContext)) {
+            if (checkWifi()) {
                 onCheck();
             } else {
                 onFailure(new UpdateError(UpdateError.CHECK_NO_WIFI));
             }
         } else {
-            if (UpdateUtil.checkNetwork(mContext)) {
+            if (checkNetwork()) {
                 onCheck();
             } else {
                 onFailure(new UpdateError(UpdateError.CHECK_NO_NETWORK));
@@ -87,7 +92,7 @@ class UpdateAgent {
         SharedPreferences sp = mContext.getSharedPreferences(PREFS, 0);
         File file = new File(mContext.getExternalCacheDir(), sp.getString(PREFS_UPDATE, "") + ".apk");
         if (file.exists()) file.delete();
-        File tempFile = new File(mContext.getExternalCacheDir(),  sp.getString(PREFS_UPDATE, ""));
+        File tempFile = new File(mContext.getExternalCacheDir(), sp.getString(PREFS_UPDATE, ""));
         if (tempFile.exists()) tempFile.delete();
         sp.edit().clear().apply();
     }
@@ -98,6 +103,70 @@ class UpdateAgent {
         } catch (Exception e) {
             setError(new UpdateError(UpdateError.CHECK_PARSE));
         }
+    }
+
+    public boolean checkNetwork() {
+        ConnectivityManager connectivity = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity == null) {
+            return false;
+        }
+        NetworkInfo info = connectivity.getActiveNetworkInfo();
+        return info != null && info.isConnected();
+    }
+
+    private boolean checkWifi() {
+        ConnectivityManager connectivity = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity == null) {
+            return false;
+        }
+        NetworkInfo info = connectivity.getActiveNetworkInfo();
+        return info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    public boolean verify(File apk, String md5) {
+        if (!apk.exists()) {
+            return false;
+        }
+        String _md5 = md5(apk);
+        if (TextUtils.isEmpty(_md5)) {
+            return false;
+        }
+        boolean result = _md5 != null && _md5.equalsIgnoreCase(md5);
+        if (!result) {
+            apk.delete();
+        }
+        return result;
+    }
+
+    public String md5(File file) {
+        MessageDigest digest;
+        FileInputStream fis;
+        byte[] buffer = new byte[1024];
+
+        try {
+            if (!file.isFile()) {
+                return "";
+            }
+
+            digest = MessageDigest.getInstance("MD5");
+            fis = new FileInputStream(file);
+
+            while (true) {
+                int len;
+                if ((len = fis.read(buffer, 0, 1024)) == -1) {
+                    fis.close();
+                    break;
+                }
+
+                digest.update(buffer, 0, len);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        BigInteger var5 = new BigInteger(1, digest.digest());
+        return String.format("%1$032x", new Object[]{var5});
     }
 
     private void prepareUpdate() {
@@ -140,7 +209,7 @@ class UpdateAgent {
                 prepareUpdate();
                 mTmpFile = new File(mContext.getExternalCacheDir(), mInfo.getMd5());
                 mApkFile = new File(mContext.getExternalCacheDir(), mInfo.getMd5() + ".apk");
-                if (UpdateUtil.verify(mApkFile, mInfo.getMd5())) {
+                if (verify(mApkFile, mInfo.getMd5())) {
                     onInstall();
                 } else {
                     mOnPromptListener.onPrompt(this);
@@ -151,7 +220,7 @@ class UpdateAgent {
 
     public void update() {
         mApkFile = new File(mContext.getExternalCacheDir(), mInfo.getMd5() + ".apk");
-        if (UpdateUtil.verify(mApkFile, mInfo.getMd5())) {
+        if (verify(mApkFile, mInfo.getMd5())) {
             onInstall();
         } else {
             onDownload();
@@ -222,7 +291,7 @@ class UpdateAgent {
     private void onInstall() {
         String md5 = mContext.getSharedPreferences(PREFS, 0).getString(PREFS_UPDATE, "");
         File apk = new File(mContext.getExternalCacheDir(), md5 + ".apk");
-        if (UpdateUtil.verify(apk, md5)) {
+        if (verify(apk, md5)) {
             onInstall(apk);
         }
     }

@@ -18,7 +18,7 @@ import java.net.URL;
 class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
 
     private static final int TIME_OUT = 30000;
-    private static final int BUFFER_SIZE = 1024 * 100;
+    private static final int BUFFER_SIZE = 1024 * 10;
 
     private final static int EVENT_START = 1;
     private final static int EVENT_PROGRESS = 2;
@@ -64,7 +64,7 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
                 mAgent.setError(new UpdateError(UpdateError.DOWNLOAD_CANCELLED));
             } else if (result == -1) {
                 mAgent.setError(new UpdateError(UpdateError.DOWNLOAD_UNKNOWN));
-            } else if (!UpdateUtil.verify(mTemp, mTemp.getName())) {
+            } else if (!mAgent.verify(mTemp, mTemp.getName())) {
                 mAgent.setError(new UpdateError(UpdateError.DOWNLOAD_VERIFY));
             }
         } catch (UpdateError e) {
@@ -108,20 +108,20 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
         mAgent.downloadFinish();
     }
 
-    void checkNetwork() throws UpdateError {
-        if (!UpdateUtil.checkNetwork(mContext)) {
+    private void checkNetwork() throws UpdateError {
+        if (!mAgent.checkNetwork()) {
             throw new UpdateError(UpdateError.DOWNLOAD_NETWORK_BLOCKED);
         }
     }
 
-    void checkStatus() throws IOException, UpdateError {
+    private void checkStatus() throws IOException, UpdateError {
         int statusCode = mConnection.getResponseCode();
         if (statusCode != 200 && statusCode != 206) {
             throw new UpdateError(UpdateError.DOWNLOAD_HTTP_STATUS, "" + statusCode);
         }
     }
 
-    void checkSpace(long loaded, long total) throws UpdateError {
+    private void checkSpace(long loaded, long total) throws UpdateError {
         long storage = getAvailableStorage();
         if (total - loaded > storage) {
             throw new UpdateError(UpdateError.DOWNLOAD_DISK_NO_SPACE);
@@ -227,7 +227,7 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
         }
     }
 
-    public long getAvailableStorage() {
+    private long getAvailableStorage() {
         try {
             StatFs stat = new StatFs(Environment.getExternalStorageDirectory().toString());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {

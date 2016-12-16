@@ -7,7 +7,11 @@ import com.hitomi.basic.manager.update.behavior.impl.DialogProgressBehavior;
 import com.hitomi.basic.manager.update.behavior.impl.EmptyProgressBehavior;
 import com.hitomi.basic.manager.update.behavior.impl.NotificationProgressBehavior;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class UpdateManager {
 
@@ -27,6 +31,32 @@ public class UpdateManager {
 
     public void reset() {
         agent.clean();
+    }
+
+    public String readString(InputStream input) throws IOException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try {
+            byte[] buffer = new byte[4096];
+            int n = 0;
+            while (-1 != (n = input.read(buffer))) {
+                output.write(buffer, 0, n);
+            }
+            output.flush();
+        } finally {
+            close(input);
+            close(output);
+        }
+        return output.toString("UTF-8");
+    }
+
+    public void close(Closeable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static class Builder {
