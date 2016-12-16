@@ -87,19 +87,19 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
     @Override
     protected void onProgressUpdate(Integer... progress) {
         switch (progress[0]) {
-        case EVENT_START:
-            mAgent.downloadStart();
-            break;
-        case EVENT_PROGRESS:
-            long now = System.currentTimeMillis();
-            if (now - mTimeLast < 900) {
+            case EVENT_START:
+                mAgent.downloadStart();
                 break;
-            }
-            mTimeLast = now;
-            mTimeUsed = now - mTimeBegin;
-            mSpeed = mBytesLoaded * 1000 / mTimeUsed;
-            mAgent.downloadProgress((int) (this.getBytesLoaded() * 100 / mBytesTotal));
-            break;
+            case EVENT_PROGRESS:
+                long now = System.currentTimeMillis();
+                if (now - mTimeLast < 900) {
+                    break;
+                }
+                mTimeLast = now;
+                mTimeUsed = now - mTimeBegin;
+                mSpeed = mBytesLoaded * 1000 / mTimeUsed;
+                mAgent.downloadProgress((int) (this.getBytesLoaded() * 100 / mBytesTotal));
+                break;
         }
     }
 
@@ -212,6 +212,19 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
         }
     }
 
+    private long getAvailableStorage() {
+        try {
+            StatFs stat = new StatFs(Environment.getExternalStorageDirectory().toString());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                return stat.getAvailableBlocksLong() * stat.getBlockSizeLong();
+            } else {
+                return (long) stat.getAvailableBlocks() * (long) stat.getBlockSize();
+            }
+        } catch (RuntimeException ex) {
+            return 0;
+        }
+    }
+
     private final class LoadingRandomAccessFile extends RandomAccessFile {
 
         public LoadingRandomAccessFile(File file) throws FileNotFoundException {
@@ -224,19 +237,6 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
             super.write(buffer, offset, count);
             mBytesLoaded += count;
             publishProgress(EVENT_PROGRESS);
-        }
-    }
-
-    private long getAvailableStorage() {
-        try {
-            StatFs stat = new StatFs(Environment.getExternalStorageDirectory().toString());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                return stat.getAvailableBlocksLong() * stat.getBlockSizeLong();
-            } else {
-                return (long) stat.getAvailableBlocks() * (long) stat.getBlockSize();
-            }
-        } catch (RuntimeException ex) {
-            return 0;
         }
     }
 }

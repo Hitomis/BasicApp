@@ -2,10 +2,9 @@ package com.hitomi.basic.manager.update;
 
 import android.content.Context;
 
-import com.hitomi.basic.manager.update.behavior.OnProgressListener;
-import com.hitomi.basic.manager.update.behavior.impl.DialogProgressBehavior;
-import com.hitomi.basic.manager.update.behavior.impl.EmptyProgressBehavior;
-import com.hitomi.basic.manager.update.behavior.impl.NotificationProgressBehavior;
+import com.hitomi.basic.manager.update.progress.DialogProgressBehavior;
+import com.hitomi.basic.manager.update.progress.EmptyProgressBehavior;
+import com.hitomi.basic.manager.update.progress.NotificationProgressBehavior;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -66,7 +65,7 @@ public class UpdateManager {
         private boolean isManual; // true：手动检查，所有类型的错误，都会提示，false：只会提醒 2000 以上的错误
         private boolean isWifiOnly;
         private int progressStyle;
-        private OnProgressListener progressBehavior;
+        private UpdateAgent.OnProgressListener onProgressListener;
         private UpdateAgent.OnPromptListener onPromptListener;
         private UpdateAgent.OnFailureListener onFailureListener;
         private UpdateAgent.InfoParser parser;
@@ -100,8 +99,8 @@ public class UpdateManager {
             return this;
         }
 
-        public Builder setProgressBehavior(OnProgressListener progressBehavior) {
-            this.progressBehavior = progressBehavior;
+        public Builder setOnProgress(UpdateAgent.OnProgressListener listener) {
+            this.onProgressListener = listener;
             return this;
         }
 
@@ -133,8 +132,8 @@ public class UpdateManager {
             agent.setInfoParser(parser);
 
             // 设定文件下载的进度提醒方式
-            if (progressBehavior != null) { // 用户自定义了进度提醒方式，就使用用户自定义的
-                agent.setProgressListener(progressBehavior);
+            if (onProgressListener != null) { // 用户自定义了进度提醒方式，就使用用户自定义的
+                agent.setProgressListener(onProgressListener);
             } else if (progressStyle == BEHAVIRO_NOTIFY) {
                 agent.setProgressListener(new NotificationProgressBehavior(context, 655));
             } else if (progressStyle == BEHAVIRO_DIALOG) {

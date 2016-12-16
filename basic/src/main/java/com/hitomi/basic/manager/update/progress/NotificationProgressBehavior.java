@@ -1,17 +1,17 @@
-package com.hitomi.basic.manager.update.behavior.impl;
+package com.hitomi.basic.manager.update.progress;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 
-import com.hitomi.basic.manager.update.behavior.OnProgressListener;
+import com.hitomi.basic.manager.update.UpdateAgent;
 
 /**
  * Created by hitomi on 2016/12/15.
  */
 
-public class NotificationProgressBehavior implements OnProgressListener {
+public class NotificationProgressBehavior implements UpdateAgent.OnProgressListener {
 
     private Context mContext;
     private int mNotifyId;

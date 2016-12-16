@@ -1,15 +1,16 @@
-package com.hitomi.basic.manager.update.behavior.impl;
+package com.hitomi.basic.manager.update.progress;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 
-import com.hitomi.basic.manager.update.behavior.OnProgressListener;
+import com.hitomi.basic.manager.update.UpdateAgent;
+
 
 /**
  * Created by hitomi on 2016/12/15.
  */
 
-public class DialogProgressBehavior implements OnProgressListener {
+public class DialogProgressBehavior implements UpdateAgent.OnProgressListener {
 
     private Context mContext;
     private ProgressDialog mDialog;

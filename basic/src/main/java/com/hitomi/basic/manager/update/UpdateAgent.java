@@ -16,8 +16,6 @@ import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hitomi.basic.manager.update.behavior.OnProgressListener;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,7 +23,7 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
-class UpdateAgent {
+public class UpdateAgent {
 
     private static final String PREFS = "hitomi.update.prefs";
     private static final String PREFS_IGNORE = "hitomi.update.prefs.ignore";
@@ -60,6 +58,10 @@ class UpdateAgent {
 
     public String getUrl() {
         return mUrl;
+    }
+
+    public UpdateInfo getUpdateInfo() {
+        return mInfo;
     }
 
     public void setError(UpdateError error) {
@@ -308,10 +310,17 @@ class UpdateAgent {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
         if (mInfo.isForce()) {
-            System.exit(0);
+            android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
 
+    public interface OnProgressListener {
+        void onStart();
+
+        void onProgress(int progress);
+
+        void onFinish();
+    }
 
     public interface OnFailureListener {
         void onFailure(UpdateError error);
@@ -346,7 +355,7 @@ class UpdateAgent {
         }
     }
 
-    private class OnPrompt implements UpdateAgent.OnPromptListener {
+    private class OnPrompt implements OnPromptListener {
 
         private Context mContext;
 
@@ -356,7 +365,7 @@ class UpdateAgent {
 
         @Override
         public void onPrompt(UpdateAgent agent) {
-            final UpdateInfo info = mInfo;
+            final UpdateInfo info = agent.getUpdateInfo();
             String size = Formatter.formatShortFileSize(mContext, info.getSize());
             String content = String.format("最新版本：%1$s\n新版本大小：%2$s\n\n更新内容\n%3$s", info.getVersionName(), size, info.getUpdateContent());
 

@@ -9,6 +9,7 @@ import java.net.URL;
 class UpdateChecker extends AsyncTask<Void, Integer, Void> {
 
     final UpdateAgent mAgent;
+
     public UpdateChecker(UpdateAgent agent) {
         mAgent = agent;
     }
