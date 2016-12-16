@@ -15,7 +15,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="检查更新" />
+        android:text="检查更新(普通)" />
+
+    <Button
+        android:id="@+id/btn_check_ignor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="检查更新(不能忽略)" />
+
+    <Button
+        android:id="@+id/btn_check_force"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="检查更新(强制更新)" />
+
+    <Button
+        android:id="@+id/btn_check_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="检查更新(Notify样式)" />
+
+    <Button
+        android:id="@+id/btn_check_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="检查更新(Dialog样式)" />
+
+    <Button
+        android:id="@+id/btn_check_none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="检查更新(无样式[自动下载])" />
 
     <Button
         android:id="@+id/btn_clean"

@@ -288,7 +288,7 @@ public class UpdateAgent {
     }
 
     private void onDownload() {
-        new UpdateDownloader(this, mContext, mInfo.getUrl(), mTmpFile).execute();
+        new UpdateDownloader(this, mTmpFile).execute();
     }
 
     private void onInstall() {

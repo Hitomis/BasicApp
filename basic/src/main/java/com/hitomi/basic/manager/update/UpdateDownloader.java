@@ -1,6 +1,5 @@
 package com.hitomi.basic.manager.update;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
@@ -24,7 +23,6 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
     private final static int EVENT_PROGRESS = 2;
     private final static int EVENT_COMPLETE = 3;
 
-    private Context mContext;
     private UpdateAgent mAgent;
     private String mUrl;
     private File mTemp;
@@ -33,24 +31,22 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
     private long mBytesTotal = 0;
     private long mBytesTemp = 0;
     private long mTimeBegin = 0;
-    private long mTimeUsed = 1;
     private long mTimeLast = 0;
     private long mSpeed = 0;
 
     private HttpURLConnection mConnection;
 
-    public UpdateDownloader(UpdateAgent agent, Context context, String url, File file) {
+    public UpdateDownloader(UpdateAgent agent, File file) {
         super();
-        mContext = context;
         mAgent = agent;
-        mUrl = url;
+        mUrl = agent.getUpdateInfo().getUrl();
         mTemp = file;
         if (mTemp.exists()) {
             mBytesTemp = mTemp.length();
         }
     }
 
-    public long getBytesLoaded() {
+    private long getBytesLoaded() {
         return mBytesLoaded + mBytesTemp;
     }
 
@@ -96,7 +92,7 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
                     break;
                 }
                 mTimeLast = now;
-                mTimeUsed = now - mTimeBegin;
+                long mTimeUsed = now - mTimeBegin;
                 mSpeed = mBytesLoaded * 1000 / mTimeUsed;
                 mAgent.downloadProgress((int) (this.getBytesLoaded() * 100 / mBytesTotal));
                 break;
@@ -166,8 +162,7 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
 
         int bytesCopied = copy(mConnection.getInputStream(), new LoadingRandomAccessFile(mTemp));
 
-        if (isCancelled()) {
-        } else if ((mBytesTemp + bytesCopied) != mBytesTotal && mBytesTotal != -1) {
+        if ((mBytesTemp + bytesCopied) != mBytesTotal && mBytesTotal != -1) {
             throw new UpdateError(UpdateError.DOWNLOAD_INCOMPLETE);
         }
 
