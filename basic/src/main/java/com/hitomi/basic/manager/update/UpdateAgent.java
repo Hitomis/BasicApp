@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -33,6 +34,7 @@ public class UpdateAgent {
     private String mUrl;
     private File mTmpFile;
     private File mApkFile;
+    private File mParentDir;
     private boolean mIsManual = false;
     private boolean mIsWifiOnly = false;
 
@@ -54,6 +56,9 @@ public class UpdateAgent {
         mOnFailureListener = new OnFailure(context);
 
         mParser = new DefaultParser();
+        // 创建 apk 文件目录[该路径被 Android 系统认定为应用程序的缓存路径，当程序被卸载的时候，会一起被清除]
+        mParentDir = getDiskCacheDir();
+        if (!mParentDir.exists()) mParentDir.mkdirs();
     }
 
     public String getUrl() {
@@ -92,9 +97,9 @@ public class UpdateAgent {
 
     public void clean() {
         SharedPreferences sp = mContext.getSharedPreferences(PREFS, 0);
-        File file = new File(mContext.getExternalCacheDir(), sp.getString(PREFS_UPDATE, "") + ".apk");
+        File file = new File(mParentDir, sp.getString(PREFS_UPDATE, "") + ".apk");
         if (file.exists()) file.delete();
-        File tempFile = new File(mContext.getExternalCacheDir(), sp.getString(PREFS_UPDATE, ""));
+        File tempFile = new File(mParentDir, sp.getString(PREFS_UPDATE, ""));
         if (tempFile.exists()) tempFile.delete();
         sp.edit().clear().apply();
     }
@@ -176,6 +181,17 @@ public class UpdateAgent {
         return String.format("%1$032x", new Object[]{var5});
     }
 
+    private File getDiskCacheDir() {
+        String cachePath;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = mContext.getExternalCacheDir().getPath();
+        } else {
+            cachePath = mContext.getCacheDir().getPath();
+        }
+        return new File(cachePath + File.separator + "apk");
+    }
+
     private void prepareUpdate() {
         String md5 = mInfo.getMd5();
         if (TextUtils.isEmpty(md5)) {
@@ -186,12 +202,12 @@ public class UpdateAgent {
         if (md5.equals(old)) {
             return;
         }
-        File oldFile = new File(mContext.getExternalCacheDir(), old);
+        File oldFile = new File(mParentDir, old);
         if (oldFile.exists()) {
             oldFile.delete();
         }
         sp.edit().putString(PREFS_UPDATE, md5).apply();
-        File file = new File(mContext.getExternalCacheDir(), md5);
+        File file = new File(mParentDir, md5);
         if (!file.exists()) {
             try {
                 // 创建 apk 临时文件
@@ -214,8 +230,8 @@ public class UpdateAgent {
                 onFailure(new UpdateError(UpdateError.UPDATE_IGNORED));
             } else {
                 prepareUpdate();
-                mTmpFile = new File(mContext.getExternalCacheDir(), mInfo.getMd5());
-                mApkFile = new File(mContext.getExternalCacheDir(), mInfo.getMd5() + ".apk");
+                mTmpFile = new File(mParentDir, mInfo.getMd5());
+                mApkFile = new File(mParentDir, mInfo.getMd5() + ".apk");
                 if (verify(mApkFile, mInfo.getMd5())) {
                     onInstall();
                 } else {
@@ -226,7 +242,8 @@ public class UpdateAgent {
     }
 
     public void update() {
-        mApkFile = new File(mContext.getExternalCacheDir(), mInfo.getMd5() + ".apk");
+        if (mApkFile == null)
+            mApkFile = new File(mParentDir, mInfo.getMd5() + ".apk");
         if (verify(mApkFile, mInfo.getMd5())) {
             onInstall();
         } else {
@@ -298,7 +315,7 @@ public class UpdateAgent {
 
     private void onInstall() {
         String md5 = mContext.getSharedPreferences(PREFS, 0).getString(PREFS_UPDATE, "");
-        File apk = new File(mContext.getExternalCacheDir(), md5 + ".apk");
+        File apk = new File(mParentDir, md5 + ".apk");
         if (verify(apk, md5)) {
             onInstall(apk);
         }

@@ -1,6 +1,7 @@
 package com.hitomi.basic.manager.update;
 
 import android.content.Context;
+import android.os.Environment;
 
 import com.hitomi.basic.manager.update.progress.DialogProgressBehavior;
 import com.hitomi.basic.manager.update.progress.EmptyProgressBehavior;
@@ -184,11 +185,6 @@ public class UpdateManager {
         }
 
         public UpdateManager create() {
-            // 创建 apk 文件目录[该路径被 Android 系统认定为应用程序的缓存路径，当程序被卸载的时候，会一起被清除]
-            File file = new File(context.getExternalFilesDir("").getParentFile(), "cache");
-            if (!file.exists())
-                file.mkdirs();
-
             if ("".equals(channel) || null == channel) {
                 url = String.format(url, "");
             } else {
@@ -219,6 +215,5 @@ public class UpdateManager {
             return updateManager;
         }
     }
-
 
 }
