@@ -2,7 +2,7 @@ package com.hitomi.basic.manager.update;
 
 import android.util.SparseArray;
 
-public class UpdateError extends Throwable {
+class UpdateError extends Throwable {
 
     public static final int UPDATE_IGNORED = 1001;
     public static final int UPDATE_NO_NEWER = 1002;

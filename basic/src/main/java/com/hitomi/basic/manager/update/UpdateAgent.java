@@ -29,6 +29,7 @@ public class UpdateAgent {
     private static final String PREFS = "hitomi.update.prefs";
     private static final String PREFS_IGNORE = "hitomi.update.prefs.ignore";
     private static final String PREFS_UPDATE = "hitomi.update.prefs.update";
+    private static final String APK_DIR_NAME = "apk";
 
     private Context mContext;
     private String mUrl;
@@ -189,7 +190,7 @@ public class UpdateAgent {
         } else {
             cachePath = mContext.getCacheDir().getPath();
         }
-        return new File(cachePath + File.separator + "apk");
+        return new File(cachePath + File.separator + APK_DIR_NAME);
     }
 
     private void prepareUpdate() {

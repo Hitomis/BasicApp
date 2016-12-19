@@ -160,7 +160,8 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
 
         publishProgress(EVENT_START);
 
-        int bytesCopied = copy(mConnection.getInputStream(), new LoadingRandomAccessFile(mTemp));
+        // Fix: int 最大数字表示为 2G 存储, 为了预防文件过大，这里使用 long 型
+        long bytesCopied = copy(mConnection.getInputStream(), new LoadingRandomAccessFile(mTemp));
 
         if ((mBytesTemp + bytesCopied) != mBytesTotal && mBytesTotal != -1) {
             throw new UpdateError(UpdateError.DOWNLOAD_INCOMPLETE);
@@ -170,7 +171,7 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
 
     }
 
-    private int copy(InputStream in, RandomAccessFile out) throws IOException, UpdateError {
+    private long copy(InputStream in, RandomAccessFile out) throws IOException, UpdateError {
 
         byte[] buffer = new byte[BUFFER_SIZE];
         BufferedInputStream bis = new BufferedInputStream(in, BUFFER_SIZE);
@@ -178,7 +179,7 @@ class UpdateDownloader extends AsyncTask<Void, Integer, Long> {
 
             out.seek(out.length());
 
-            int bytes = 0;
+            long bytes = 0;
             long previousBlockTime = -1;
 
             while (!isCancelled()) {
