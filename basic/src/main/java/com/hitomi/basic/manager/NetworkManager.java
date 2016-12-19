@@ -118,6 +118,8 @@ public class NetworkManager {
         mContext.registerReceiver(netWorkChangeReceiver, filter);
     }
 
+    private NetworkManager() {}
+
     private static class SingletonHolder {
         public final static NetworkManager instance = new NetworkManager();
     }

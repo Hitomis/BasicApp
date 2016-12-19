@@ -15,4 +15,6 @@ public interface CacheHandler {
 
     void clear();
 
+    void close();
+
 }

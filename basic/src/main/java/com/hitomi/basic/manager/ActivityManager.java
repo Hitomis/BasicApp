@@ -22,8 +22,10 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
         app.registerActivityLifecycleCallbacks(this);
     }
 
+    private ActivityManager() {}
+
     private static class SingletonHolder {
-        public final static ActivityManager instance = new ActivityManager();
+        final static ActivityManager instance = new ActivityManager();
     }
 
     public static ActivityManager getInstance() {

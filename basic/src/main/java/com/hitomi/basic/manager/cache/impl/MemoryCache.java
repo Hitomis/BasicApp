@@ -9,30 +9,24 @@ import com.hitomi.basic.manager.cache.CacheHandler;
 public class MemoryCache implements CacheHandler {
 
     private LruCache<String, Object> cache;
-    private static MemoryCache instance;
 
     private MemoryCache() {
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
         int cacheSize = maxMemory / 8;
-        cache = new LruCache<String, Object>(cacheSize);
+        cache = new LruCache<>(cacheSize);
+    }
 
+    private static class SingletonHolder {
+        final static MemoryCache instance = new MemoryCache();
     }
 
     public static MemoryCache getInstance() {
-        if (instance == null) {
-            synchronized (MemoryCache.class) {
-                if (instance == null) {
-                    instance = new MemoryCache();
-                }
-            }
-        }
-        return instance;
+        return MemoryCache.SingletonHolder.instance;
     }
-
 
     @Override
     public synchronized void put(String key, Object value) {
-        if (TextUtils.isEmpty(key)) return;
+        if (TextUtils.isEmpty(key) || value == null) return;
 
         if (cache.get(key) != null) {
             cache.remove(key);
@@ -41,7 +35,7 @@ public class MemoryCache implements CacheHandler {
     }
 
     @Override
-    public Object get(String key) {
+    public synchronized Object get(String key) {
         return cache.get(key);
     }
 
@@ -70,4 +64,12 @@ public class MemoryCache implements CacheHandler {
     public void clear() {
         cache.evictAll();
     }
+
+    @Override
+    public void close() {
+        clear();
+        cache = null;
+    }
+
+
 }
