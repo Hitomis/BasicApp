@@ -11,13 +11,10 @@ import com.hitomi.basic.manager.cache.impl.SharedPref;
  */
 public class CacheManager {
 
-    private static Context mContext;
-
-    private CacheManager() {
-    }
+    private static Context app;
 
     public static void init(Context context) {
-        CacheManager.mContext = context;
+        CacheManager.app = context;
     }
 
     public static CacheHandler MC() {
@@ -25,11 +22,11 @@ public class CacheManager {
     }
 
     public static SharedPref SP() {
-        return SharedPref.getInstance().init(mContext);
+        return SharedPref.getInstance().init(app);
     }
 
     public static CacheHandler DS() {
-        return DiskCache.newInstance(mContext);
+        return DiskCache.newInstance(app);
     }
 
 }

@@ -27,8 +27,10 @@ public class SharedPref implements CacheHandler {
     }
 
     public SharedPref init(Context context){
-        sharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        if (sharedPreferences == null || editor == null) {
+            sharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+        }
         return this;
     }
 

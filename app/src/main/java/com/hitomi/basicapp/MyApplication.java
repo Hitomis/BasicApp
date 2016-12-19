@@ -9,6 +9,7 @@ import com.elvishew.xlog.XLog;
 import com.elvishew.xlog.printer.AndroidPrinter;
 import com.hitomi.basic.manager.ActivityManager;
 import com.hitomi.basic.manager.NetworkManager;
+import com.hitomi.basic.manager.cache.CacheManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -24,8 +25,9 @@ public class MyApplication extends Application {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
         initXLog();
-        ActivityManager.getInstance().init(this);
+        CacheManager.init(this);
         NetworkManager.getInstance().init(this);
+        ActivityManager.getInstance().init(this);
     }
 
     private void initXLog() {
