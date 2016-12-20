@@ -16,9 +16,10 @@ import com.hitomi.basic.ui.BaseActivity;
 
 import java.io.InputStream;
 
-public class HomeActivity extends BaseActivity implements View.OnClickListener {
+public class CacheActivity extends BaseActivity implements View.OnClickListener {
 
     private Button btnSp1, btnMc1, btnDc1, btnSp2, btnMc2;
+    private Button btnExit;
     private ImageView imageView;
 
     private SharedPref sp = CacheManager.SP();
@@ -27,7 +28,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public int getContentViewID() {
-        return R.layout.activity_home;
+        return R.layout.activity_cache;
     }
 
     @Override
@@ -39,6 +40,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         btnSp2 = (Button) findViewById(R.id.btn_sp2);
         btnMc2 = (Button) findViewById(R.id.btn_mc2);
 
+        btnExit = (Button) findViewById(R.id.btn_exit);
         imageView = (ImageView) findViewById(R.id.image_view);
     }
 
@@ -50,6 +52,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         btnSp2.setOnClickListener(this);
         btnMc2.setOnClickListener(this);
+        btnExit.setOnClickListener(this);
     }
 
     @Override
@@ -65,7 +68,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         mc.put("mc2", model);
         mc.put("mc1", "这是测试 MemoryCache 取出的字符串");
 
-        Drawable image = getBaseContext().getResources().getDrawable(R.drawable.bg1);
+        Drawable image = getBaseContext().getResources().getDrawable(R.drawable.img1);
         ds.put("dc1", image);
     }
 
@@ -90,6 +93,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                     InputStream resultIs = (InputStream) value;
                     imageView.setImageBitmap(inputStream2Bitmap(resultIs));
                 }
+                break;
+            case R.id.btn_exit:
+                postExitApp();
                 break;
         }
     }

@@ -46,11 +46,18 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
         });
     }
 
-
+    /**
+     * 退出 app
+     */
     protected void postExitApp() {
         EventBus.getDefault().post(new AppExitEvent());
     }
 
+    /**
+     * 退出 app 功能 需要使用 EventBus 通知每一个 Activity 执行 finish 方法.<br/>
+     * 注意：若需要退出 app, 请使用 {@link BaseActivity#postExitApp()}. 不要调用该方法
+     * @param event
+     */
     @Subscribe
     public void exitApp(AppExitEvent event) {
         finish();

@@ -65,4 +65,10 @@
         android:layout_height="wrap_content"
         android:text="跳转到下一个 Activity" />
 
+    <Button
+        android:id="@+id/btn_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="跳转 ImageActivity" />
+
 </LinearLayout>

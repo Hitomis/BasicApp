@@ -17,7 +17,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     String mCheckUrl = "http://img3.fdc.com.cn/app_download/android_upgrade%s.xml";
     private Button btnCheck, btnCheckIgnor, btnCheckForce, btnCheckNotify, btnCheckDialog, btnCheckNone;
-    private Button btnJumpNext, btnClean;
+    private Button btnJumpNext, btnClean, btnImage;
     private UpdateManager updateManager;
 
     @Override
@@ -36,6 +36,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         btnJumpNext = (Button) findViewById(R.id.btn_jump_next);
         btnClean = (Button) findViewById(R.id.btn_clean);
+        btnImage = (Button) findViewById(R.id.btn_image);
     }
 
     @Override
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         btnJumpNext.setOnClickListener(this);
         btnClean.setOnClickListener(this);
+        btnImage.setOnClickListener(this);
     }
 
     @Override
@@ -159,7 +161,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 Toast.makeText(this, "cleared", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_jump_next:
-                startActivity(new Intent(this, HomeActivity.class));
+                startActivity(new Intent(this, CacheActivity.class));
+                break;
+            case R.id.btn_image:
+                startActivity(new Intent(this, ImageActivity.class));
                 break;
         }
     }
