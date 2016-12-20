@@ -18,6 +18,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -139,7 +141,7 @@ public class DiskCache implements CacheHandler {
 
     @Override
     public void put(String key, Object value) {
-        if (TextUtils.isEmpty(key) || value == null) return ;
+        if (TextUtils.isEmpty(key) || value == null) return;
         if (value instanceof InputStream) {
             put(key, (InputStream) value);
         } else if (value instanceof Drawable) {
@@ -147,6 +149,12 @@ public class DiskCache implements CacheHandler {
             put(key, bitmap2InputStream(bitmap));
         } else if (value instanceof Bitmap) {
             put(key, bitmap2InputStream((Bitmap) value));
+        } else if (value instanceof File) {
+            try {
+                put(key, new FileInputStream((File) value));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 

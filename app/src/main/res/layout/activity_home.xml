@@ -15,30 +15,35 @@
         android:id="@+id/btn_sp1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SharedPreferences 测试1" />
+        android:text="sp 测试1 - 存取字符串" />
 
     <Button
         android:id="@+id/btn_sp2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SharedPreferences 测试1" />
+        android:text="sp 测试1 - 存取数字" />
 
     <Button
         android:id="@+id/btn_mc1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="内存缓存 测试1" />
+        android:text="内存缓存 测试1 - 存取字符串" />
 
     <Button
         android:id="@+id/btn_mc2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="内存缓存 测试2" />
+        android:text="内存缓存 测试2 - 存取对象" />
 
     <Button
-        android:id="@+id/btn_dc"
+        android:id="@+id/btn_dc1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="磁盘缓存 测试" />
+        android:text="磁盘缓存 测试 - 取出图片" />
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
