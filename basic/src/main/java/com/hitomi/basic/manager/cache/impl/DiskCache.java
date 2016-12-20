@@ -3,6 +3,10 @@ package com.hitomi.basic.manager.cache.impl;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.text.TextUtils;
 
@@ -10,29 +14,22 @@ import com.hitomi.basic.manager.cache.CacheHandler;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
-import java.util.Calendar;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class DiskCache implements CacheHandler {
-    private static String TAG_CACHE = "=====createTime{createTime}expireMills{expireMills}";
-    private static String REGEX = "=====createTime\\{(\\d{1,})\\}expireMills\\{(\\d{1,})\\}";
     private static String DISK_CHACHE_DIR = "file";
 
-    private static final long NO_CACHE = -1L;
-
     private DiskLruCache cache;
-    private Pattern compile;
 
     private DiskCache(Context context) {
-        compile = Pattern.compile(REGEX);
         try {
             File cacheDir = getDiskCacheDir(context, DISK_CHACHE_DIR);
             if (!cacheDir.exists()) {
@@ -56,26 +53,6 @@ public class DiskCache implements CacheHandler {
             e.printStackTrace();
         }
         return 1;
-    }
-
-    private void put(String key, String value, long expireMills) {
-        if (TextUtils.isEmpty(key) || TextUtils.isEmpty(value)) return;
-
-        String name = getMd5Key(key);
-        try {
-            Object existValue = get(name);
-            if (existValue != null && existValue instanceof String) {     //如果存在，先删除
-                cache.remove(name);
-            }
-
-            DiskLruCache.Editor editor = cache.edit(name);
-            StringBuilder content = new StringBuilder(value);
-            content.append(TAG_CACHE.replace("createTime", "" + Calendar.getInstance().getTimeInMillis()).replace("expireMills", "" + expireMills));
-            editor.set(0, content.toString());
-            editor.commit();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void put(String key, InputStream is) {
@@ -130,13 +107,46 @@ public class DiskCache implements CacheHandler {
         }
     }
 
+    /**
+     * 将Bitmap转换成InputStream
+     * @param bm 需要转换的 Bitmap
+     * @return InputStream
+     */
+    private InputStream bitmap2InputStream(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        return new ByteArrayInputStream(baos.toByteArray());
+    }
+
+    /**
+     * drawable转换成Bitmap
+     * @param drawable 需要转换的 Drawable
+     * @return Bitmap
+     */
+    private Bitmap drawable2Bitmap(Drawable drawable) {
+        Bitmap bitmap = Bitmap
+                .createBitmap(
+                        drawable.getIntrinsicWidth(),
+                        drawable.getIntrinsicHeight(),
+                        drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                                : Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
     @Override
     public void put(String key, Object value) {
         if (TextUtils.isEmpty(key) || value == null) return ;
         if (value instanceof InputStream) {
             put(key, (InputStream) value);
-        } else {
-            put(key, value.toString(), NO_CACHE);
+        } else if (value instanceof Drawable) {
+            Bitmap bitmap = drawable2Bitmap((Drawable) value);
+            put(key, bitmap2InputStream(bitmap));
+        } else if (value instanceof Bitmap) {
+            put(key, bitmap2InputStream((Bitmap) value));
         }
     }
 
@@ -147,26 +157,9 @@ public class DiskCache implements CacheHandler {
             String md5Key = getMd5Key(key);
             DiskLruCache.Snapshot snapshot = cache.get(md5Key);
             if (snapshot != null) {
-                String content = snapshot.getString(0);
-                if (!TextUtils.isEmpty(content)) { // key 映射的是字符
-                    Matcher matcher = compile.matcher(content);
-                    long createTime = 0;
-                    long expireMills = 0;
-                    while (matcher.find()) {
-                        createTime = Long.parseLong(matcher.group(1));
-                        expireMills = Long.parseLong(matcher.group(2));
-                    }
-                    int index = content.indexOf("=====createTime");
-
-                    if ((createTime + expireMills < Calendar.getInstance().getTimeInMillis())
-                            || expireMills == NO_CACHE) {
-                        value = content.substring(0, index);
-                    } else {
-                        //过期
-                        cache.remove(md5Key);       //删除
-                    }
-                } else  { // key 映射的是 InputStream
-                    value = snapshot.getInputStream(0);
+                InputStream is = snapshot.getInputStream(0);
+                if (is != null) {
+                    value = is;
                 }
             }
         } catch (Exception e) {
@@ -206,7 +199,6 @@ public class DiskCache implements CacheHandler {
 
     @Override
     public void close() {
-        compile = null;
         try {
             cache.close();
         } catch (IOException e) {
