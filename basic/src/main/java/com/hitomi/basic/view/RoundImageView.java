@@ -59,9 +59,16 @@ public class RoundImageView extends ImageView {
     private int mWidth;
     private RectF mRoundRect;
 
-    public RoundImageView(Context context, AttributeSet attrs) {
+    public RoundImageView(Context context) {
+        this(context, null);
+    }
 
-        super(context, attrs);
+    public RoundImageView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public RoundImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         mMatrix = new Matrix();
         mBitmapPaint = new Paint();
         mBitmapPaint.setAntiAlias(true);
@@ -73,10 +80,6 @@ public class RoundImageView extends ImageView {
                                 .getDisplayMetrics()));// 默认为10dp
         type = a.getInt(R.styleable.RoundImageView_type, TYPE_CIRCLE);// 默认为 Circle
         a.recycle();
-    }
-
-    public RoundImageView(Context context) {
-        this(context, null);
     }
 
     @Override
