@@ -30,6 +30,8 @@
         <activity
             android:name=".ImageActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".UpdateActivity" />
+        <activity android:name=".AdapterActivity"></activity>
     </application>
 
 </manifest>
