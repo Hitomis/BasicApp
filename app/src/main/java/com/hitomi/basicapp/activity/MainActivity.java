@@ -1,4 +1,4 @@
-package com.hitomi.basicapp;
+package com.hitomi.basicapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,10 +6,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.hitomi.basic.ui.BaseActivity;
+import com.hitomi.basicapp.R;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    private Button btnUpdate, btnCache, btnRound, btnRecycle;
+    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp;
 
     @Override
     public int getContentViewID() {
@@ -22,6 +23,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnCache = (Button) findViewById(R.id.btn_cache);
         btnRound = (Button) findViewById(R.id.btn_round);
         btnRecycle = (Button) findViewById(R.id.btn_recycle);
+        btnHttp = (Button) findViewById(R.id.btn_http);
     }
 
     @Override
@@ -30,6 +32,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnCache.setOnClickListener(this);
         btnRound.setOnClickListener(this);
         btnRecycle.setOnClickListener(this);
+        btnHttp.setOnClickListener(this);
     }
 
     @Override
@@ -51,6 +54,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.btn_recycle:
                 startActivity(new Intent(this, AdapterActivity.class));
+                break;
+            case R.id.btn_http:
+                startActivity(new Intent(this, OkHttpActivity.class));
                 break;
         }
     }

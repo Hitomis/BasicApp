@@ -1,4 +1,4 @@
-package com.hitomi.basicapp;
+package com.hitomi.basicapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import com.hitomi.basic.manager.update.UpdateAgent;
 import com.hitomi.basic.manager.update.UpdateInfo;
 import com.hitomi.basic.manager.update.UpdateManager;
 import com.hitomi.basic.ui.BaseActivity;
+import com.hitomi.basicapp.R;
 
 import java.io.InputStream;
 

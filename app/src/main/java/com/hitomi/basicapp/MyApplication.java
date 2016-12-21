@@ -34,7 +34,7 @@ public class MyApplication extends Application {
         LogConfiguration config = new LogConfiguration.Builder()
                 .logLevel(BuildConfig.DEBUG
                         ? LogLevel.DEBUG
-                        : LogLevel.NONE) // 指定日志级别，低于该级别的日志将不会被打印，默认为 LogLevel.ALL
+                        : LogLevel.NONE) // DEBUG 模式下打印日志, RELEASE 不再打印日志
                 .t()  // 允许打印线程信息，默认禁止
                 .b()  // 允许打印日志边框，默认禁止
                 .build();

@@ -1,4 +1,4 @@
-package com.hitomi.basicapp;
+package com.hitomi.basicapp.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +13,7 @@ import com.hitomi.basic.adapter.recycleview.HeaderAndFooterWrapper;
 import com.hitomi.basic.adapter.recycleview.LoadMoreWrapper;
 import com.hitomi.basic.adapter.recycleview.ViewHolder;
 import com.hitomi.basic.ui.BaseActivity;
+import com.hitomi.basicapp.R;
 
 import java.util.ArrayList;
 import java.util.List;

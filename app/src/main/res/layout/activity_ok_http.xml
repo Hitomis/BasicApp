@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_ok_http"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.hitomi.basicapp.activity.MainActivity">
+    tools:context="com.hitomi.basicapp.activity.OkHttpActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,36 +16,17 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btn_update"
+            android:id="@+id/btn_get"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="检查更新测试页面" />
+            android:text="get 请求"/>
 
         <Button
-            android:id="@+id/btn_cache"
+            android:id="@+id/btn_post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="缓存管理测试页面" />
-
-        <Button
-            android:id="@+id/btn_round"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="圆角图片测试页面" />
-
-        <Button
-            android:id="@+id/btn_recycle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="recycle测试页面" />
-
-        <Button
-            android:id="@+id/btn_http"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="okHttp 测试" />
+            android:text="post 请求"/>
 
     </LinearLayout>
-
 
 </ScrollView>

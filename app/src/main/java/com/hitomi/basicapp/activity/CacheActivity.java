@@ -1,4 +1,4 @@
-package com.hitomi.basicapp;
+package com.hitomi.basicapp.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +13,8 @@ import com.hitomi.basic.manager.cache.CacheHandler;
 import com.hitomi.basic.manager.cache.CacheManager;
 import com.hitomi.basic.manager.cache.impl.SharedPref;
 import com.hitomi.basic.ui.BaseActivity;
+import com.hitomi.basicapp.McModel;
+import com.hitomi.basicapp.R;
 
 import java.io.InputStream;
 

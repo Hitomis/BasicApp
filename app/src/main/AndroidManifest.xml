@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,13 +25,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CacheActivity"
+            android:name=".activity.CacheActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ImageActivity"
+            android:name=".activity.ImageActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".UpdateActivity" />
-        <activity android:name=".AdapterActivity"></activity>
+        <activity android:name=".activity.UpdateActivity" />
+        <activity android:name=".activity.AdapterActivity" />
+        <activity android:name=".activity.OkHttpActivity"></activity>
     </application>
 
 </manifest>

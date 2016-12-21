@@ -1,8 +1,9 @@
-package com.hitomi.basicapp;
+package com.hitomi.basicapp.activity;
 
 import android.os.Bundle;
 
 import com.hitomi.basic.ui.BaseActivity;
+import com.hitomi.basicapp.R;
 
 /**
  * Created by hitomi on 2016/12/20.

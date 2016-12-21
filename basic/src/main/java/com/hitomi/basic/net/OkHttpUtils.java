@@ -18,7 +18,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 /**
- * Created by zhy on 15/8/17.
+ * 一般的get请求 <br/>
+ * 一般的post请求 <br/>
+ * 基于Http的文件上传 <br/>
+ * 文件下载 <br/>
+ * 上传下载的进度回调 <br/>
+ * 加载图片 <br/>
+ * 支持请求回调，直接返回对象、对象集合 <br/>
+ * 支持session的保持 <br/>
+ * 支持自签名网站https的访问 <br/>
+ * 支持取消某个请求 <br/>
  */
 public class OkHttpUtils {
     public static final long DEFAULT_MILLISECONDS = 10_000L;

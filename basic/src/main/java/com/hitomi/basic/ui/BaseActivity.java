@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.elvishew.xlog.Logger;
+import com.elvishew.xlog.XLog;
 import com.hitomi.basic.manager.NetworkManager;
 import com.hitomi.basic.model.AppExitEvent;
+import com.hitomi.basic.net.OkHttpUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -14,6 +17,9 @@ import org.greenrobot.eventbus.Subscribe;
  * Created by hitomi on 2016/12/11.
  */
 public abstract class BaseActivity extends AppCompatActivity implements UIHandler {
+
+    protected Logger log = XLog.tag(this.getClass().getSimpleName()).build();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,12 +69,12 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
         finish();
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         NetworkManager.getInstance().destroy();
+        OkHttpUtils.getInstance().cancelTag(this);
     }
 
 
