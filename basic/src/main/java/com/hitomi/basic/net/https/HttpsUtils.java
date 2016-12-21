@@ -25,11 +25,6 @@ import javax.net.ssl.X509TrustManager;
  * Created by zhy on 15/12/14.
  */
 public class HttpsUtils {
-    public static class SSLParams {
-        public SSLSocketFactory sSLSocketFactory;
-        public X509TrustManager trustManager;
-    }
-
     public static SSLParams getSslSocketFactory(InputStream[] certificates, InputStream bksFile, String password) {
         SSLParams sslParams = new SSLParams();
         try {
@@ -52,30 +47,6 @@ public class HttpsUtils {
             throw new AssertionError(e);
         } catch (KeyStoreException e) {
             throw new AssertionError(e);
-        }
-    }
-
-    private class UnSafeHostnameVerifier implements HostnameVerifier {
-        @Override
-        public boolean verify(String hostname, SSLSession session) {
-            return true;
-        }
-    }
-
-    private static class UnSafeTrustManager implements X509TrustManager {
-        @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
-        }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[]{};
         }
     }
 
@@ -155,6 +126,27 @@ public class HttpsUtils {
         return null;
     }
 
+    public static class SSLParams {
+        public SSLSocketFactory sSLSocketFactory;
+        public X509TrustManager trustManager;
+    }
+
+    private static class UnSafeTrustManager implements X509TrustManager {
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[]{};
+        }
+    }
 
     private static class MyTrustManager implements X509TrustManager {
         private X509TrustManager defaultTrustManager;
@@ -186,6 +178,13 @@ public class HttpsUtils {
         @Override
         public X509Certificate[] getAcceptedIssuers() {
             return new X509Certificate[0];
+        }
+    }
+
+    private class UnSafeHostnameVerifier implements HostnameVerifier {
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            return true;
         }
     }
 }

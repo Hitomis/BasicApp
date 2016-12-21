@@ -32,6 +32,21 @@ public class PostFormBuilder extends OkHttpRequestBuilder<PostFormBuilder> imple
         return this;
     }
 
+    @Override
+    public PostFormBuilder params(Map<String, String> params) {
+        this.params = params;
+        return this;
+    }
+
+    @Override
+    public PostFormBuilder addParams(String key, String val) {
+        if (this.params == null) {
+            params = new LinkedHashMap<>();
+        }
+        params.put(key, val);
+        return this;
+    }
+
     public static class FileInput {
         public String key;
         public String filename;
@@ -51,22 +66,6 @@ public class PostFormBuilder extends OkHttpRequestBuilder<PostFormBuilder> imple
                     ", file=" + file +
                     '}';
         }
-    }
-
-
-    @Override
-    public PostFormBuilder params(Map<String, String> params) {
-        this.params = params;
-        return this;
-    }
-
-    @Override
-    public PostFormBuilder addParams(String key, String val) {
-        if (this.params == null) {
-            params = new LinkedHashMap<>();
-        }
-        params.put(key, val);
-        return this;
     }
 
 

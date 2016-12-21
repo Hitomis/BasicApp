@@ -1,10 +1,9 @@
 package com.hitomi.basic.net.request;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-
 import java.io.IOException;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.ForwardingSink;
@@ -56,6 +55,10 @@ public class CountingRequestBody extends RequestBody {
         bufferedSink.flush();
     }
 
+    public static interface Listener {
+        public void onRequestProgress(long bytesWritten, long contentLength);
+    }
+
     protected final class CountingSink extends ForwardingSink {
 
         private long bytesWritten = 0;
@@ -72,10 +75,6 @@ public class CountingRequestBody extends RequestBody {
             listener.onRequestProgress(bytesWritten, contentLength());
         }
 
-    }
-
-    public static interface Listener {
-        public void onRequestProgress(long bytesWritten, long contentLength);
     }
 
 }

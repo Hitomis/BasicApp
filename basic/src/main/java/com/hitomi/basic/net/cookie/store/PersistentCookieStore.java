@@ -79,6 +79,10 @@ public class PersistentCookieStore implements CookieStore {
         }
     }
 
+    private static boolean isCookieExpired(Cookie cookie) {
+        return cookie.expiresAt() < System.currentTimeMillis();
+    }
+
     protected void add(HttpUrl uri, Cookie cookie) {
         String name = getCookieToken(cookie);
 
@@ -128,10 +132,6 @@ public class PersistentCookieStore implements CookieStore {
         }
 
         return ret;
-    }
-
-    private static boolean isCookieExpired(Cookie cookie) {
-        return cookie.expiresAt() < System.currentTimeMillis();
     }
 
     @Override
