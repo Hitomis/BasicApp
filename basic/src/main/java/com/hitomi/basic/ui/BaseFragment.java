@@ -7,12 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.elvishew.xlog.Logger;
+import com.elvishew.xlog.XLog;
+
 /**
  * Created by hitomi on 2016/12/11.
  */
 public abstract class BaseFragment extends Fragment implements UIHandler {
 
-    private View contentView;
+    protected Logger log = XLog.tag(this.getClass().getSimpleName()).build();
+
+    protected View contentView;
 
     @Nullable
     @Override
