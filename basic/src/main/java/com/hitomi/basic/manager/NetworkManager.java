@@ -139,8 +139,8 @@ public class NetworkManager {
         networkListener = listener;
     }
 
-    public void destroy() {
-        networkListener = null;
+    public OnNetworkStatusChangeListener getNetworkChangeListener() {
+        return networkListener;
     }
 
     /**

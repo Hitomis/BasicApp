@@ -55,6 +55,7 @@ public class OkHttpActivity extends BaseActivity implements View.OnClickListener
     private void doPost() {
         OkHttpUtils.post()
                 .url("https://gw.fdc.com.cn/router/rest")
+                .tag(this)
                 .addParams("method", "homenhapi.admin.housedetail")
                 .addParams("bid", "D61D1BEC-D56C-411F-B1CC-E9F152C58BCD")
                 .build()
@@ -62,7 +63,7 @@ public class OkHttpActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Toast.makeText(OkHttpActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
-                        log.json(e.getMessage());
+                        log.e(e.getMessage());
                     }
 
                     @Override
@@ -77,6 +78,7 @@ public class OkHttpActivity extends BaseActivity implements View.OnClickListener
     private void doGet() {
         OkHttpUtils.get()
                 .url("https://gw.fdc.com.cn/router/rest")
+                .tag(this)
                 .addParams("method", "homenhapi.admin.housedetail")
                 .addParams("bid", "D61D1BEC-D56C-411F-B1CC-E9F152C58BCD")
                 .build()
@@ -84,7 +86,7 @@ public class OkHttpActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Toast.makeText(OkHttpActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
-                        log.json(e.getMessage());
+                        log.e(e.getMessage());
                     }
 
                     @Override

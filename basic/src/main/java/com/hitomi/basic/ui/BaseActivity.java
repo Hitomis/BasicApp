@@ -3,10 +3,14 @@ package com.hitomi.basic.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.elvishew.xlog.Logger;
 import com.elvishew.xlog.XLog;
 import com.hitomi.basic.manager.NetworkManager;
+import com.hitomi.basic.manager.hook.HookListenerContract;
+import com.hitomi.basic.manager.hook.HookManager;
+import com.hitomi.basic.manager.hook.ListenerManager;
 import com.hitomi.basic.model.AppExitEvent;
 import com.hitomi.basic.net.OkHttpUtils;
 
@@ -29,27 +33,47 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
             initView();
             setViewListener();
             dealLogic(savedInstanceState);
-            observeNetwork();
         }
+        observeNetwork();
     }
 
     private void observeNetwork() {
-        NetworkManager.getInstance().setNetworkChangeListener(new NetworkManager.OnNetworkStatusChangeListener() {
-            @Override
-            public void onWifiAvailable() {
+        // 整个 app 生命周期中 OnNetworkStatusChangeListener 只能存在一个
+        if (NetworkManager.getInstance().getNetworkChangeListener() == null) {
+            NetworkManager.OnNetworkStatusChangeListener onNetworkStatusChangeListener = new NetworkManager.OnNetworkStatusChangeListener() {
+                @Override
+                public void onWifiAvailable() {
+                    endHook();
+                }
 
-            }
+                @Override
+                public void onMobileNetAvailable() {
+                    endHook();
+                }
 
-            @Override
-            public void onMobileNetAvailable() {
+                @Override
+                public void onNetworkUnavailable() {
+                    startHook();
+                }
+            };
+            NetworkManager.getInstance().setNetworkChangeListener(onNetworkStatusChangeListener);
+        }
+    }
 
-            }
+    private void startHook() {
+        ListenerManager.Builer builer = new ListenerManager.Builer().buildOnClickListener(
+                new HookListenerContract.OnClickListener() {
+                    @Override
+                    public boolean doInListener(View v) {
+                        log.e("当前没有网络");
+                        return false;
+                    }
+                });
+        HookManager.getInstance().startHook(this, ListenerManager.create(builer));
+    }
 
-            @Override
-            public void onNetworkUnavailable() {
-
-            }
-        });
+    private void endHook() {
+        HookManager.getInstance().endHook();
     }
 
     /**
@@ -71,11 +95,9 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        super.onDestroy(); // 销毁或反注册资源, 预防 OOM
         EventBus.getDefault().unregister(this);
-        NetworkManager.getInstance().destroy();
         OkHttpUtils.getInstance().cancelTag(this);
     }
-
 
 }
