@@ -37,6 +37,9 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
         observeNetwork();
     }
 
+    /**
+     * 观察网络变化
+     */
     private void observeNetwork() {
         // 整个 app 生命周期中 OnNetworkStatusChangeListener 只能存在一个
         if (NetworkManager.getInstance().getNetworkChangeListener() == null) {
@@ -60,6 +63,9 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
         }
     }
 
+    /**
+     * 开启 View 监听器相关的钩子函数, 修改全局状态
+     */
     private void startHook() {
         ListenerManager.Builer builer = new ListenerManager.Builer().buildOnClickListener(
                 new HookListenerContract.OnClickListener() {
@@ -72,6 +78,9 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
         HookManager.getInstance().startHook(this, ListenerManager.create(builer));
     }
 
+    /**
+     * 关闭钩子函数, 还原 View 监听器相关事件方法
+     */
     private void endHook() {
         HookManager.getInstance().endHook();
     }
