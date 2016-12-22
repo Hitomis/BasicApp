@@ -66,7 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
                     @Override
                     public boolean doInListener(View v) {
                         log.e("当前没有网络");
-                        return false;
+                        return true;
                     }
                 });
         HookManager.getInstance().startHook(this, ListenerManager.create(builer));

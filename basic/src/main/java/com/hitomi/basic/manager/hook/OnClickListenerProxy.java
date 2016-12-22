@@ -13,7 +13,7 @@ class OnClickListenerProxy implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (mlistener != null && mlistener.doInListener(v))
+        if (mlistener != null && !mlistener.doInListener(v))
         if (originClickListener != null) originClickListener.onClick(v);
     }
 
