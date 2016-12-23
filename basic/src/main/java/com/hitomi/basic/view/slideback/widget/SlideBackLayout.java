@@ -16,9 +16,6 @@ import com.hitomi.basic.view.slideback.SlideConfig;
 import com.hitomi.basic.view.slideback.callbak.OnInternalStateListener;
 
 
-/**
- * Created by Oubowu on 2016/9/22 0022 15:24.
- */
 public class SlideBackLayout extends FrameLayout {
 
     private static final int MIN_FLING_VELOCITY = 400;
@@ -171,7 +168,6 @@ public class SlideBackLayout extends FrameLayout {
             if (mCloseFlagForDetached || mCloseFlagForWindowFocus) {
                 // 针对快速滑动的时候，页面关闭的时候移除上个页面的时候，布局重新调整，这时候我们把contentView设为invisible，
                 // 但是还是可以响应DragHelper的处理，所以这里根据页面关闭的标志位不给处理事件了
-                // Log.e("TAG", mTestName + "都要死了，还处理什么触摸事件！！");
                 return super.onTouchEvent(event);
             }
             mDragHelper.processTouchEvent(event);
@@ -183,7 +179,6 @@ public class SlideBackLayout extends FrameLayout {
 
     private void addPreContentView() {
         if (mPreContentView.getParent() != SlideBackLayout.this) {
-            // Log.e("TAG", mTestName + ": 我要把上个页面的内容页加到我这里啦！");
             mPreContentView.setTag("notScreenOrientationChange");
             ((ViewGroup) mPreContentView.getParent()).removeView(mPreContentView);
             SlideBackLayout.this.addView(mPreContentView, 0);
@@ -249,29 +244,20 @@ public class SlideBackLayout extends FrameLayout {
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
-        // // Log.e("TAG", "onWindowFocusChanged(): " + this + " ; " + hasWindowFocus);
-
         if (hasWindowFocus) {
 
             mEnableTouchEvent = true;
-
-            //            Log.e("TAG", "SlideBackLayout-378行-onWindowFocusChanged(): " + hasWindowFocus);
-
             // 当前页面
             if (!mIsFirstAttachToWindow) {
                 mIsFirstAttachToWindow = true;
-                // Log.e("TAG", mTestName + ": 第一次窗口取得焦点");
-            } /*else if (mRotateScreen && mPreContentView.getParent() != SlideBackLayout.this) {
-                // Log.e("TAG", mTestName + ": 从其他Activity返回来了 ");
-            }*/
+
+            }
         } else {
             if (mRotateScreen) {
                 // 1.跳转到另外一个Activity，例如也是需要滑动的，这时候就需要取当前Activity的contentView，所以这里把preContentView给回上个Activity
                 if (mCloseFlagForWindowFocus) {
                     mCloseFlagForWindowFocus = false;
-                    // Log.e("TAG", mTestName + ": onWindowFocusChanged前已经调了关闭");
                 } else {
-                    // Log.e("TAG", mTestName + ": 跳转到另外一个Activity，取这个Activity的contentView前把preContentView给回上个Activity");
                     mOnInternalStateListener.onClose(false);
                 }
             }
@@ -283,19 +269,15 @@ public class SlideBackLayout extends FrameLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mEnableTouchEvent = false;
-        // // Log.e("TAG", "SlideBackLayout-345行-onDetachedFromWindow(): " + this);
         if (mRotateScreen) {
             // 1.旋转屏幕的时候必调此方法，这里掉onClose目的是把preContentView给回上个Activity
             if (mCloseFlagForDetached) {
                 mCloseFlagForDetached = false;
-                // Log.e("TAG", mTestName + ": onDetachedFromWindow(): " + "已经调了关闭");
             } else {
                 if (getTag() != null && getTag().equals("notScreenOrientationChange")) {
                     // 说明是手动删的不关旋转屏幕的事，所以不处理
-                    // Log.e("TAG", mTestName + ":说明是手动删的不关旋转屏幕的事，所以不处理");
                     setTag(null);
                 } else {
-                    // Log.e("TAG", mTestName + ":屏幕旋转了，重建界面: 把preContentView给回上个Activity");
                     mOnInternalStateListener.onClose(false);
                 }
             }
@@ -306,7 +288,6 @@ public class SlideBackLayout extends FrameLayout {
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mScreenWidth = getResources().getDisplayMetrics().widthPixels;
-        // Log.e("TAG", mTestName + ": SlideBackLayout-338行-onConfigurationChanged(): " + mScreenWidth);
         ViewGroup.LayoutParams layoutParams = mShadowView.getLayoutParams();
         layoutParams.width = mScreenWidth / 28;
         layoutParams.height = LayoutParams.MATCH_PARENT;
@@ -354,20 +335,15 @@ public class SlideBackLayout extends FrameLayout {
             switch (state) {
                 case ViewDragHelper.STATE_IDLE:
                     if (mContentView.getLeft() == 0) {
-                        // 2016/9/22 0022 回到原处
                         mOnInternalStateListener.onOpen();
                     } else if (mContentView.getLeft() == mScreenWidth) {
-                        // 2016/9/22 0022 结束Activity
-
                         // 这里再绘制一次是因为在屏幕旋转的模式下，remove了preContentView后布局会重新调整
                         if (mRotateScreen && mCacheDrawView.getVisibility() == INVISIBLE) {
                             mCacheDrawView.setBackgroundDrawable(mPreDecorViewDrawable);
                             mCacheDrawView.drawCacheView(mPreContentView);
                             mCacheDrawView.setVisibility(VISIBLE);
-                            // Log.e("TAG", mTestName + ": 这里再绘制一次是因为在屏幕旋转的模式下，remove了preContentView后布局会重新调整");
                             mCloseFlagForWindowFocus = true;
                             mCloseFlagForDetached = true;
-                            // Log.e("TAG", mTestName + ": 滑动到尽头了这个界面要死了，把preContentView给回上个Activity");
                             // 这里setTag是因为下面的回调会把它移除出当前页面，这时候会触发它的onDetachedFromWindow事件，
                             // 而它的onDetachedFromWindow实际上是来处理屏幕旋转的，所以设置个tag给它，让它知道是当前界面移除它的，并不是屏幕旋转导致的
                             mPreContentView.setTag("notScreenOrientationChange");
@@ -410,7 +386,6 @@ public class SlideBackLayout extends FrameLayout {
 
                     mCheckPreContentView = true;
                     // 只需要检查一次上个Activity是不是变了
-                    // Log.e("TAG","只需要检查一次上个Activity是不是变了");
                     mOnInternalStateListener.onCheckPreActivity(SlideBackLayout.this);
                 }
 
@@ -427,7 +402,6 @@ public class SlideBackLayout extends FrameLayout {
             mOnInternalStateListener.onSlide(percent);
 
             if (mRotateScreen) {
-                // // Log.e("TAG", "滑动上个页面");
                 mPreContentView.setX(-mScreenWidth / 2 + percent * (mScreenWidth / 2));
             } else {
                 mCacheDrawView.setX(-mScreenWidth / 2 + percent * (mScreenWidth / 2));

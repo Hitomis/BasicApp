@@ -2,19 +2,14 @@ package com.hitomi.basic.view.slideback;
 
 import android.support.annotation.FloatRange;
 
-/**
- * Created by Oubowu on 2016/9/22 23:37.
- */
 public class SlideConfig {
 
     private boolean mEdgeOnly;
     private boolean mLock;
 
-    @FloatRange(from = 0.0,
-            to = 1.0)
+    @FloatRange(from = 0.0, to = 1.0)
     private float mEdgePercent;
-    @FloatRange(from = 0.0,
-            to = 1.0)
+    @FloatRange(from = 0.0, to = 1.0)
     private float mSlideOutPercent;
 
     private float mSlideOutVelocity;
@@ -67,11 +62,9 @@ public class SlideConfig {
         private boolean edgeOnly = false;
         private boolean lock = false;
 
-        @FloatRange(from = 0.0,
-                to = 1.0)
+        @FloatRange(from = 0.0, to = 1.0)
         private float edgePercent = 0.4f;
-        @FloatRange(from = 0.0,
-                to = 1.0)
+        @FloatRange(from = 0.0, to = 1.0)
         private float slideOutPercent = 0.1f;
 
         private float slideOutVelocity = 2000f;
@@ -100,14 +93,12 @@ public class SlideConfig {
             return this;
         }
 
-        public Builder edgePercent(@FloatRange(from = 0.0,
-                to = 1.0) float edgePercent) {
+        public Builder edgePercent(@FloatRange(from = 0.0, to = 1.0) float edgePercent) {
             this.edgePercent = edgePercent;
             return this;
         }
 
-        public Builder slideOutPercent(@FloatRange(from = 0.0,
-                to = 1.0) float slideOutPercent) {
+        public Builder slideOutPercent(@FloatRange(from = 0.0, to = 1.0) float slideOutPercent) {
             this.slideOutPercent = slideOutPercent;
             return this;
         }

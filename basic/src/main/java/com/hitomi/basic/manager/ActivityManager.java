@@ -1,6 +1,5 @@
 package com.hitomi.basic.manager;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Build;
@@ -11,10 +10,12 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * Activity 栈管理
- * Created by hitomi on 2016/12/11.
+ * Activity 栈管理帮助类 {@link Build.VERSION_CODES#ICE_CREAM_SANDWICH} 以上可用 <br/>
+ *
+ * github : https://github.com/Hitomis <br/>
+ *
+ * Created by hitomi on 2016/10/11.
  */
-@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ActivityManager implements Application.ActivityLifecycleCallbacks {
     private static Stack<Activity> activityStack;
 
@@ -29,7 +30,9 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
     }
 
     public static ActivityManager getInstance() {
-        activityStack = new Stack<>();
+        if (activityStack == null) {
+            activityStack = new Stack<>();
+        }
         return SingletonHolder.instance;
     }
 

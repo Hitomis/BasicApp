@@ -12,9 +12,6 @@ import android.graphics.Shader;
 import android.support.annotation.FloatRange;
 import android.view.View;
 
-/**
- * Created by Oubowu on 2016/9/20 0020 11:22.
- */
 public class ShadowView extends View {
 
     private LinearGradient mLinearGradient;

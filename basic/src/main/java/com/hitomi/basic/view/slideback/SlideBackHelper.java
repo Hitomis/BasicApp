@@ -2,7 +2,6 @@ package com.hitomi.basic.view.slideback;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,43 +18,46 @@ public class SlideBackHelper {
     private Activity preActivity;
     private View preContentView;
 
-    private SlideBackHelper() {
-    }
+    private SlideConfig slideConfig;
+    private OnSlideListener onSlideListener;
 
-    private static class SingletonHolder {
-        final static SlideBackHelper instance = new SlideBackHelper();
+    private SlideBackHelper() {
     }
 
     public static SlideBackHelper getInstance() {
         return SlideBackHelper.SingletonHolder.instance;
     }
 
-    public ViewGroup getDecorView(Activity activity) {
+    private ViewGroup getDecorView(Activity activity) {
         return (ViewGroup) activity.getWindow().getDecorView();
     }
 
-    public Drawable getDecorViewDrawable(Activity activity) {
+    private Drawable getDecorViewDrawable(Activity activity) {
         return getDecorView(activity).getBackground();
     }
 
-    public View getContentView(Activity activity) {
+    private View getContentView(Activity activity) {
         return getDecorView(activity).getChildAt(0);
     }
 
+    public void setOnSlideListener(@Nullable OnSlideListener listener) {
+        onSlideListener = listener;
+    }
+
+    public void init(@Nullable SlideConfig config) {
+        slideConfig = config;
+    }
+
     /**
-     * 附着Activity，实现侧滑
-     *
-     * @param curActivity 当前Activity
-     * @param config      参数配置
-     * @param listener    滑动的监听
-     * @return 处理侧滑的布局，提高方法动态设置滑动相关参数
+     * 启动当前页面侧滑功能
      */
-    public void attach(@NonNull final Activity curActivity, @Nullable final SlideConfig config, @Nullable final OnSlideListener listener) {
+    public void startup() {
 
         final ActivityManager activityManager = ActivityManager.getInstance();
-        if (activityManager.getPreActivity() == null) return ;
+        if (activityManager.getPreActivity() == null) return;
 
-        final ViewGroup decorView = getDecorView(curActivity);
+        final Activity currActivity = activityManager.getCurrentActivity();
+        final ViewGroup decorView = getDecorView(currActivity);
         final View contentView = decorView.getChildAt(0);
         decorView.removeViewAt(0);
 
@@ -64,29 +66,28 @@ public class SlideBackHelper {
             content.setBackgroundDrawable(decorView.getBackground());
         }
 
-
         preActivity = activityManager.getPreActivity();
         preContentView = getContentView(preActivity);
+
         Drawable preDecorViewDrawable = getDecorViewDrawable(preActivity);
         content = preContentView.findViewById(android.R.id.content);
         if (content.getBackground() == null) {
             content.setBackgroundDrawable(preDecorViewDrawable);
         }
 
-        final SlideBackLayout slideBackLayout;
-        slideBackLayout = new SlideBackLayout(curActivity, contentView, preContentView, preDecorViewDrawable, config, new OnInternalStateListener() {
+        final SlideBackLayout slideBackLayout = new SlideBackLayout(currActivity, contentView, preContentView, preDecorViewDrawable, slideConfig, new OnInternalStateListener() {
 
             @Override
             public void onSlide(float percent) {
-                if (listener != null) {
-                    listener.onSlide(percent);
+                if (onSlideListener != null) {
+                    onSlideListener.onSlide(percent);
                 }
             }
 
             @Override
             public void onOpen() {
-                if (listener != null) {
-                    listener.onOpen();
+                if (onSlideListener != null) {
+                    onSlideListener.onOpen();
                 }
             }
 
@@ -94,15 +95,15 @@ public class SlideBackHelper {
             public void onClose(Boolean finishActivity) {
 
                 // finishActivity为true时关闭页面，为false时不关闭页面，为null时为其他地方关闭页面时调用SlideBackLayout.isComingToFinish的回调
-                if (listener != null) {
-                    listener.onClose();
+                if (onSlideListener != null) {
+                    onSlideListener.onClose();
                 }
 
-                if ((finishActivity == null || !finishActivity) && listener != null) {
-                    listener.onClose();
+                if ((finishActivity == null || !finishActivity) && onSlideListener != null) {
+                    onSlideListener.onClose();
                 }
 
-                if (config != null && config.isRotateScreen()) {
+                if (slideConfig != null && slideConfig.isRotateScreen()) {
 
                     if (finishActivity != null && finishActivity) {
                         contentView.setVisibility(View.INVISIBLE);
@@ -116,10 +117,9 @@ public class SlideBackHelper {
                 }
 
                 if (finishActivity != null && finishActivity) {
-                    finishActivityByNoAnimation(curActivity);
-                    activityManager.removeActivity(curActivity);
+                    finishActivityByNoAnimation(currActivity);
                 } else if (finishActivity == null) {
-                    activityManager.removeActivity(curActivity);
+                    activityManager.removeActivity(currActivity);
                 }
             }
 
@@ -147,6 +147,10 @@ public class SlideBackHelper {
         });
 
         decorView.addView(slideBackLayout);
+    }
+
+    private static class SingletonHolder {
+        final static SlideBackHelper instance = new SlideBackHelper();
     }
 
 }
