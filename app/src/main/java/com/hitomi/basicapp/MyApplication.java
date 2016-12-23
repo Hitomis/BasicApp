@@ -26,11 +26,18 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
-        ActivityManager.getInstance().init(this);
+        initActivityManager();
         initXLog();
         CacheManager.init(this);
         NetworkManager.getInstance().init(this);
         initSlideback();
+    }
+
+    private void initActivityManager() {
+        ActivityManager activityManager = ActivityManager.getInstance();
+        activityManager.init(this);
+        // 不管理 LeakCanary 用于显示 OOM 信息的 Activity
+        activityManager.addIgnor("DisplayLeakActivity");
     }
 
     private void initSlideback() {

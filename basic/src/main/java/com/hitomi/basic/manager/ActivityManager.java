@@ -6,7 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -17,7 +19,8 @@ import java.util.Stack;
  * Created by hitomi on 2016/10/11.
  */
 public class ActivityManager implements Application.ActivityLifecycleCallbacks {
-    private static Stack<Activity> activityStack;
+    private Stack<Activity> activityStack;
+    private Set<String> ignorActivityNames;
 
     public void init(Application app) {
         app.registerActivityLifecycleCallbacks(this);
@@ -30,9 +33,6 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
     }
 
     public static ActivityManager getInstance() {
-        if (activityStack == null) {
-            activityStack = new Stack<>();
-        }
         return SingletonHolder.instance;
     }
 
@@ -75,6 +75,11 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
     public void addActivity(Activity activity) {
         if (activityStack == null) {
             activityStack = new Stack<>();
+        }
+        for (String actName : ignorActivityNames) {
+            // 在 ignorActivityNames 清单中的 Activity 不能被添加到管理器中
+            if (actName.equals(activity.getClass().getSimpleName()))
+                return ;
         }
         activityStack.add(activity);
     }
@@ -153,4 +158,14 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
         activityStack.clear();
         addActivity(activity);
     }
+
+    public ActivityManager addIgnor(String activityName) {
+        if (ignorActivityNames == null)
+            ignorActivityNames = new HashSet<>();
+
+        if (activityName != null && activityName.length() != 0)
+            ignorActivityNames.add(activityName);
+        return this;
+    }
+
 }

@@ -35,8 +35,15 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
             setViewListener();
             dealLogic(savedInstanceState);
         }
-        SlideBackHelper.getInstance().startup();
         observeNetwork();
+        addSlidBack();
+    }
+
+    /**
+     * 为 Activity 添加侧边栏滑动返回组件
+     */
+    private void addSlidBack() {
+        SlideBackHelper.getInstance().startup();
     }
 
     /**
