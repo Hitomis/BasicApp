@@ -30,9 +30,18 @@
         <activity
             android:name=".activity.ImageActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.UpdateActivity" />
-        <activity android:name=".activity.AdapterActivity" />
-        <activity android:name=".activity.OkHttpActivity"></activity>
+        <activity
+            android:name=".activity.UpdateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AdapterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.OkHttpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SlidebackActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
