@@ -15,9 +15,6 @@ import com.hitomi.basic.view.slideback.widget.SlideBackLayout;
 
 public class SlideBackHelper {
 
-    private Activity preActivity;
-    private View preContentView;
-
     private SlideConfig slideConfig;
     private OnSlideListener onSlideListener;
 
@@ -66,16 +63,17 @@ public class SlideBackHelper {
             content.setBackgroundDrawable(decorView.getBackground());
         }
 
-        preActivity = activityManager.getPreActivity();
-        preContentView = getContentView(preActivity);
+        final Activity[] preActivity = {activityManager.getPreActivity()};
+        final View[] preContentView = {getContentView(preActivity[0])};
 
-        Drawable preDecorViewDrawable = getDecorViewDrawable(preActivity);
-        content = preContentView.findViewById(android.R.id.content);
+        Drawable preDecorViewDrawable = getDecorViewDrawable(preActivity[0]);
+        content = preContentView[0].findViewById(android.R.id.content);
         if (content.getBackground() == null) {
             content.setBackgroundDrawable(preDecorViewDrawable);
         }
 
-        final SlideBackLayout slideBackLayout = new SlideBackLayout(currActivity, contentView, preContentView, preDecorViewDrawable, slideConfig, new OnInternalStateListener() {
+        final SlideBackLayout slideBackLayout = new SlideBackLayout(currActivity, contentView, preContentView[0],
+                preDecorViewDrawable, slideConfig, new OnInternalStateListener() {
 
             @Override
             public void onSlide(float percent) {
@@ -109,10 +107,10 @@ public class SlideBackHelper {
                         contentView.setVisibility(View.INVISIBLE);
                     }
 
-                    if (preActivity != null && preContentView.getParent() != getDecorView(preActivity)) {
-                        preContentView.setX(0);
-                        ((ViewGroup) preContentView.getParent()).removeView(preContentView);
-                        getDecorView(preActivity).addView(preContentView, 0);
+                    if (preActivity[0] != null && preContentView[0].getParent() != getDecorView(preActivity[0])) {
+                        preContentView[0].setX(0);
+                        ((ViewGroup) preContentView[0].getParent()).removeView(preContentView[0]);
+                        getDecorView(preActivity[0]).addView(preContentView[0], 0);
                     }
                 }
 
@@ -137,10 +135,10 @@ public class SlideBackHelper {
             @Override
             public void onCheckPreActivity(SlideBackLayout slideBackLayout) {
                 Activity activity = activityManager.getPreActivity();
-                if (activity != preActivity) {
-                    preActivity = activity;
-                    preContentView = getContentView(preActivity);
-                    slideBackLayout.updatePreContentView(preContentView);
+                if (activity != preActivity[0]) {
+                    preActivity[0] = activity;
+                    preContentView[0] = getContentView(preActivity[0]);
+                    slideBackLayout.updatePreContentView(preContentView[0]);
                 }
             }
 
