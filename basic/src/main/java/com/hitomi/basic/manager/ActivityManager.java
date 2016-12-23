@@ -116,6 +116,14 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
     }
 
     /**
+     * 获取现有的所有 Activity
+     * @return
+     */
+    public List<Activity> getAllActivities() {
+        return new ArrayList<>(activityStack);
+    }
+
+    /**
      * 结束当前Activity（堆栈中最后一个压入的）
      */
     public void finishActivity() {
