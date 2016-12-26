@@ -37,7 +37,7 @@ public class MyApplication extends Application {
         ActivityManager activityManager = ActivityManager.getInstance();
         activityManager.init(this);
         // 不管理 LeakCanary 用于显示 OOM 信息的 Activity
-        activityManager.addIgnor("DisplayLeakActivity");
+        activityManager.addIgnore("DisplayLeakActivity");
     }
 
     private void initSlideback() {

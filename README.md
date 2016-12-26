@@ -1,6 +1,6 @@
 # BasicApp
 
-简单的 Android app 快速开发模块框架
+简单的 Android app 快速开发模板框架
 
 
 目前正在持续集成和改善中

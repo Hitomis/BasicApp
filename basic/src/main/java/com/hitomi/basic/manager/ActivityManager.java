@@ -20,7 +20,7 @@ import java.util.Stack;
  */
 public class ActivityManager implements Application.ActivityLifecycleCallbacks {
     private Stack<Activity> activityStack;
-    private Set<String> ignorActivityNames;
+    private Set<String> ignoreActivityNames;
 
     public void init(Application app) {
         app.registerActivityLifecycleCallbacks(this);
@@ -76,8 +76,8 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
         if (activityStack == null) {
             activityStack = new Stack<>();
         }
-        for (String actName : ignorActivityNames) {
-            // 在 ignorActivityNames 清单中的 Activity 不能被添加到管理器中
+        for (String actName : ignoreActivityNames) {
+            // 在 ignoreActivityNames 清单中的 Activity 不能被添加到管理器中
             if (actName.equals(activity.getClass().getSimpleName()))
                 return ;
         }
@@ -167,12 +167,12 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
         addActivity(activity);
     }
 
-    public ActivityManager addIgnor(String activityName) {
-        if (ignorActivityNames == null)
-            ignorActivityNames = new HashSet<>();
+    public ActivityManager addIgnore(String activityName) {
+        if (ignoreActivityNames == null)
+            ignoreActivityNames = new HashSet<>();
 
         if (activityName != null && activityName.length() != 0)
-            ignorActivityNames.add(activityName);
+            ignoreActivityNames.add(activityName);
         return this;
     }
 
