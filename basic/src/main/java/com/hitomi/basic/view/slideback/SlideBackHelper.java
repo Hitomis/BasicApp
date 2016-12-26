@@ -2,6 +2,7 @@ package com.hitomi.basic.view.slideback;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.hitomi.basic.view.slideback.widget.SlideBackLayout;
 public class SlideBackHelper {
 
     private SlideConfig slideConfig;
+    private ActivityManager activityManager;
     private OnSlideListener onSlideListener;
 
     private SlideBackHelper() {
@@ -41,7 +43,8 @@ public class SlideBackHelper {
         onSlideListener = listener;
     }
 
-    public void init(@Nullable SlideConfig config) {
+    public void init(@NonNull ActivityManager manager, @Nullable SlideConfig config) {
+        activityManager = manager;
         slideConfig = config;
     }
 
@@ -49,9 +52,8 @@ public class SlideBackHelper {
      * 启动当前页面侧滑功能
      */
     public void startup() {
-
-        final ActivityManager activityManager = ActivityManager.getInstance();
-        if (activityManager.getPreActivity() == null) return;
+        if (activityManager == null || activityManager.getPreActivity() == null)
+            return;
 
         final Activity currActivity = activityManager.getCurrentActivity();
         final ViewGroup decorView = getDecorView(currActivity);
