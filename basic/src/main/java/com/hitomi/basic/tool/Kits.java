@@ -1,5 +1,6 @@
 package com.hitomi.basic.tool;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,7 +11,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -290,65 +294,6 @@ public class Kits {
             } catch (Exception e) {
                 return 0;
             }
-        }
-    }
-
-    public static class Random {
-        public static final String NUMBERS_AND_LETTERS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        public static final String NUMBERS = "0123456789";
-        public static final String LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        public static final String CAPITAL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        public static final String LOWER_CASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
-
-        public static String getRandomNumbersAndLetters(int length) {
-            return getRandom(NUMBERS_AND_LETTERS, length);
-        }
-
-        public static String getRandomNumbers(int length) {
-            return getRandom(NUMBERS, length);
-        }
-
-        public static String getRandomLetters(int length) {
-            return getRandom(LETTERS, length);
-        }
-
-        public static String getRandomCapitalLetters(int length) {
-            return getRandom(CAPITAL_LETTERS, length);
-        }
-
-        public static String getRandomLowerCaseLetters(int length) {
-            return getRandom(LOWER_CASE_LETTERS, length);
-        }
-
-        public static String getRandom(String source, int length) {
-            return TextUtils.isEmpty(source) ? null : getRandom(source.toCharArray(), length);
-        }
-
-        public static String getRandom(char[] sourceChar, int length) {
-            if (sourceChar == null || sourceChar.length == 0 || length < 0) {
-                return null;
-            }
-
-            StringBuilder str = new StringBuilder(length);
-            java.util.Random random = new java.util.Random();
-            for (int i = 0; i < length; i++) {
-                str.append(sourceChar[random.nextInt(sourceChar.length)]);
-            }
-            return str.toString();
-        }
-
-        public static int getRandom(int max) {
-            return getRandom(0, max);
-        }
-
-        public static int getRandom(int min, int max) {
-            if (min > max) {
-                return 0;
-            }
-            if (min == max) {
-                return min;
-            }
-            return min + new java.util.Random().nextInt(max - min);
         }
     }
 
@@ -1071,6 +1016,85 @@ public class Kits {
             return calendar.getTimeInMillis();
         }
 
+    }
+
+    public static class Keyboard {
+        /**
+         * 避免输入法面板遮挡
+         * <p>在manifest.xml中activity中设置</p>
+         * <p>android:windowSoftInputMode="adjustPan"</p>
+         */
+
+        /**
+         * 动态隐藏软键盘
+         *
+         * @param activity activity
+         */
+        public static void hideSoftInput(Activity activity) {
+            View view = activity.getCurrentFocus();
+            if (view == null) view = new View(activity);
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
+        /**
+         * 点击屏幕空白区域隐藏软键盘
+         * <p>根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘</p>
+         * <p>需重写dispatchTouchEvent</p>
+         * <p>参照以下注释代码</p>
+         */
+        public static void clickBlankArea2HideSoftInput() {
+            /*
+            @Override
+            public boolean dispatchTouchEvent(MotionEvent ev) {
+                if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+                    View v = getCurrentFocus();
+                    if (isShouldHideKeyboard(v, ev)) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                }
+                return super.dispatchTouchEvent(ev);
+            }
+            // 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘
+            private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+                if (v != null && (v instanceof EditText)) {
+                    int[] l = {0, 0};
+                    v.getLocationInWindow(l);
+                    int left = l[0],
+                            top = l[1],
+                            bottom = top + v.getHeight(),
+                            right = left + v.getWidth();
+                    return !(event.getX() > left && event.getX() < right
+                            && event.getY() > top && event.getY() < bottom);
+                }
+                return false;
+            }
+            */
+        }
+
+        /**
+         * 动态显示软键盘
+         *
+         * @param edit 输入框
+         */
+        public static void showSoftInput(Context context, EditText edit) {
+            edit.setFocusable(true);
+            edit.setFocusableInTouchMode(true);
+            edit.requestFocus();
+            InputMethodManager imm = (InputMethodManager) context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(edit, 0);
+        }
+
+        /**
+         * 切换键盘显示与否状态
+         */
+        public static void toggleSoftInput(Context context) {
+            InputMethodManager imm = (InputMethodManager) context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
     }
 
 }

@@ -30,8 +30,8 @@ public class ShadowView extends View {
             // 绘制渐变阴影
             if (mLinearGradient == null) {
                 mRectF = new RectF();
-                int[] colors = {Color.parseColor("#0A000000"), Color.parseColor("#66000000"), Color.parseColor("#aa000000")};
-                // 我设置着色器开始的位置为（0，0），结束位置为（getWidth(), 0）表示我的着色器要给整个View在水平方向上渲染
+                int[] colors = {Color.TRANSPARENT, Color.parseColor("#18000000"), Color.parseColor("#52000000")};
+                // 设置着色器开始的位置为（0，0），结束位置为（getWidth(), 0）表示着色器要给整个View在水平方向上渲染
                 mLinearGradient = new LinearGradient(0, 0, getWidth(), 0, colors, null, Shader.TileMode.REPEAT);
                 mPaint.setShader(mLinearGradient);
                 mRectF.set(0, 0, getWidth(), getHeight());
