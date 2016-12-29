@@ -99,10 +99,18 @@ public class UpdateAgent {
     public void clean() {
         SharedPreferences sp = mContext.getSharedPreferences(PREFS, 0);
         File file = new File(mParentDir, sp.getString(PREFS_UPDATE, "") + ".apk");
-        if (file.exists()) file.delete();
+        saveDeleteFile(file);
         File tempFile = new File(mParentDir, sp.getString(PREFS_UPDATE, ""));
-        if (tempFile.exists()) tempFile.delete();
+        saveDeleteFile(tempFile);
         sp.edit().clear().apply();
+    }
+
+    private void saveDeleteFile(File file) {
+        if (file.exists()) {
+            final File to = new File(file.getAbsolutePath() + System.currentTimeMillis());
+            file.renameTo(to);
+            to.delete();
+        }
     }
 
     public void parse(InputStream inputStream) {
@@ -204,7 +212,7 @@ public class UpdateAgent {
             return;
         }
         File oldFile = new File(mParentDir, old);
-        if (oldFile.exists()) {
+        if (oldFile.exists() && !TextUtils.isEmpty(old)) {
             oldFile.delete();
         }
         sp.edit().putString(PREFS_UPDATE, md5).apply();

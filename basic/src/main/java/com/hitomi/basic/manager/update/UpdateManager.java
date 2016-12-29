@@ -1,7 +1,6 @@
 package com.hitomi.basic.manager.update;
 
 import android.content.Context;
-import android.os.Environment;
 
 import com.hitomi.basic.manager.update.progress.DialogProgressBehavior;
 import com.hitomi.basic.manager.update.progress.EmptyProgressBehavior;
@@ -9,7 +8,6 @@ import com.hitomi.basic.manager.update.progress.NotificationProgressBehavior;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 

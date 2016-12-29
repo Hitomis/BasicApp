@@ -17,6 +17,7 @@ import java.io.InputStream;
 public class UpdateActivity extends BaseActivity implements View.OnClickListener {
 
     String mCheckUrl = "http://img3.fdc.com.cn/app_download/android_upgrade%s.xml";
+    static final String MD5 = "091f341fdda331dc5d57e68607ffd93a";
     private Button btnCheck, btnCheckIgnor, btnCheckForce, btnCheckNotify, btnCheckDialog, btnCheckNone;
     private Button btnJumpNext, btnClean, btnImage;
     private UpdateManager updateManager;
@@ -175,7 +176,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         updateInfo.setAutoInstall(true);
         updateInfo.setForce(false);
         updateInfo.setIgnorable(true);
-        updateInfo.setMd5("97b311cf068f3b24e7fc755a7cd3277d");
+        updateInfo.setMd5(MD5);
         updateInfo.setSize(23_593_239);
         updateInfo.setUpdateContent("• 支持文字、贴纸、背景音乐，尽情展现欢乐气氛；\n" +
                 "• 两人视频通话支持实时滤镜，丰富滤镜，多彩心情；\n" +
@@ -192,7 +193,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
                 "• 图片编辑新增艺术滤镜，一键打造文艺画风；\n" +
                 "• 图片编辑新增艺术滤镜，一键打造文艺画风；\n" +
                 "• 资料卡新增点赞排行榜，看好友里谁是魅力之王。");
-        updateInfo.setUrl("http://img3.fdc.com.cn/app_download/app-yifang-release-1.1.4.apk");
+        updateInfo.setUrl("http://img3.fdc.com.cn/app_download/app-yifang-release-1.1.5.apk");
         updateInfo.setVersionCode(10);
         updateInfo.setVersionName("v1.1.5");
         return updateInfo;
@@ -203,13 +204,13 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         updateInfo.setAutoInstall(true);
         updateInfo.setForce(false);
         updateInfo.setIgnorable(false);
-        updateInfo.setMd5("97b311cf068f3b24e7fc755a7cd3277d");
+        updateInfo.setMd5(MD5);
         updateInfo.setSize(23_593_239);
         updateInfo.setUpdateContent("• 支持文字、贴纸、背景音乐，尽情展现欢乐气氛；\n" +
                 "• 两人视频通话支持实时滤镜，丰富滤镜，多彩心情；\n" +
                 "• 图片编辑新增艺术滤镜，一键打造文艺画风；\n" +
                 "• 资料卡新增点赞排行榜，看好友里谁是魅力之王。");
-        updateInfo.setUrl("http://img3.fdc.com.cn/app_download/app-yifang-release-1.1.4.apk");
+        updateInfo.setUrl("http://img3.fdc.com.cn/app_download/app-yifang-release-1.1.5.apk");
         updateInfo.setVersionCode(10);
         updateInfo.setVersionName("v1.1.5");
         return updateInfo;
@@ -220,13 +221,13 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         updateInfo.setAutoInstall(true);
         updateInfo.setForce(true);
         updateInfo.setIgnorable(true);
-        updateInfo.setMd5("97b311cf068f3b24e7fc755a7cd3277d");
+        updateInfo.setMd5(MD5);
         updateInfo.setSize(23_593_239);
         updateInfo.setUpdateContent("• 支持文字、贴纸、背景音乐，尽情展现欢乐气氛；\n" +
                 "• 两人视频通话支持实时滤镜，丰富滤镜，多彩心情；\n" +
                 "• 图片编辑新增艺术滤镜，一键打造文艺画风；\n" +
                 "• 资料卡新增点赞排行榜，看好友里谁是魅力之王。");
-        updateInfo.setUrl("http://img3.fdc.com.cn/app_download/app-yifang-release-1.1.4.apk");
+        updateInfo.setUrl("http://img3.fdc.com.cn/app_download/app-yifang-release-1.1.5.apk");
         updateInfo.setVersionCode(10);
         updateInfo.setVersionName("v1.1.5");
         return updateInfo;
