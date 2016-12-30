@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 public class TitleBarLayout extends RelativeLayout {
 
-    private TitleConfig config;
+    TitleBarController controller;
 
     public TitleBarLayout(Context context) {
         this(context, null);
@@ -22,12 +22,102 @@ public class TitleBarLayout extends RelativeLayout {
 
     public TitleBarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
-        initBaseMode();
+        controller = new TitleBarController(context, this);
+        controller.prepareContentView();
     }
 
-    private void initBaseMode() {
+    public static class Builder {
+        private final TitleBarController.TitleParams params;
+        
+        public Builder(Context context) {
+            params = new TitleBarController.TitleParams(context);
+        }
 
+        public Builder setTitle(String title) {
+            params.title = title;
+            return this;
+        }
+
+        public Builder setTitleColor(int titleColor) {
+            params.titleColor = titleColor;
+            return this;
+        }
+
+        public Builder setTitleSize(int titleSize) {
+            params.titleSize = titleSize;
+            return this;
+        }
+
+        public Builder setTitleIcon(int titleIcon) {
+            params.titleIcon = titleIcon;
+            return this;
+        }
+
+        public Builder setBarColor(int barColor) {
+            params.barColor = barColor;
+            return this;
+        }
+
+        public Builder setBarHeight(int barHeight) {
+            params.barHeight = barHeight;
+            return this;
+        }
+
+        public Builder setLeftText(String leftText) {
+            params.leftText = leftText;
+            return this;
+        }
+
+        public Builder setLeftTextColor(int leftTextColor) {
+            params.leftTextColor = leftTextColor;
+            return this;
+        }
+
+        public Builder setLeftTextSize(int leftTextSize) {
+            params.leftTextSize = leftTextSize;
+            return this;
+        }
+
+        public Builder setLeftIcon(int leftIcon) {
+            params.leftIcon = leftIcon;
+            return this;
+        }
+
+        public Builder setLeftMargin(int leftMargin) {
+            params.leftMargin = leftMargin;
+            return this;
+        }
+
+        public Builder setRightText(String rightText) {
+            params.rightText = rightText;
+            return this;
+        }
+
+        public Builder setRightTextColor(int rightTextColor) {
+            params.rightTextColor = rightTextColor;
+            return this;
+        }
+
+        public Builder setRightTextSize(int rightTextSize) {
+            params.rightTextSize = rightTextSize;
+            return this;
+        }
+
+        public Builder setRightIcon(int rightIcon) {
+            params.rightIcon = rightIcon;
+            return this;
+        }
+
+        public Builder setRightMargin(int rightMargin) {
+            params.rightMargin = rightMargin;
+            return this;
+        }
+
+        public TitleBarLayout create() {
+            final TitleBarLayout titleBar = new TitleBarLayout(params.context);
+            params.apply(titleBar.controller);
+            return titleBar;
+        }
     }
 
 
