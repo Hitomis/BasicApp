@@ -43,23 +43,13 @@ public class TitleBarLayout extends RelativeLayout {
             return this;
         }
 
-        public Builder setTitleSize(int titleSize) {
+        public Builder setTitleSize(float titleSize) {
             params.titleSize = titleSize;
-            return this;
-        }
-
-        public Builder setTitleIcon(int titleIcon) {
-            params.titleIcon = titleIcon;
             return this;
         }
 
         public Builder setBarColor(int barColor) {
             params.barColor = barColor;
-            return this;
-        }
-
-        public Builder setBarHeight(int barHeight) {
-            params.barHeight = barHeight;
             return this;
         }
 
@@ -117,6 +107,10 @@ public class TitleBarLayout extends RelativeLayout {
             final TitleBarLayout titleBar = new TitleBarLayout(params.context);
             params.apply(titleBar.controller);
             return titleBar;
+        }
+
+        public void setup(TitleBarLayout titleBar){
+            params.apply(titleBar.controller);
         }
     }
 

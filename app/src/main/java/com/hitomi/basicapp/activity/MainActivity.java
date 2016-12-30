@@ -1,11 +1,13 @@
 package com.hitomi.basicapp.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.hitomi.basic.ui.BaseActivity;
+import com.hitomi.basic.view.titlebar.TitleBarLayout;
 import com.hitomi.basicapp.R;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -39,7 +41,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void dealLogic(Bundle savedInstanceState) {
-
+        TitleBarLayout titleBar = (TitleBarLayout) findViewById(R.id.title_bar);
+        new TitleBarLayout.Builder(this)
+                .setTitle("测试标题")
+                .setTitleSize(18)
+                .setTitleColor(Color.WHITE)
+                .setBarColor(Color.parseColor("#74c650"))
+                .setup(titleBar);
     }
 
     @Override
