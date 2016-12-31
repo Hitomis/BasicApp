@@ -68,6 +68,13 @@ public class TitleBarLayout extends RelativeLayout {
             return this;
         }
 
+        public Builder setLeftText(String leftText, int leftTextColor, int leftTextSize) {
+            params.leftText = leftText;
+            params.leftTextColor = leftTextColor;
+            params.leftTextSize = leftTextSize;
+            return this;
+        }
+
         public Builder setLeftIcon(int leftIcon) {
             params.leftIcon = leftIcon;
             return this;
@@ -75,6 +82,11 @@ public class TitleBarLayout extends RelativeLayout {
 
         public Builder setLeftMargin(int leftMargin) {
             params.leftMargin = leftMargin;
+            return this;
+        }
+
+        public Builder setLeftRegion(int leftRegion) {
+            params.leftRegion = leftRegion;
             return this;
         }
 
@@ -93,6 +105,13 @@ public class TitleBarLayout extends RelativeLayout {
             return this;
         }
 
+        public Builder setRightText(String rightText, int rightTextColor, int rightTextSize) {
+            params.rightText = rightText;
+            params.rightTextColor = rightTextColor;
+            params.rightTextSize = rightTextSize;
+            return this;
+        }
+
         public Builder setRightIcon(int rightIcon) {
             params.rightIcon = rightIcon;
             return this;
@@ -100,6 +119,21 @@ public class TitleBarLayout extends RelativeLayout {
 
         public Builder setRightMargin(int rightMargin) {
             params.rightMargin = rightMargin;
+            return this;
+        }
+
+        public Builder setRightRegion(int rightRegion) {
+            params.rightRegion = rightRegion;
+            return this;
+        }
+
+        public Builder setLeftOnclickListener(OnClickListener listener) {
+            params.onLeftClickListener = listener;
+            return this;
+        }
+
+        public Builder setRightOnclickListener(OnClickListener listener) {
+            params.onRightClickListener = listener;
             return this;
         }
 

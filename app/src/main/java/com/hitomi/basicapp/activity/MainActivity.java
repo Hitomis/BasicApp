@@ -5,7 +5,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.hitomi.basic.tool.Kits;
 import com.hitomi.basic.ui.BaseActivity;
 import com.hitomi.basic.view.titlebar.TitleBarLayout;
 import com.hitomi.basicapp.R;
@@ -47,6 +49,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .setTitleSize(18)
                 .setTitleColor(Color.WHITE)
                 .setBarColor(Color.parseColor("#74c650"))
+                .setLeftMargin(Kits.Dimens.dip2Px(this, 8))
+                .setLeftRegion(Kits.Dimens.dip2Px(this, 8))
+                .setRightMargin(Kits.Dimens.dip2Px(this, 8))
+                .setRightRegion(Kits.Dimens.dip2Px(this, 8))
+                .setLeftText("返回", Color.WHITE, 14)
+                .setRightText("确定", Color.WHITE, 14)
+                .setLeftOnclickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "click left", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setRightOnclickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "click right", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .setup(titleBar);
     }
 

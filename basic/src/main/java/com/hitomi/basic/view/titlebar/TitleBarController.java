@@ -2,6 +2,7 @@ package com.hitomi.basic.view.titlebar;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,8 +20,6 @@ public class TitleBarController {
 
     private TextView tvTitle, leftText, rightText;
     private ImageView leftImage, rightImage;
-
-
 
     public TitleBarController(Context context, TitleBarLayout titleBarLayout) {
         this.context = context;
@@ -55,9 +54,10 @@ public class TitleBarController {
         titleBar.setBackgroundColor(color);
     }
 
-    private void createLeftText(int leftMargin) {
+    private void createLeftText(int leftRegion, int leftMargin) {
         if (leftText != null) return ;
         leftText = new TextView(context);
+        leftText.setPadding(leftRegion, leftRegion, leftRegion, leftRegion);
         RelativeLayout.LayoutParams leftRlp =
                 new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         leftRlp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -80,9 +80,10 @@ public class TitleBarController {
         leftText.setTextSize(leftSize);
     }
 
-    private void createLeftIcon(int leftMargin) {
+    private void createLeftIcon(int leftRegion, int leftMargin) {
         if (leftImage != null) return;
         leftImage = new ImageView(context);
+        leftImage.setPadding(leftRegion, leftRegion, leftRegion, leftRegion);
         RelativeLayout.LayoutParams leftRlp =
                 new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         leftRlp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -96,9 +97,18 @@ public class TitleBarController {
         leftImage.setImageResource(leftIcon);
     }
 
-    private void createRightText(int rightMargin) {
+    private void setLeftOnClickListener(View.OnClickListener onLeftClickListener) {
+        if (leftText == null) {
+            leftImage.setOnClickListener(onLeftClickListener);
+        } else {
+            leftText.setOnClickListener(onLeftClickListener);
+        }
+    }
+
+    private void createRightText(int rightRegion, int rightMargin) {
         if (rightText != null) return ;
         rightText = new TextView(context);
+        rightText.setPadding(rightRegion, rightRegion, rightRegion ,rightRegion);
         RelativeLayout.LayoutParams rightRlp =
                 new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         rightRlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -121,9 +131,10 @@ public class TitleBarController {
         rightText.setTextSize(rightTextSize);
     }
 
-    private void createRightIcon(int rightMargin) {
+    private void createRightIcon(int rightRegion, int rightMargin) {
         if (rightImage != null) return;
         rightImage = new ImageView(context);
+        rightImage.setPadding(rightRegion, rightRegion, rightRegion, rightRegion);
         RelativeLayout.LayoutParams rightRlp =
                 new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         rightRlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -135,6 +146,14 @@ public class TitleBarController {
     public void setRightIcon(int rightIcon) {
         if (rightIcon == 0) return ;
         rightImage.setImageResource(rightIcon);
+    }
+
+    public void setRightOnClickListener(View.OnClickListener onRightClickListener) {
+        if (rightText == null) {
+            rightImage.setOnClickListener(onRightClickListener);
+        } else {
+            rightText.setOnClickListener(onRightClickListener);
+        }
     }
 
     public static class TitleParams {
@@ -151,12 +170,17 @@ public class TitleBarController {
         public float leftTextSize;
         public int leftIcon;
         public int leftMargin;
+        public int leftRegion;
 
         public CharSequence rightText;
         public int rightTextColor;
         public float rightTextSize;
         public int rightIcon;
         public int rightMargin;
+        public int rightRegion;
+
+        public View.OnClickListener onLeftClickListener;
+        public View.OnClickListener onRightClickListener;
 
 
         public TitleParams(Context context) {
@@ -170,25 +194,26 @@ public class TitleBarController {
             controller.setTitleSize(titleSize);
 
             if (TextUtils.isEmpty(leftText)) {
-                controller.createLeftIcon(leftMargin);
+                controller.createLeftIcon(leftRegion, leftMargin);
                 controller.setLeftIcon(leftIcon);
             } else {
-                controller.createLeftText(leftMargin);
+                controller.createLeftText(leftRegion, leftMargin);
                 controller.setLeftText(leftText);
                 controller.setLeftTextColor(leftTextColor);
                 controller.setLeftTextSize(leftTextSize);
             }
+            controller.setLeftOnClickListener(onLeftClickListener);
 
             if (TextUtils.isEmpty(rightText)) {
-                controller.createRightIcon(leftMargin);
-                controller.setRightIcon(leftIcon);
+                controller.createRightIcon(rightRegion, rightMargin);
+                controller.setRightIcon(rightIcon);
             } else {
-                controller.createRightText(leftMargin);
-                controller.setRightText(leftText);
-                controller.setRightTextColor(leftTextColor);
-                controller.setRightTextSize(leftTextSize);
+                controller.createRightText(rightRegion, rightMargin);
+                controller.setRightText(rightText);
+                controller.setRightTextColor(rightTextColor);
+                controller.setRightTextSize(rightTextSize);
             }
-
+            controller.setRightOnClickListener(onRightClickListener);
         }
     }
 
