@@ -41,7 +41,7 @@ public class TitleBarController {
     }
 
     private void setTitleColor(int color) {
-        if (color <= 0) return;
+        if (color == 0) return;
         tvTitle.setTextColor(color);
     }
 
@@ -51,7 +51,7 @@ public class TitleBarController {
     }
 
     private void setBarColor(int color) {
-        if (color <= 0) return ;
+        if (color == 0) return ;
         titleBar.setBackgroundColor(color);
     }
 
@@ -71,7 +71,7 @@ public class TitleBarController {
     }
 
     private void setLeftTextColor(int leftColor) {
-        if (leftColor <= 0) return ;
+        if (leftColor == 0) return ;
         leftText.setTextColor(leftColor);
     }
 
@@ -112,7 +112,7 @@ public class TitleBarController {
     }
 
     public void setRightTextColor(int rightTextColor) {
-        if (rightTextColor <= 0) return ;
+        if (rightTextColor == 0) return ;
         rightText.setTextColor(rightTextColor);
     }
 
