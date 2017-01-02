@@ -12,7 +12,6 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 /**
  * Created by hitomi on 2016/12/27.
  */
-
 public class TitleBarController {
 
     private final Context context;
@@ -169,6 +168,7 @@ public class TitleBarController {
         public int leftTextColor;
         public float leftTextSize;
         public int leftIcon;
+        public int leftIconSize;
         public int leftMargin;
         public int leftRegion;
 
@@ -176,6 +176,7 @@ public class TitleBarController {
         public int rightTextColor;
         public float rightTextSize;
         public int rightIcon;
+        public int rightIconSize;
         public int rightMargin;
         public int rightRegion;
 

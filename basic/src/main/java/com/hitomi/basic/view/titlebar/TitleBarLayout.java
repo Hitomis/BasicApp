@@ -7,7 +7,6 @@ import android.widget.RelativeLayout;
 /**
  * Created by hitomi on 2016/12/27.
  */
-
 public class TitleBarLayout extends RelativeLayout {
 
     TitleBarController controller;
