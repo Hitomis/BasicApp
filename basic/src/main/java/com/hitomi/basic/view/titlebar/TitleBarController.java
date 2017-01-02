@@ -79,12 +79,12 @@ public class TitleBarController {
         leftText.setTextSize(leftSize);
     }
 
-    private void createLeftIcon(int leftRegion, int leftMargin) {
+    private void createLeftIcon(int leftIconSize, int leftRegion, int leftMargin) {
         if (leftImage != null) return;
         leftImage = new ImageView(context);
         leftImage.setPadding(leftRegion, leftRegion, leftRegion, leftRegion);
-        RelativeLayout.LayoutParams leftRlp =
-                new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        int iconSize = leftIconSize == 0 ? WRAP_CONTENT : leftIconSize;
+        RelativeLayout.LayoutParams leftRlp = new RelativeLayout.LayoutParams(iconSize, iconSize);
         leftRlp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         leftRlp.addRule(RelativeLayout.CENTER_VERTICAL);
         leftRlp.leftMargin = leftMargin;
@@ -130,12 +130,12 @@ public class TitleBarController {
         rightText.setTextSize(rightTextSize);
     }
 
-    private void createRightIcon(int rightRegion, int rightMargin) {
+    private void createRightIcon(int rightIconSize, int rightRegion, int rightMargin) {
         if (rightImage != null) return;
         rightImage = new ImageView(context);
         rightImage.setPadding(rightRegion, rightRegion, rightRegion, rightRegion);
-        RelativeLayout.LayoutParams rightRlp =
-                new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        int iconSize = rightIconSize == 0 ? WRAP_CONTENT : rightIconSize;
+        RelativeLayout.LayoutParams rightRlp = new RelativeLayout.LayoutParams(iconSize, iconSize);
         rightRlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         rightRlp.addRule(RelativeLayout.CENTER_VERTICAL);
         rightRlp.rightMargin = rightMargin;
@@ -195,7 +195,7 @@ public class TitleBarController {
             controller.setTitleSize(titleSize);
 
             if (TextUtils.isEmpty(leftText)) {
-                controller.createLeftIcon(leftRegion, leftMargin);
+                controller.createLeftIcon(leftIconSize, leftRegion, leftMargin);
                 controller.setLeftIcon(leftIcon);
             } else {
                 controller.createLeftText(leftRegion, leftMargin);
@@ -206,7 +206,7 @@ public class TitleBarController {
             controller.setLeftOnClickListener(onLeftClickListener);
 
             if (TextUtils.isEmpty(rightText)) {
-                controller.createRightIcon(rightRegion, rightMargin);
+                controller.createRightIcon(rightIconSize, rightRegion, rightMargin);
                 controller.setRightIcon(rightIcon);
             } else {
                 controller.createRightText(rightRegion, rightMargin);

@@ -79,6 +79,17 @@ public class TitleBarLayout extends RelativeLayout {
             return this;
         }
 
+        public Builder setLeftIcon(int leftIcon, int leftIconSize) {
+            params.leftIcon = leftIcon;
+            params.leftIconSize = leftIconSize;
+            return this;
+        }
+
+        public Builder setLeftIconSize(int leftIconSize) {
+            params.leftIconSize = leftIconSize;
+            return this;
+        }
+
         public Builder setLeftMargin(int leftMargin) {
             params.leftMargin = leftMargin;
             return this;
@@ -113,6 +124,17 @@ public class TitleBarLayout extends RelativeLayout {
 
         public Builder setRightIcon(int rightIcon) {
             params.rightIcon = rightIcon;
+            return this;
+        }
+
+        public Builder setRightIcon(int rightIcon, int rightIconSize) {
+            params.rightIcon = rightIcon;
+            params.rightIconSize = rightIconSize;
+            return this;
+        }
+
+        public Builder setRightIconSize(int rightIconSize) {
+            params.rightIconSize = rightIconSize;
             return this;
         }
 

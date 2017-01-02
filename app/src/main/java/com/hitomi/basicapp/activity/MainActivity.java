@@ -53,8 +53,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .setLeftRegion(Kits.Dimens.dip2Px(this, 8))
                 .setRightMargin(Kits.Dimens.dip2Px(this, 8))
                 .setRightRegion(Kits.Dimens.dip2Px(this, 8))
-                .setLeftText("返回", Color.WHITE, 14)
-                .setRightText("确定", Color.WHITE, 14)
+//                .setLeftText("返回", Color.WHITE, 14)
+//                .setRightText("确定", Color.WHITE, 14)
+                .setLeftIcon(R.mipmap.back)
+                .setRightIcon(R.mipmap.edit)
                 .setLeftOnclickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
