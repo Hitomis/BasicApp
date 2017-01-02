@@ -1,6 +1,7 @@
 package com.hitomi.basic.view.titlebar;
 
 import android.content.Context;
+import android.support.annotation.IdRes;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,11 +15,13 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  */
 public class TitleBarController {
 
+    @IdRes static final int ID_RIGHT = 10001;
+
     private final Context context;
     private final TitleBarLayout titleBar;
 
-    private TextView tvTitle, leftText, rightText;
-    private ImageView leftImage, rightImage;
+    private TextView tvTitle, leftText, rightText, rightSubText;
+    private ImageView leftImage, rightImage, rightSubImage;
 
     public TitleBarController(Context context, TitleBarLayout titleBarLayout) {
         this.context = context;
@@ -107,6 +110,7 @@ public class TitleBarController {
     private void createRightText(int rightRegion, int rightMargin) {
         if (rightText != null) return ;
         rightText = new TextView(context);
+        rightText.setId(ID_RIGHT);
         rightText.setPadding(rightRegion, rightRegion, rightRegion ,rightRegion);
         RelativeLayout.LayoutParams rightRlp =
                 new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
@@ -133,6 +137,7 @@ public class TitleBarController {
     private void createRightIcon(int rightIconSize, int rightRegion, int rightMargin) {
         if (rightImage != null) return;
         rightImage = new ImageView(context);
+        rightImage.setId(ID_RIGHT);
         rightImage.setPadding(rightRegion, rightRegion, rightRegion, rightRegion);
         int iconSize = rightIconSize == 0 ? WRAP_CONTENT : rightIconSize;
         RelativeLayout.LayoutParams rightRlp = new RelativeLayout.LayoutParams(iconSize, iconSize);
@@ -152,6 +157,57 @@ public class TitleBarController {
             rightImage.setOnClickListener(onRightClickListener);
         } else {
             rightText.setOnClickListener(onRightClickListener);
+        }
+    }
+
+    private void createRightSubText(int rightSubRegion, int rightSubMargin) {
+        if (rightSubText != null) return ;
+        rightSubText = new TextView(context);
+        rightSubText.setPadding(rightSubRegion, rightSubRegion, rightSubRegion ,rightSubRegion);
+        RelativeLayout.LayoutParams rightSubRlp =
+                new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        rightSubRlp.addRule(RelativeLayout.LEFT_OF, ID_RIGHT);
+        rightSubRlp.addRule(RelativeLayout.CENTER_VERTICAL);
+        rightSubRlp.rightMargin = rightSubMargin;
+        titleBar.addView(rightSubText, rightSubRlp);
+    }
+
+    private void setRightSubText(CharSequence rightSubStr) {
+        rightSubText.setText(rightSubStr);
+    }
+
+    private void setRightSubTextColor(int rightSubTextColor) {
+        if (rightSubTextColor == 0) return ;
+        rightSubText.setTextColor(rightSubTextColor);
+    }
+
+    private void setRightSubTextSize(float rightSubTextSize) {
+        if (rightSubTextSize <= 0) return ;
+        rightSubText.setTextSize(rightSubTextSize);
+    }
+
+    private void createRightSubIcon(int rightSubIconSize, int rightSubRegion, int rightSubMargin) {
+        if (rightSubImage != null) return;
+        rightSubImage = new ImageView(context);
+        rightSubImage.setPadding(rightSubRegion, rightSubRegion, rightSubRegion, rightSubRegion);
+        int iconSize = rightSubIconSize == 0 ? WRAP_CONTENT : rightSubIconSize;
+        RelativeLayout.LayoutParams rightSubRlp = new RelativeLayout.LayoutParams(iconSize, iconSize);
+        rightSubRlp.addRule(RelativeLayout.LEFT_OF, ID_RIGHT);
+        rightSubRlp.addRule(RelativeLayout.CENTER_VERTICAL);
+        rightSubRlp.rightMargin = rightSubMargin;
+        titleBar.addView(rightSubImage, rightSubRlp);
+    }
+
+    private void setRightSubIcon(int rightSubIcon) {
+        if (rightSubIcon == 0) return ;
+        rightSubImage.setImageResource(rightSubIcon);
+    }
+
+    private void setRightSubOnClickListener(View.OnClickListener onRightSubClickListener) {
+        if (rightSubText == null) {
+            rightSubImage.setOnClickListener(onRightSubClickListener);
+        } else {
+            rightSubText.setOnClickListener(onRightSubClickListener);
         }
     }
 
@@ -180,8 +236,17 @@ public class TitleBarController {
         public int rightMargin;
         public int rightRegion;
 
+        public CharSequence rightSubText;
+        public int rightSubTextColor;
+        public float rightSubTextSize;
+        public int rightSubIcon;
+        public int rightSubIconSize;
+        public int rightSubMargin;
+        public int rightSubRegion;
+
         public View.OnClickListener onLeftClickListener;
         public View.OnClickListener onRightClickListener;
+        public View.OnClickListener onRightSubClickListener;
 
 
         public TitleParams(Context context) {
@@ -215,6 +280,18 @@ public class TitleBarController {
                 controller.setRightTextSize(rightTextSize);
             }
             controller.setRightOnClickListener(onRightClickListener);
+
+            if (TextUtils.isEmpty(rightSubText)) {
+                controller.createRightSubIcon(rightSubIconSize, rightSubRegion, rightSubMargin);
+                controller.setRightSubIcon(rightSubIcon);
+            } else {
+                controller.createRightSubText(rightSubRegion, rightSubMargin);
+                controller.setRightSubText(rightSubText);
+                controller.setRightSubTextColor(rightSubTextColor);
+                controller.setRightSubTextSize(rightSubTextSize);
+            }
+            controller.setRightSubOnClickListener(onRightSubClickListener);
+
         }
     }
 

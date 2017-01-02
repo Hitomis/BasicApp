@@ -57,16 +57,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //                .setRightText("确定", Color.WHITE, 14)
                 .setLeftIcon(R.mipmap.back)
                 .setRightIcon(R.mipmap.edit)
-                .setLeftOnclickListener(new View.OnClickListener() {
+                .setRightSubIcon(R.mipmap.back)
+                .setRightSubRegion(Kits.Dimens.dip2Px(this, 8))
+//                .setRightSubText("子项", Color.WHITE, 14)
+                .setRightSubMargin(Kits.Dimens.dip2Px(this, 8))
+                .setLeftOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(MainActivity.this, "click left", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setRightOnclickListener(new View.OnClickListener() {
+                .setRightOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(MainActivity.this, "click right", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setRightSubOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "click right sub", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setup(titleBar);

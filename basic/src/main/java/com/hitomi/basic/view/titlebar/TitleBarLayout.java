@@ -148,13 +148,66 @@ public class TitleBarLayout extends RelativeLayout {
             return this;
         }
 
-        public Builder setLeftOnclickListener(OnClickListener listener) {
+        public Builder setRightSubText(String rightSubText) {
+            params.rightSubText = rightSubText;
+            return this;
+        }
+
+        public Builder setRightSubTextColor(int rightSubTextColor) {
+            params.rightSubTextColor = rightSubTextColor;
+            return this;
+        }
+
+        public Builder setRightSubTextSize( int rightSubTextSize) {
+            params.rightSubTextSize = rightSubTextSize;
+            return this;
+        }
+
+        public Builder setRightSubText(String rightSubText, int rightSubTextColor, int rightSubTextSize) {
+            params.rightSubText = rightSubText;
+            params.rightSubTextColor = rightSubTextColor;
+            params.rightSubTextSize = rightSubTextSize;
+            return this;
+        }
+
+        public Builder setRightSubIcon(int rightSubIcon) {
+            params.rightSubIcon = rightSubIcon;
+            return this;
+        }
+
+        public Builder setRightSubIcon(int rightSubIcon, int rightSubIconSize) {
+            params.rightSubIcon = rightSubIcon;
+            params.rightSubIconSize = rightSubIconSize;
+            return this;
+        }
+
+        public Builder setRightSubIconSize(int rightSubIconSize) {
+            params.rightSubIconSize = rightSubIconSize;
+            return this;
+        }
+
+        public Builder setRightSubMargin(int rightSubMargin) {
+            params.rightSubMargin = rightSubMargin;
+            return this;
+        }
+
+        public Builder setRightSubRegion(int rightSubRegion) {
+            params.rightSubRegion = rightSubRegion;
+            return this;
+        }
+
+        public Builder setLeftOnClickListener(OnClickListener listener) {
             params.onLeftClickListener = listener;
             return this;
         }
 
-        public Builder setRightOnclickListener(OnClickListener listener) {
+        public Builder setRightOnClickListener(OnClickListener listener) {
             params.onRightClickListener = listener;
+            return this;
+        }
+
+        public Builder setRightSubOnClickListener(OnClickListener listener){
+            params.onRightSubClickListener = listener;
             return this;
         }
 
@@ -168,6 +221,4 @@ public class TitleBarLayout extends RelativeLayout {
             params.apply(titleBar.controller);
         }
     }
-
-
 }
