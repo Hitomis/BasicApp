@@ -1,8 +1,10 @@
 package com.hitomi.basic.view.titlebar;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /**
  * Created by hitomi on 2016/12/27.
@@ -22,7 +24,6 @@ public class TitleBarLayout extends RelativeLayout {
     public TitleBarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         controller = new TitleBarController(context, this);
-        controller.prepareContentView();
     }
 
     public static class Builder {
@@ -34,6 +35,17 @@ public class TitleBarLayout extends RelativeLayout {
 
         public Builder setTitle(String title) {
             params.title = title;
+            return this;
+        }
+
+        public Builder setTitleView(TextView tvTitle) {
+            params.tvTitle = tvTitle;
+            return this;
+        }
+
+        public Builder setTitleView(TextView tvTitle, RelativeLayout.LayoutParams titleRlp) {
+            params.tvTitle = tvTitle;
+            params.titleRlp = titleRlp;
             return this;
         }
 
@@ -79,14 +91,25 @@ public class TitleBarLayout extends RelativeLayout {
             return this;
         }
 
-        public Builder setLeftIcon(int leftIcon, int leftIconSize) {
-            params.leftIcon = leftIcon;
-            params.leftIconSize = leftIconSize;
+        public Builder setLeftBitmap(Bitmap leftBitmap) {
+            params.leftBitmap = leftBitmap;
             return this;
         }
 
-        public Builder setLeftIconSize(int leftIconSize) {
-            params.leftIconSize = leftIconSize;
+        public Builder setLeftIcon(int leftIcon, int leftImageSize) {
+            params.leftIcon = leftIcon;
+            params.leftImageSize = leftImageSize;
+            return this;
+        }
+
+        public Builder setLeftBitmap(Bitmap leftBitmap, int leftImageSize) {
+            params.leftBitmap = leftBitmap;
+            params.leftImageSize = leftImageSize;
+            return this;
+        }
+
+        public Builder setLeftImageSize(int leftImageSize) {
+            params.leftImageSize = leftImageSize;
             return this;
         }
 
@@ -127,14 +150,25 @@ public class TitleBarLayout extends RelativeLayout {
             return this;
         }
 
-        public Builder setRightIcon(int rightIcon, int rightIconSize) {
-            params.rightIcon = rightIcon;
-            params.rightIconSize = rightIconSize;
+        public Builder setRightBitmap(Bitmap rightBitmap) {
+            params.rightBitmap = rightBitmap;
             return this;
         }
 
-        public Builder setRightIconSize(int rightIconSize) {
-            params.rightIconSize = rightIconSize;
+        public Builder setRightIcon(int rightIcon, int rightImageSize) {
+            params.rightIcon = rightIcon;
+            params.rightImageSize = rightImageSize;
+            return this;
+        }
+
+        public Builder setRightBitmap(Bitmap rightBitmap, int rightImageSize) {
+            params.rightBitmap = rightBitmap;
+            params.rightImageSize = rightImageSize;
+            return this;
+        }
+
+        public Builder setRightImageSize(int rightImageSize) {
+            params.rightImageSize = rightImageSize;
             return this;
         }
 
@@ -175,14 +209,25 @@ public class TitleBarLayout extends RelativeLayout {
             return this;
         }
 
-        public Builder setRightSubIcon(int rightSubIcon, int rightSubIconSize) {
-            params.rightSubIcon = rightSubIcon;
-            params.rightSubIconSize = rightSubIconSize;
+        public Builder setRightSubBitmap(Bitmap rightSubBitmap) {
+            params.rightSubBitmap = rightSubBitmap;
             return this;
         }
 
-        public Builder setRightSubIconSize(int rightSubIconSize) {
-            params.rightSubIconSize = rightSubIconSize;
+        public Builder setRightSubIcon(int rightSubIcon, int rightSubImageSize) {
+            params.rightSubIcon = rightSubIcon;
+            params.rightSubImageSize = rightSubImageSize;
+            return this;
+        }
+
+        public Builder setRightSubBitmap(Bitmap rightSubBitmap, int rightSubImageSize) {
+            params.rightSubBitmap = rightSubBitmap;
+            params.rightSubImageSize = rightSubImageSize;
+            return this;
+        }
+
+        public Builder setRightSubImageSize(int rightSubImageSize) {
+            params.rightSubImageSize = rightSubImageSize;
             return this;
         }
 
@@ -193,6 +238,11 @@ public class TitleBarLayout extends RelativeLayout {
 
         public Builder setRightSubRegion(int rightSubRegion) {
             params.rightSubRegion = rightSubRegion;
+            return this;
+        }
+
+        public Builder setTitleOnClickListener(OnClickListener listener) {
+            params.onTitleClickListener = listener;
             return this;
         }
 
