@@ -28,13 +28,20 @@ public class TitleBarLayout extends RelativeLayout {
 
     public static class Builder {
         private final TitleBarController.TitleParams params;
-        
+
         public Builder(Context context) {
             params = new TitleBarController.TitleParams(context);
         }
 
         public Builder setTitle(String title) {
             params.title = title;
+            return this;
+        }
+
+        public Builder setTitle(String title, int titleColor, float titleSize) {
+            params.title = title;
+            params.titleColor = titleColor;
+            params.titleSize = titleSize;
             return this;
         }
 
@@ -83,6 +90,11 @@ public class TitleBarLayout extends RelativeLayout {
             params.leftText = leftText;
             params.leftTextColor = leftTextColor;
             params.leftTextSize = leftTextSize;
+            return this;
+        }
+
+        public Builder setLeftTextView(TextView leftTextView) {
+            params.tvleft = leftTextView;
             return this;
         }
 
@@ -145,6 +157,11 @@ public class TitleBarLayout extends RelativeLayout {
             return this;
         }
 
+        public Builder setRightTextView(TextView rightTextView) {
+            params.tvRight = rightTextView;
+            return this;
+        }
+
         public Builder setRightIcon(int rightIcon) {
             params.rightIcon = rightIcon;
             return this;
@@ -192,7 +209,7 @@ public class TitleBarLayout extends RelativeLayout {
             return this;
         }
 
-        public Builder setRightSubTextSize( int rightSubTextSize) {
+        public Builder setRightSubTextSize(int rightSubTextSize) {
             params.rightSubTextSize = rightSubTextSize;
             return this;
         }
@@ -256,7 +273,7 @@ public class TitleBarLayout extends RelativeLayout {
             return this;
         }
 
-        public Builder setRightSubOnClickListener(OnClickListener listener){
+        public Builder setRightSubOnClickListener(OnClickListener listener) {
             params.onRightSubClickListener = listener;
             return this;
         }
@@ -267,7 +284,7 @@ public class TitleBarLayout extends RelativeLayout {
             return titleBar;
         }
 
-        public void setup(TitleBarLayout titleBar){
+        public void setup(TitleBarLayout titleBar) {
             params.apply(titleBar.controller);
         }
     }

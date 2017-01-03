@@ -83,6 +83,16 @@ class TitleBarController {
         titleBar.addView(leftText, leftRlp);
     }
 
+    private void setLeftTextView(TextView tvleft, int leftMargin) {
+        leftText = tvleft;
+        RelativeLayout.LayoutParams leftRlp =
+                new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        leftRlp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        leftRlp.addRule(RelativeLayout.CENTER_VERTICAL);
+        leftRlp.leftMargin = leftMargin;
+        titleBar.addView(leftText, leftRlp);
+    }
+
     private void setLeftText(CharSequence leftStr) {
         leftText.setText(leftStr);
     }
@@ -127,6 +137,17 @@ class TitleBarController {
         rightText = new TextView(context);
         rightText.setId(ID_RIGHT);
         rightText.setPadding(rightRegion, rightRegion, rightRegion, rightRegion);
+        RelativeLayout.LayoutParams rightRlp =
+                new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        rightRlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        rightRlp.addRule(RelativeLayout.CENTER_VERTICAL);
+        rightRlp.rightMargin = rightMargin;
+        titleBar.addView(rightText, rightRlp);
+    }
+
+    private void setRightTextView(TextView tvRight, int rightMargin) {
+        rightText = tvRight;
+        rightText.setId(ID_RIGHT);
         RelativeLayout.LayoutParams rightRlp =
                 new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         rightRlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -242,12 +263,14 @@ class TitleBarController {
         public final Context context;
 
         int barColor;
+
         TextView tvTitle;
         RelativeLayout.LayoutParams titleRlp;
         CharSequence title;
         int titleColor;
         float titleSize;
 
+        TextView tvleft;
         CharSequence leftText;
         int leftTextColor;
         float leftTextSize;
@@ -257,6 +280,7 @@ class TitleBarController {
         int leftMargin;
         int leftRegion;
 
+        TextView tvRight;
         CharSequence rightText;
         int rightTextColor;
         float rightTextSize;
@@ -296,33 +320,37 @@ class TitleBarController {
             controller.setTitleSize(titleSize);
             controller.setTitleOnClickListener(onTitleClickListener);
 
-            if (TextUtils.isEmpty(leftText)) {
+            if (tvleft != null) {
+                controller.setLeftTextView(tvleft, leftMargin);
+            } else if (!TextUtils.isEmpty(leftText)) {
+                controller.createLeftText(leftRegion, leftMargin);
+                controller.setLeftText(leftText);
+                controller.setLeftTextColor(leftTextColor);
+                controller.setLeftTextSize(leftTextSize);
+            } else {
                 controller.createLeftImage(leftImageSize, leftRegion, leftMargin);
                 if (leftIcon != 0) {
                     controller.setLeftIcon(leftIcon);
                 } else if (leftBitmap != null) {
                     controller.setLeftBitmap(leftBitmap);
                 }
-            } else {
-                controller.createLeftText(leftRegion, leftMargin);
-                controller.setLeftText(leftText);
-                controller.setLeftTextColor(leftTextColor);
-                controller.setLeftTextSize(leftTextSize);
             }
             controller.setLeftOnClickListener(onLeftClickListener);
 
-            if (TextUtils.isEmpty(rightText)) {
+            if (tvRight != null) {
+                controller.setRightTextView(tvRight, rightMargin);
+            } else if (!TextUtils.isEmpty(rightText)) {
+                controller.createRightText(rightRegion, rightMargin);
+                controller.setRightText(rightText);
+                controller.setRightTextColor(rightTextColor);
+                controller.setRightTextSize(rightTextSize);
+            } else {
                 controller.createRightImage(rightImageSize, rightRegion, rightMargin);
                 if (rightIcon != 0) {
                     controller.setRightIcon(rightIcon);
                 } else if (rightBitmap != null) {
                     controller.setRightBitmap(rightBitmap);
                 }
-            } else {
-                controller.createRightText(rightRegion, rightMargin);
-                controller.setRightText(rightText);
-                controller.setRightTextColor(rightTextColor);
-                controller.setRightTextSize(rightTextSize);
             }
             controller.setRightOnClickListener(onRightClickListener);
 
