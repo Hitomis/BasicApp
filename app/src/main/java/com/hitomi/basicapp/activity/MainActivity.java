@@ -5,16 +5,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.hitomi.basic.tool.Kits;
 import com.hitomi.basic.ui.BaseActivity;
 import com.hitomi.basic.view.titlebar.TitleBarLayout;
 import com.hitomi.basicapp.R;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnSlide;
+    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnSlide, btnTitlebar;
 
     @Override
     public int getContentViewID() {
@@ -29,6 +27,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnRecycle = (Button) findViewById(R.id.btn_recycle);
         btnHttp = (Button) findViewById(R.id.btn_http);
         btnSlide = (Button) findViewById(R.id.btn_slide);
+        btnTitlebar = (Button) findViewById(R.id.btn_titlebar);
     }
 
     @Override
@@ -39,6 +38,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnRecycle.setOnClickListener(this);
         btnHttp.setOnClickListener(this);
         btnSlide.setOnClickListener(this);
+        btnTitlebar.setOnClickListener(this);
     }
 
     @Override
@@ -49,36 +49,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .setTitleSize(18)
                 .setTitleColor(Color.WHITE)
                 .setBarColor(Color.parseColor("#74c650"))
-                .setLeftMargin(Kits.Dimens.dip2Px(this, 8))
-                .setLeftRegion(Kits.Dimens.dip2Px(this, 8))
-                .setRightMargin(Kits.Dimens.dip2Px(this, 8))
-                .setRightRegion(Kits.Dimens.dip2Px(this, 8))
-//                .setLeftText("返回", Color.WHITE, 14)
-//                .setRightText("确定", Color.WHITE, 14)
-                .setLeftIcon(R.mipmap.back)
-                .setRightIcon(R.mipmap.edit)
-                .setRightSubIcon(R.mipmap.back)
-                .setRightSubRegion(Kits.Dimens.dip2Px(this, 8))
-//                .setRightSubText("子项", Color.WHITE, 14)
-                .setRightSubMargin(Kits.Dimens.dip2Px(this, 8))
-                .setLeftOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "click left", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setRightOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "click right", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setRightSubOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "click right sub", Toast.LENGTH_SHORT).show();
-                    }
-                })
                 .setup(titleBar);
     }
 
@@ -102,6 +72,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.btn_slide:
                 startActivity(new Intent(this, SlidebackActivity.class));
+                break;
+            case R.id.btn_titlebar:
+                startActivity(new Intent(this, TitlebarActivity.class));
                 break;
         }
     }
