@@ -181,7 +181,7 @@ public class TitlebarActivity extends BaseActivity {
     private void titlebarDemo1() {
         new TitleBarLayout.Builder(this)
                 .setBarColor(Color.parseColor("#2f008d"))
-                .setTitle("普通标题栏", Color.RED, 18)
+                .setTitle("普通标题栏", Color.WHITE, 18)
                 .setLeftIcon(R.mipmap.left)
                 .setLeftMargin(Kits.Dimens.dip2Px(this, 8))
                 .setLeftRegion(Kits.Dimens.dip2Px(this, 8))
