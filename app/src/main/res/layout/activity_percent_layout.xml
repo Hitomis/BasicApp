@@ -43,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:scaleType="centerCrop"
         android:src="@drawable/img5"
         app:layout_heightPercent="30%sh"
         app:layout_widthPercent="30%sh"/>
