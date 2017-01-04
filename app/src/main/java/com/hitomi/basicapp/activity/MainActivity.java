@@ -12,7 +12,7 @@ import com.hitomi.basicapp.R;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnSlide, btnTitlebar;
+    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnSlide, btnTitlebar, btnPercentLayout;
 
     @Override
     public int getContentViewID() {
@@ -28,6 +28,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnHttp = (Button) findViewById(R.id.btn_http);
         btnSlide = (Button) findViewById(R.id.btn_slide);
         btnTitlebar = (Button) findViewById(R.id.btn_titlebar);
+        btnPercentLayout = (Button) findViewById(R.id.btn_percent_layout);
     }
 
     @Override
@@ -39,6 +40,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnHttp.setOnClickListener(this);
         btnSlide.setOnClickListener(this);
         btnTitlebar.setOnClickListener(this);
+        btnPercentLayout.setOnClickListener(this);
     }
 
     @Override
@@ -75,6 +77,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.btn_titlebar:
                 startActivity(new Intent(this, TitlebarActivity.class));
+                break;
+            case R.id.btn_percent_layout:
+                startActivity(new Intent(this, PercentLayoutActivity.class));
                 break;
         }
     }

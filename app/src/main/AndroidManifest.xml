@@ -45,6 +45,7 @@
         <activity
             android:name=".activity.TitlebarActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.PercentLayoutActivity"></activity>
     </application>
 
 </manifest>
