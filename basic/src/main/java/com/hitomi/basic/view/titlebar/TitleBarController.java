@@ -309,12 +309,12 @@ class TitleBarController {
         }
 
         void apply(TitleBarController controller) {
+            controller.setBarColor(barColor);
             if (tvTitle == null) {
                 controller.createTitle();
             } else {
                 controller.setTitle(tvTitle, titleRlp);
             }
-            controller.setBarColor(barColor);
             controller.setTitleText(title);
             controller.setTitleColor(titleColor);
             controller.setTitleSize(titleSize);
