@@ -44,33 +44,34 @@
 ##滑动返回组件-SlideBackHelper
 
    现在 Android 手机屏幕越来越大, 大多数人都是习惯单手玩手机, 此时触摸返回上一页按钮就显得不是那么方便, 越来越多人也习惯了侧滑返回上一页的操作习惯
-   所以 SlideBackHelper 仿 IOS 实现了滑动返回功能
+   所以 SlideBackHelper 仿 IOS 实现了滑动返回功能支持如下特性：
    
-   支持如下特性：
-   * 支持动态切换全局或边缘滑动，亦可动态禁止或恢复滑动
-   * 支持动态设置边缘响应和滑动关闭距离的阈值
-   * 优化了与RecyclerView、ViewPager等滑动控件手势冲突
-   * 支持屏幕旋转
+  * 支持动态切换全局或边缘滑动，亦可动态禁止或恢复滑动
+  * 支持动态设置边缘响应和滑动关闭距离的阈值
+  * 优化了与RecyclerView、ViewPager等滑动控件手势冲突
+  * 支持屏幕旋转
+   
    
    在 Application 中需要对 SlideBackHelper 组件进行全局初始化
     
-    ```
-    private void initSlideback() {
-        SlideConfig slideConfig = new SlideConfig.Builder()
-                .rotateScreen(false) // 屏幕是否旋转
-                .edgeOnly(true) //  // 是否仅为侧边缘滑动，false: 任何地方都可以滑动
-                .lock(false) // 是否禁止侧滑
-                .edgePercent(0.1f) // 边缘滑动的响应阈值，0~1，对应屏幕宽度*percent
-                .slideOutPercent(0.5f) // 关闭页面的阈值，0~1，对应屏幕宽度*percent
-                .create();
-        SlideBackHelper.getInstance().init(ActivityManager.getInstance(), slideConfig);
-    }
-    ```
+   ```
+   private void initSlideback() {
+       SlideConfig slideConfig = new SlideConfig.Builder()
+               .rotateScreen(false) // 屏幕是否旋转
+               .edgeOnly(true) //  // 是否仅为侧边缘滑动，false: 任何地方都可以滑动
+               .lock(false) // 是否禁止侧滑
+               .edgePercent(0.1f) // 边缘滑动的响应阈值，0~1，对应屏幕宽度*percent
+               .slideOutPercent(0.5f) // 关闭页面的阈值，0~1，对应屏幕宽度*percent
+               .create();
+       SlideBackHelper.getInstance().init(ActivityManager.getInstance(), slideConfig);
+   }
+   ```
 
    在 BaseActivity 中开启 SlideBackHelper 组件
-    ```
-    SlideBackHelper.getInstance().startup();
-    ```
+   
+   ```
+   SlideBackHelper.getInstance().startup();
+   ```
 
 ##网络请求组件-okHttpUtils
 
