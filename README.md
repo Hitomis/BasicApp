@@ -32,8 +32,7 @@
 
 #组件说明
 
-  
- ##网络请求组件-okHttpUtils
+##网络请求组件-okHttpUtils
 
   基于对 [okhttp](https://github.com/square/okhttp) 的封装, 出自于 [hongyang](http://blog.csdn.net/lmj623565791/article/details/49734867) 之手
 
@@ -50,7 +49,7 @@
   * 支持自签名网站https的访问，提供方法设置下证书就行
 
 
-  ##万能适配器-baseAdapter
+##万能适配器-baseAdapter
 
   简化列表式组件数据的适配, 并且支持多 Item 类型的情景, 同样出自 hongyang 之手
 
@@ -62,7 +61,7 @@
   * 支持 EmptyView
 
 
-  ##扩展的百分比布局-PercentLayout
+##扩展的百分比布局-PercentLayout
 
   基于 Android Percent Support Lib 扩展的百分比布局, google 官方百分比布局只支持 RelativeLayout、FrameLayout, hongyang 在此基础上扩展了
   LinearLayout, 并且也扩展了一些属性, 让 PercentLayout 更加灵活
@@ -88,7 +87,7 @@
   * layout_paddingLeftPercent
   * layout_paddingRightPercent
 
-  ##快速编译方案-Freeline
+##快速编译方案-Freeline
 
   Freeline 是一款 Android 平台上的秒级编译方案，能够显著地提高 Android 工程的编译速度。从此摆脱 Gradle 龟速编译的痛苦
 
@@ -105,7 +104,7 @@
   * 支持各类主流注解库（APT）
   * 支持 Windows，Linux，Mac 平台
 
-  ##万能的日志库-XLog
+##万能的日志库-XLog
 
   简单、美观、强大、可扩展的 Android 和 Java 日志库，可同时在多个通道打印日志，如 Logcat、Console 和文件
 
@@ -122,11 +121,11 @@
   * 在 Android Studio 中的日志样式美观
   * 简单易用，扩展性高
 
-  ##轻便的图片加载组件-picasso
+##轻便的图片加载组件-picasso
 
-  ##跨组件通信方案-EventBus3
+##跨组件通信方案-EventBus3
 
-  ##app内存泄漏实时检测-leakcanary
+##app内存泄漏实时检测-leakcanary
 
 
 #Licence
