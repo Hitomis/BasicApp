@@ -44,13 +44,15 @@
 ##滑动返回组件-SlideBackHelper
 
    现在 Android 手机屏幕越来越大, 大多数人都是习惯单手玩手机, 此时触摸返回上一页按钮就显得不是那么方便, 越来越多人也习惯了侧滑返回上一页的操作习惯
-   所以 SlideBackHelper 仿 IOS 实现了滑动返回功能, 支持如下特性：
-   * 支持动态切换全局或边缘滑动，亦可动态禁止或恢复滑动
+   所以 SlideBackHelper 仿 IOS 实现了滑动返回功能
+   
+   支持如下特性：
+   * 支持动态切换全局或边缘滑动，亦可动态禁止或恢复滑动
    * 支持动态设置边缘响应和滑动关闭距离的阈值
-   * 优化了与RecyclerView、ViewPager等滑动控件手势冲突
+   * 优化了与RecyclerView、ViewPager等滑动控件手势冲突
    * 支持屏幕旋转
-
-    在 Application 中需要对 SlideBackHelper 组件进行全局初始化
+   
+   在 Application 中需要对 SlideBackHelper 组件进行全局初始化
     
     ```
     private void initSlideback() {
@@ -65,7 +67,7 @@
     }
     ```
 
-    在 BaseActivity 中开启 SlideBackHelper 组件
+   在 BaseActivity 中开启 SlideBackHelper 组件
     ```
     SlideBackHelper.getInstance().startup();
     ```
