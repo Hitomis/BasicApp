@@ -118,8 +118,8 @@ public class UpdateManager {
          *     还需要自己跟后台人员沟通好不同渠道所对应 XML 所在的路径 url</li>
          * </ur>
          *
-         * @param has
-         * @return
+         * @param has true：有更新升级接口, false：没有
+         * @return Builder
          */
         public Builder setHasInterface(boolean has) {
             this.hasInterface = has;
