@@ -164,6 +164,45 @@
   渠道的更新升级信息了. 同时注意在 XML 文件中要配置好对应的 apk 下载 url 路径. 例如在 android_upgrade_yinyongbao.xml 文件中配置的 apk 下载路径肯定是指定下
   载渠道为 yinyongbao 的 apk
 
+  关于服务器端如何获取 apk 文件的 MD5：
+  ```
+  /**
+   * 获取文件的 md5 码
+   * @param file
+   * @return
+   */
+  public String md5(File file) {
+      MessageDigest digest;
+      FileInputStream fis;
+      byte[] buffer = new byte[1024];
+
+      try {
+          if (!file.isFile()) {
+              return "";
+          }
+
+          digest = MessageDigest.getInstance("MD5");
+          fis = new FileInputStream(file);
+
+          while (true) {
+              int len;
+              if ((len = fis.read(buffer, 0, 1024)) == -1) {
+                  fis.close();
+                  break;
+              }
+
+              digest.update(buffer, 0, len);
+          }
+      } catch (Exception e) {
+          e.printStackTrace();
+          return null;
+      }
+
+      BigInteger var5 = new BigInteger(1, digest.digest());
+      return String.format("%1$032x", new Object[]{var5});
+  }
+  ```
+
 ##全局缓存组件-CacheManager
 
  App 中总需要临时保存多种多样的数据, 例如 用户信息、缩略图、app 设置信息等等, 使用 CacheManager 可以方便的完成这些工作.
