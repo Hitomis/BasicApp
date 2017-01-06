@@ -73,6 +73,111 @@
    SlideBackHelper.getInstance().startup();
    ```
 
+##圆角图片-RoundImageView
+
+  目前 App 中圆角图片或者圆角矩形图片应用越来越广泛, 故集成这个基本控件
+
+  支持以下功能：
+  * 圆形样式图片
+  * 圆角矩形样式图片
+
+  Examples:
+  ```
+  <com.hitomi.basic.view.RoundImageView
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      android:src="@drawable/img1"
+      app:type="circle" />
+  ```
+
+
+##可定制的标题栏-TitleBarLayout
+
+  可以定制通用的标题栏布局, 通过在 XML 文件中定义, 同时也可以在 java 中通过构建器创建
+
+  支持以下功能：
+  * 自定义标题栏左侧操作区域, 可以填充文字或者图标或者两者并存
+  * 自定义标题栏标题区域, 可以填充文字或者使用 TextView 填充
+  * 自定义标题栏右侧操作区域, 可以填充文字或者图标或者两者并存
+  * 自定义标题栏右侧子项操作区域, 可以填充文字或者图标或者两者并存
+
+  Examples:
+  ```
+  new TitleBarLayout.Builder(this)
+          .setBarColor(Color.parseColor("#2f008d"))
+          .setTitle("文字标题栏", Color.WHITE, 18)
+          .setLeftText("返回", Color.WHITE, 16)
+          .setRightText("确定", Color.WHITE, 16)
+          .setLeftMargin(Kits.Dimens.dip2Px(this, 8))
+          .setRightMargin(Kits.Dimens.dip2Px(this, 8))
+          .setup(titleBar6);
+  ```
+
+##统一管理Activity的生命周期-ActivityManager
+
+  Activity 的生命周期管理类, 基于 4.0 版本的 Application.ActivityLifecycleCallbacks 实现.
+
+  故 4.0 以下不可用
+
+##App 网络管理组件-NetworkManager
+
+  功能如下：
+  * 监听网络变化, 当网络状态放生改变时可以通过监听器收到通知
+  * 判断当前网络是否是移动网络
+  * 判断当前网络是否是 wifi 网络
+  * 判断是否有网络连接
+  * 是否能与外网通信(有网络连接不代表一定能访问外网)
+
+##App 更新升级管理组件-UpdateManager
+
+　App 发布上线意味着以后客户端必定需要升级更新, 使用 UpdateManager 可以更方便快捷的完成这项工作
+
+  在使用 UpdateManager 组件时, 需要跟服务端同学沟通好以下事项：
+  * 服务器必须下发版本号 (versionCode)
+  * 服务器必须下发版本名称 (versionName)
+  * 服务器必须下发 apk 下载地址 url (url)
+  * 服务器必须下发 最新apk md5 码, 用来校验 apk 文件完整性和安全性 (md5)
+  * 服务器必须下发 apk 存储大小 (size)
+  * 服务器需要下发 updateContent (updateContent)
+  * 如果有多渠道, 服务器需要配置好多种渠道 apk 包, 以待客户端能够下载正确的渠道包
+  * 支持任何形式的方式下发以上数据, xml、json、file. 客户端去做对应的解析工作就可以了.推荐 xml 或者 json
+
+
+　支持特性如下：
+  * 服务器端可配置是否强制更新
+  * 服务器端可配置是否下载完成后自动跳转到安装界面
+  * 服务器端可配置是否可以忽略当前版本
+  * 客户端可自定义渠道信息
+  * 客户端可自定义显示更新信息的形式, 默认使用 Dialog 去显示
+  * 客户端可以自定义解析器, 用于解析服务器下发的更新参数信息
+  * 客户端可以自定义下载 apk 文件的进度显示方式, 内置 Dialog 以及 Notify 两种形式
+
+  关于渠道说明：
+  1、如果服务器有更新升级接口, 那么访问接口的时候需要带上渠道参数, 对应服务器返回的数据当中给定对应渠道正确的 apk 下载路径即可, 记得修改 channel 与 url 的拼接逻辑代码
+  2、如果服务器没有更新升级接口, 采用的是自定义编写 XML 文件的方式去下发更新升级参数, 那么在服务器就需要同时放多个 XML,
+  例如 app_download/android_upgrade_xiaomi.xml、app_download/android_upgrade_wandoujia.xml、app_download/android_upgrade_yinyongbao.xml 等等
+  客户端在配置好渠道后, url 会拼接上 channel, 这样就可以去访问对应的 XML 文件, 获取到相同渠道的更新升级信息了
+
+##全局缓存组件-CacheManager
+
+ App 中总需要临时保存多种多样的数据, 例如 用户信息、缩略图、app 设置信息等等, 使用 CacheManager 可以方便的完成这些工作.
+
+ CacheManager 包含
+ * 通过 CacheManager.MC() 拿到对象缓存实例, 基于 LruCache 实现
+ * 通过 CacheManager.DS() 拿到磁盘缓存实例, 基于 DiskLruCache 实现
+ * 通过 CacheManager.SP() 拿到 SharedPreferences 缓存实例, 封装了 SharedPreferences 的一些简单功能
+
+
+##通用 App 事件钩子管理器-HookManager
+
+ HookManager 可以完成在事件方法中插入自己的业务代码, 用于处理全局的特别业务是一种不错的方法.
+ 例如断网后, 屏蔽所有的点击事件.
+ 目前 HookManager 可以完成在以下事件方法中插入业务逻辑：
+ * OnClickListener
+ * OnLongClickListener
+ * OnFocusChangeListener己可以扩展
+
+
 ##网络请求组件-okHttpUtils
 
   基于对 [okhttp](https://github.com/square/okhttp) 的封装, 出自于 [hongyang](http://blog.csdn.net/lmj623565791/article/details/49734867) 之手
