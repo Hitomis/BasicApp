@@ -156,10 +156,13 @@
   关于渠道说明：
 
   1、如果服务器有更新升级接口, 那么访问接口的时候需要带上渠道参数, 对应服务器返回的数据当中给定对应渠道正确的 apk 下载路径即可, 记得修改 channel 与 url 的拼接逻辑代码
+  (拼接代码修改为：让 channel 以参数的形式添加在 url 后, 例如：http://XXXXXX/upgrade?channel=yinyongbao)
 
   2、如果服务器没有更新升级接口, 采用的是自定义编写 XML 文件的方式去下发更新升级参数, 那么在服务器就需要同时放多个 XML,
   例如 app_download/android_upgrade_xiaomi.xml、app_download/android_upgrade_wandoujia.xml、app_download/android_upgrade_yinyongbao.xml 等等
-  客户端在配置好渠道后, url 会拼接上 channel, 这样就可以去访问对应的 XML 文件, 获取到相同渠道的更新升级信息了
+  客户端在配置好渠道后, url 会拼接上 channel (目前拼接后的 url 大致为："http://XXXXXX/android_upgrade_channel.xml) 这样就可以去访问对应的 XML 文件, 获取到对应
+  渠道的更新升级信息了. 同时注意在 XML 文件中要配置好对应的 apk 下载 url 路径. 例如在 android_upgrade_yinyongbao.xml 文件中配置的 apk 下载路径肯定是指定下
+  载渠道为 yinyongbao 的 apk
 
 ##全局缓存组件-CacheManager
 
