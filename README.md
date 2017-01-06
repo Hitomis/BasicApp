@@ -130,9 +130,10 @@
 
 ##App 更新升级管理组件-UpdateManager
 
-　App 发布上线意味着以后客户端必定需要升级更新, 使用 UpdateManager 可以更方便快捷的完成这项工作
+  App 发布上线意味着以后客户端必定需要升级更新, 使用 UpdateManager 可以更方便快捷的完成这项工作
 
-  在使用 UpdateManager 组件时, 需要跟服务端同学沟通好以下事项：
+
+  使用 UpdateManager 组件时, 需要跟服务端同学沟通好以下事项：
   * 服务器必须下发版本号 (versionCode)
   * 服务器必须下发版本名称 (versionName)
   * 服务器必须下发 apk 下载地址 url (url)
@@ -154,6 +155,7 @@
 
   关于渠道说明：
   1、如果服务器有更新升级接口, 那么访问接口的时候需要带上渠道参数, 对应服务器返回的数据当中给定对应渠道正确的 apk 下载路径即可, 记得修改 channel 与 url 的拼接逻辑代码
+
   2、如果服务器没有更新升级接口, 采用的是自定义编写 XML 文件的方式去下发更新升级参数, 那么在服务器就需要同时放多个 XML,
   例如 app_download/android_upgrade_xiaomi.xml、app_download/android_upgrade_wandoujia.xml、app_download/android_upgrade_yinyongbao.xml 等等
   客户端在配置好渠道后, url 会拼接上 channel, 这样就可以去访问对应的 XML 文件, 获取到相同渠道的更新升级信息了
