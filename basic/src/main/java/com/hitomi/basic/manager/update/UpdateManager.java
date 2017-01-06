@@ -1,6 +1,8 @@
 package com.hitomi.basic.manager.update;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.hitomi.basic.manager.update.progress.DialogProgressBehavior;
 import com.hitomi.basic.manager.update.progress.EmptyProgressBehavior;
@@ -73,6 +75,7 @@ public class UpdateManager {
         private Context context;
         private String url; // 检查更新 url
         private String channel; // 渠道
+        private boolean hasInterface; // 服务器是否有 app 更新升级访问接口
         private boolean isManual; // true：手动检查，所有类型的错误，都会提示，false：只会提醒 2000 以上的错误
         private boolean isWifiOnly; // 是否只在 wifi 环境下检查更新
         private int progressStyle; // 进度提醒方式
@@ -102,6 +105,24 @@ public class UpdateManager {
          */
         public Builder setChannel(String channel) {
             this.channel = channel;
+            return this;
+        }
+
+        /**
+         * 后台是否有更新升级接口 <br/>
+         * 本组件兼容两种方式获取服务器上的更新升级信息 <br/>
+         * <ur>
+         *     <li>后台提供更新升级接口：url 需要拼接 versionCode、channel、package 等参数</li>
+         *     <li>后台不提供更新升级接口：我们只能苦逼的编写好 XML 文件, 交给后台人员, 后台人员告诉
+         *     我们路径 url, 然后我们自己再根据路径 url 去访问 XML 中的 内容了. 如果需要配置渠道, 那么
+         *     还需要自己跟后台人员沟通好不同渠道所对应 XML 所在的路径 url</li>
+         * </ur>
+         *
+         * @param has
+         * @return
+         */
+        public Builder setHasInterface(boolean has) {
+            this.hasInterface = has;
             return this;
         }
 
@@ -183,11 +204,16 @@ public class UpdateManager {
         }
 
         public UpdateManager create() {
-            if ("".equals(channel) || null == channel) {
-                url = String.format(url, "");
-            } else {
-                url = String.format(url, "_" + channel);
+            if (hasInterface) { // 后台有接口的情景
+                url = toCheckUrl(context, url, channel);
+            } else { // 后台无接口, 客户端自己苦逼的访问服务器 XML 的情景
+                if ("".equals(channel) || null == channel) {
+                    url = String.format(url, "");
+                } else {
+                    url = String.format(url, "_" + channel);
+                }
             }
+
             // 创建代理
             UpdateAgent agent = new UpdateAgent(context, url, isManual, isWifiOnly);
             // 设置解析器
@@ -211,6 +237,30 @@ public class UpdateManager {
             UpdateManager updateManager = new UpdateManager();
             updateManager.setAgent(agent);
             return updateManager;
+        }
+
+        private String toCheckUrl(Context context, String url, String channel) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(url);
+            builder.append(url.indexOf("?") < 0 ? "?" : "&");
+            builder.append("package=");
+            builder.append(context.getPackageName());
+            builder.append("&version=");
+            builder.append(getVersionCode(context));
+            if (!"".equals(channel) && null != channel) {
+                builder.append("&channel=");
+                builder.append(channel);
+            }
+            return builder.toString();
+        }
+
+        private int getVersionCode(Context context) {
+            try {
+                PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+                return info.versionCode;
+            } catch (PackageManager.NameNotFoundException e) {
+                return 0;
+            }
         }
     }
 
