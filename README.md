@@ -150,13 +150,12 @@
   * 服务器端可配置是否可以忽略当前版本
   * 客户端可自定义渠道信息
   * 客户端可自定义显示更新信息的形式, 默认使用 Dialog 去显示
-  * 客户端可以自定义解析器, 用于解析服务器下发的更新参数信息
+  * 客户端可以自定义解析器, 用于解析服务器下发的更新参数信息, 默认使用内置的 XML 解析器
   * 客户端可以自定义下载 apk 文件的进度显示方式, 内置 Dialog 以及 Notify 两种形式
 
   关于渠道说明：
 
-  1、如果服务器有更新升级接口, 那么访问接口的时候需要带上渠道参数, 对应服务器返回的数据当中给定对应渠道正确的 apk 下载路径即可, 记得修改 channel 与 url 的拼接逻辑代码
-  (拼接代码修改为：让 channel 以参数的形式添加在 url 后, 例如：http://XXXXXX/upgrade?channel=yinyongbao)
+  1、如果服务器有更新升级接口, 那么访问接口的时候需要带上渠道参数, 同时在构建 Builder 的时候设置 hasInterface 为 true. 之后服务器返回的数据当中给定对应渠道正确的 apk 下载路径即可(推荐)
 
   2、如果服务器没有更新升级接口, 采用的是自定义编写 XML 文件的方式去下发更新升级参数, 那么在服务器就需要同时放多个 XML,
   例如 app_download/android_upgrade_xiaomi.xml、app_download/android_upgrade_wandoujia.xml、app_download/android_upgrade_yinyongbao.xml 等等
