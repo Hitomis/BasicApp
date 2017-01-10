@@ -115,7 +115,7 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
     protected void onDestroy() {
         super.onDestroy(); // 销毁或反注册资源, 预防 OOM
         EventBus.getDefault().unregister(this);
-        OkHttpUtils.getInstance().cancelTag(this);
+        OkHttpUtils.getInstance().cancelTag(this.getClass().getSimpleName());
     }
 
 }
