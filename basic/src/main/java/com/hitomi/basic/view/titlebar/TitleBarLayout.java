@@ -32,6 +32,10 @@ public class TitleBarLayout extends RelativeLayout {
         controller = new TitleBarController(context, this);
     }
 
+    public static Builder config(Context context) {
+        return new Builder(context);
+    }
+
     /**
      * 标题栏的构建器, 用于构建标题栏相关的一系列元素, 支持通过
      * 构建器使用 {@link Builder#create()} 方法去创建
