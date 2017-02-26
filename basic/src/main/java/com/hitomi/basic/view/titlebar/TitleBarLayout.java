@@ -2,7 +2,9 @@ package com.hitomi.basic.view.titlebar;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.annotation.IdRes;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -571,6 +573,16 @@ public class TitleBarLayout extends RelativeLayout {
          */
         public void setup(TitleBarLayout titleBar) {
             params.apply(titleBar.controller);
+        }
+
+        /**
+         * 将基于 {@link Builder} 构建的一系列元素适用在 {@link TitleBarLayout} 上面
+         * @param view {@link TitleBarLayout}
+         */
+        public void setup(View view) {
+            if (view instanceof TitleBarLayout) {
+                params.apply(((TitleBarLayout) view).controller);
+            }
         }
     }
 }
