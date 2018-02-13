@@ -10,8 +10,6 @@ import com.elvishew.xlog.printer.AndroidPrinter;
 import com.hitomi.basic.manager.ActivityManager;
 import com.hitomi.basic.manager.NetworkManager;
 import com.hitomi.basic.manager.cache.CacheManager;
-import com.hitomi.basic.view.slideback.SlideBackHelper;
-import com.hitomi.basic.view.slideback.SlideConfig;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -30,7 +28,6 @@ public class MyApplication extends Application {
         initXLog();
         CacheManager.init(this);
         NetworkManager.getInstance().init(this);
-        initSlideback();
     }
 
     /**
@@ -41,20 +38,6 @@ public class MyApplication extends Application {
         activityManager.init(this);
         // 不管理 LeakCanary 用于显示 OOM 信息的 Activity
         activityManager.addIgnore("DisplayLeakActivity");
-    }
-
-    /**
-     * 初始化侧滑返回组件
-     */
-    private void initSlideback() {
-        SlideConfig slideConfig = new SlideConfig.Builder()
-                .rotateScreen(false) // 屏幕是否旋转
-                .edgeOnly(true) //  // 是否仅为侧边缘滑动，false: 任何地方都可以滑动
-                .lock(false) // 是否禁止侧滑
-                .edgePercent(0.1f) // 边缘滑动的响应阈值，0~1，对应屏幕宽度*percent
-                .slideOutPercent(0.5f) // 关闭页面的阈值，0~1，对应屏幕宽度*percent
-                .create();
-        SlideBackHelper.getInstance().init(ActivityManager.getInstance(), slideConfig);
     }
 
     /**

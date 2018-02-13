@@ -12,7 +12,7 @@ import com.hitomi.basicapp.R;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnSlide, btnTitlebar, btnPercentLayout;
+    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnTitlebar, btnPercentLayout;
 
     @Override
     public int getContentViewID() {
@@ -26,7 +26,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnRound = (Button) findViewById(R.id.btn_round);
         btnRecycle = (Button) findViewById(R.id.btn_recycle);
         btnHttp = (Button) findViewById(R.id.btn_http);
-        btnSlide = (Button) findViewById(R.id.btn_slide);
         btnTitlebar = (Button) findViewById(R.id.btn_titlebar);
         btnPercentLayout = (Button) findViewById(R.id.btn_percent_layout);
     }
@@ -38,7 +37,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnRound.setOnClickListener(this);
         btnRecycle.setOnClickListener(this);
         btnHttp.setOnClickListener(this);
-        btnSlide.setOnClickListener(this);
         btnTitlebar.setOnClickListener(this);
         btnPercentLayout.setOnClickListener(this);
     }
@@ -71,9 +69,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.btn_http:
                 startActivity(new Intent(this, OkHttpActivity.class));
-                break;
-            case R.id.btn_slide:
-                startActivity(new Intent(this, SlidebackActivity.class));
                 break;
             case R.id.btn_titlebar:
                 startActivity(new Intent(this, TitlebarActivity.class));

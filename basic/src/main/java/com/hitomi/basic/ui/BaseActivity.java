@@ -13,7 +13,6 @@ import com.hitomi.basic.manager.hook.HookManager;
 import com.hitomi.basic.manager.hook.ListenerManager;
 import com.hitomi.basic.model.AppExitEvent;
 import com.hitomi.basic.net.OkHttpUtils;
-import com.hitomi.basic.view.slideback.SlideBackHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,14 +35,6 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
             dealLogic(savedInstanceState);
         }
         observeNetwork();
-        addSlidBack();
-    }
-
-    /**
-     * 为 Activity 添加侧边栏滑动返回组件
-     */
-    private void addSlidBack() {
-        SlideBackHelper.getInstance().startup();
     }
 
     /**

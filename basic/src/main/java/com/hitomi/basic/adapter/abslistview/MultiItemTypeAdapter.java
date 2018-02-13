@@ -74,6 +74,14 @@ public class MultiItemTypeAdapter<T> extends BaseAdapter {
     public void onViewHolderCreated(ViewHolder holder, View itemView) {
     }
 
+    public List<T> getDatas() {
+        return mDatas;
+    }
+
+    public void setDatas(List<T> list) {
+        mDatas = list;
+    }
+
     @Override
     public int getCount() {
         return mDatas.size();

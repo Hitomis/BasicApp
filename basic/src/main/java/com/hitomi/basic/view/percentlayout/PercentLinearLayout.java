@@ -10,9 +10,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-/**
- * Created by zhy on 15/6/30.
- */
 public class PercentLinearLayout extends LinearLayout {
 
     private static final String TAG = "PercentLinearLayout";
