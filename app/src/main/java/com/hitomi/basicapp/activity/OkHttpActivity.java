@@ -9,6 +9,7 @@ import com.hitomi.basic.net.OkHttpUtils;
 import com.hitomi.basic.net.callback.StringCallback;
 import com.hitomi.basic.ui.BaseActivity;
 import com.hitomi.basicapp.R;
+import com.orhanobut.logger.Logger;
 
 import okhttp3.Call;
 
@@ -63,13 +64,13 @@ public class OkHttpActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Toast.makeText(OkHttpActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
-                        log.e(e.getMessage());
+                        Logger.e(e.getMessage());
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         Toast.makeText(OkHttpActivity.this, "请求成功，请查看控制台日志", Toast.LENGTH_SHORT).show();
-                        log.json(response);
+                        Logger.json(response);
                     }
 
                 });
@@ -86,13 +87,13 @@ public class OkHttpActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Toast.makeText(OkHttpActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
-                        log.e(e.getMessage());
+                        Logger.e(e.getMessage());
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         Toast.makeText(OkHttpActivity.this, "请求成功，请查看控制台日志", Toast.LENGTH_SHORT).show();
-                        log.json(response);
+                        Logger.json(response);
                     }
 
                 });

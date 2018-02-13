@@ -3,13 +3,13 @@ package com.hitomi.basicapp;
 import android.app.Application;
 import android.content.Context;
 
-import com.elvishew.xlog.LogConfiguration;
-import com.elvishew.xlog.LogLevel;
-import com.elvishew.xlog.XLog;
-import com.elvishew.xlog.printer.AndroidPrinter;
 import com.hitomi.basic.manager.ActivityManager;
 import com.hitomi.basic.manager.NetworkManager;
 import com.hitomi.basic.manager.cache.CacheManager;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
+import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -41,17 +41,14 @@ public class MyApplication extends Application {
     }
 
     /**
-     * 初始化 XLog 日志管理器
+     * 初始化 logger 日志管理器
      */
     private void initXLog() {
-        LogConfiguration config = new LogConfiguration.Builder()
-                .logLevel(BuildConfig.DEBUG
-                        ? LogLevel.DEBUG
-                        : LogLevel.NONE) // DEBUG 模式下打印日志, RELEASE 不再打印日志
-                .t()  // 允许打印线程信息，默认禁止
-                .b()  // 允许打印日志边框，默认禁止
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .tag("Basic")
                 .build();
-        XLog.init(config, new AndroidPrinter());
+
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
     }
 
     public static RefWatcher getRefWatcher(Context context) {

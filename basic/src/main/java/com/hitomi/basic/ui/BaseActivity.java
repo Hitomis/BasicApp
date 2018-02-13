@@ -5,14 +5,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.elvishew.xlog.Logger;
-import com.elvishew.xlog.XLog;
 import com.hitomi.basic.manager.NetworkManager;
 import com.hitomi.basic.manager.hook.HookListenerContract;
 import com.hitomi.basic.manager.hook.HookManager;
 import com.hitomi.basic.manager.hook.ListenerManager;
 import com.hitomi.basic.model.AppExitEvent;
 import com.hitomi.basic.net.OkHttpUtils;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -21,8 +20,6 @@ import org.greenrobot.eventbus.Subscribe;
  * Created by hitomi on 2016/12/11.
  */
 public abstract class BaseActivity extends AppCompatActivity implements UIHandler {
-
-    protected Logger log = XLog.tag(this.getClass().getSimpleName()).build();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity implements UIHandle
                 new HookListenerContract.OnClickListener() {
                     @Override
                     public boolean doInListener(View v) {
-                        log.e("当前没有网络");
+                        Logger.e("当前没有网络");
                         return true;
                     }
                 });
