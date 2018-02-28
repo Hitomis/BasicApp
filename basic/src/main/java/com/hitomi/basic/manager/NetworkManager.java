@@ -9,8 +9,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Parcelable;
 
-import com.elvishew.xlog.Logger;
-import com.elvishew.xlog.XLog;
+import com.orhanobut.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -26,8 +25,6 @@ public class NetworkManager {
     private static final int STATUS_NETWORK_UNAVAILABLE = -100;
     private static final int STATUS_WIFI_AVAILABLE = 100;
     private static final int STATUS_MOBILENET_AVAILABLE = 101;
-
-    private Logger log = XLog.tag("NetworkManager").build();
 
     private Context mContext;
     private ConnectivityManager connManager;
@@ -93,15 +90,15 @@ public class NetworkManager {
         if (networkListener != null && lastConnType != connType) {
             switch (connType) {
                 case STATUS_WIFI_AVAILABLE:
-                    log.d("当前WiFi连接可用");
+                    Logger.d("当前WiFi连接可用");
                     networkListener.onWifiAvailable();
                     break;
                 case STATUS_MOBILENET_AVAILABLE:
-                    log.d("当前移动网络连接可用");
+                    Logger.d("当前移动网络连接可用");
                     networkListener.onMobileNetAvailable();
                     break;
                 case STATUS_NETWORK_UNAVAILABLE:
-                    log.d("当前没有网络连接");
+                    Logger.d("当前没有网络连接");
                     networkListener.onNetworkUnavailable();
                     break;
             }

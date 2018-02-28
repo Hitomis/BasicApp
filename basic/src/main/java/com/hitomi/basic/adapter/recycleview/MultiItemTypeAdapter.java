@@ -86,9 +86,12 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         return itemCount;
     }
 
-
     public List<T> getDatas() {
         return mDatas;
+    }
+
+    public void setDatas(List<T> list) {
+        mDatas = list;
     }
 
     public MultiItemTypeAdapter addItemViewDelegate(ItemViewDelegate<T> itemViewDelegate) {

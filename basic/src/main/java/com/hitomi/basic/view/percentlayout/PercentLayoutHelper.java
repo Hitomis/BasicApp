@@ -82,7 +82,7 @@ import java.util.regex.Pattern;
  */
 public class PercentLayoutHelper {
     private static final String TAG = "PercentLayout";
-    private static final String REGEX_PERCENT = "^(([0-9]+)([.]([0-9]+))?|([.]([0-9]+))?)%([s]?[wh]?)$";
+    private static final String REGEX_PERCENT = "^(-?([0-9]+)([.]([0-9]+))?|([.]([0-9]+))?)%([s]?[wh]?)$";
     private static int mWidthScreen;
     private static int mHeightScreen;
     private final ViewGroup mHost;
@@ -127,16 +127,10 @@ public class PercentLayoutHelper {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PercentLayout_Layout);
 
         info = setWidthAndHeightVal(array, info);
-
         info = setMarginRelatedVal(array, info);
-
-        info = setTextSizeSupportVal(array, info);
-
-        info = setMinMaxWidthHeightRelatedVal(array, info);
-
         info = setPaddingRelatedVal(array, info);
-
-
+        info = setMinMaxWidthHeightRelatedVal(array, info);
+        info = setTextSizeSupportVal(array, info);
         array.recycle();
 
         if (Log.isLoggable(TAG, Log.DEBUG)) {
@@ -154,8 +148,8 @@ public class PercentLayoutHelper {
             info = checkForInfoExists(info);
             info.widthPercent = percentVal;
         }
-        percentVal = getPercentVal(array, R.styleable.PercentLayout_Layout_layout_heightPercent, false);
 
+        percentVal = getPercentVal(array, R.styleable.PercentLayout_Layout_layout_heightPercent, false);
         if (percentVal != null) {
             if (Log.isLoggable(TAG, Log.VERBOSE)) {
                 Log.v(TAG, "percent height: " + percentVal.percent);
@@ -224,7 +218,6 @@ public class PercentLayoutHelper {
                 getPercentVal(array,
                         R.styleable.PercentLayout_Layout_layout_marginPercent,
                         true);
-
         if (percentVal != null) {
             if (Log.isLoggable(TAG, Log.VERBOSE)) {
                 Log.v(TAG, "percent margin: " + percentVal.percent);
@@ -311,7 +304,6 @@ public class PercentLayoutHelper {
             info.paddingTopPercent = percentVal;
         }
 
-
         percentVal = getPercentVal(array,
                 R.styleable.PercentLayout_Layout_layout_paddingLeftPercent,
                 true);
@@ -349,8 +341,7 @@ public class PercentLayoutHelper {
 
     private static PercentLayoutInfo.PercentVal getPercentVal(TypedArray array, int index, boolean baseWidth) {
         String sizeStr = array.getString(index);
-        PercentLayoutInfo.PercentVal percentVal = getPercentVal(sizeStr, baseWidth);
-        return percentVal;
+        return getPercentVal(sizeStr, baseWidth);
     }
 
     @NonNull

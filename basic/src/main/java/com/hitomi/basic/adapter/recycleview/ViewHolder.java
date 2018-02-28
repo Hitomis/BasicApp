@@ -61,6 +61,10 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         return (T) view;
     }
 
+    public <T extends View> T findViewById(int viewId) {
+        return (T) mConvertView.findViewById(viewId);
+    }
+
     public View getConvertView() {
         return mConvertView;
     }
