@@ -9,10 +9,11 @@ import android.widget.Button;
 import com.hitomi.basic.ui.BaseActivity;
 import com.hitomi.basic.view.titlebar.TitleBarLayout;
 import com.hitomi.basicapp.R;
+import com.hitomi.basicapp.mvp.MvpActivity;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnSlide, btnTitlebar, btnPercentLayout;
+    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnSlide, btnTitlebar, btnPercentLayout, btnMvp;
 
     @Override
     public int getContentViewID() {
@@ -29,6 +30,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnSlide = (Button) findViewById(R.id.btn_slide);
         btnTitlebar = (Button) findViewById(R.id.btn_titlebar);
         btnPercentLayout = (Button) findViewById(R.id.btn_percent_layout);
+        btnMvp = (Button) findViewById(R.id.btn_mvp_demo);
     }
 
     @Override
@@ -41,6 +43,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnSlide.setOnClickListener(this);
         btnTitlebar.setOnClickListener(this);
         btnPercentLayout.setOnClickListener(this);
+        btnMvp.setOnClickListener(this);
     }
 
     @Override
@@ -80,6 +83,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.btn_percent_layout:
                 startActivity(new Intent(this, PercentLayoutActivity.class));
+                break;
+            case R.id.btn_mvp_demo:
+                startActivity(new Intent(this, MvpActivity.class));
                 break;
         }
     }

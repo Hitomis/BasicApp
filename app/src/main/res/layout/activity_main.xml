@@ -62,6 +62,12 @@
             android:layout_height="wrap_content"
             android:text="percentlayout 测试" />
 
+        <Button
+            android:id="@+id/btn_mvp_demo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="mvp 示例" />
+
     </LinearLayout>
 
 
