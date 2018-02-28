@@ -1,6 +1,7 @@
 package com.hitomi.basicapp.mvp;
 
-import com.hitomi.basic.net.callback.StringCallback;
+import com.hitomi.basicapp.data.Person;
+import com.hitomi.basicapp.data.PersonCallback;
 
 import okhttp3.Call;
 
@@ -23,15 +24,15 @@ public class Presenter implements IContract.Presenter {
 
     @Override
     public void deal() {
-        MvpDataManager.getInstance().getDataSync(new StringCallback() {
+        MvpDataManager.getInstance().getDataSync(new PersonCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 view.showToast(e.toString());
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                view.updateData(response);
+            public void onResponse(Person response, int id) {
+                view.updateData(response.toString());
             }
         });
 
