@@ -3,10 +3,14 @@
     package="com.hitomi.basicapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 允许读取网络状态 -->
+    <!-- 允许连接网络权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 允许读取wifi网络状态 -->
+    <!-- 允许连接wifi网络权限 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 允许外部存储文件写入权限，6.0 需要动态申请 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 允许外部存储文件读取权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MyApplication"

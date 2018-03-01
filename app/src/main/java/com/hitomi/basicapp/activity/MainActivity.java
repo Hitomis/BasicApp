@@ -1,18 +1,27 @@
 package com.hitomi.basicapp.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 
+import com.hitomi.basic.tool.FileUtils;
 import com.hitomi.basic.ui.BaseActivity;
 import com.hitomi.basic.view.titlebar.TitleBarLayout;
 import com.hitomi.basicapp.R;
-import com.hitomi.basicapp.mvp.MvpActivity;
+import com.orhanobut.logger.Logger;
+
+import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
-
+    public static final String[] STORAGE_PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private static final int REQUEST_CODE_PERMISSION = 233;
     private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnTitlebar, btnPercentLayout, btnMvp;
 
     @Override
@@ -80,8 +89,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(this, PercentLayoutActivity.class));
                 break;
             case R.id.btn_mvp_demo:
-                startActivity(new Intent(this, MvpActivity.class));
+//                startActivity(new Intent(this, MvpActivity.class));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                        && ContextCompat.checkSelfPermission(this, STORAGE_PERMISSIONS[0]) != PERMISSION_GRANTED) {
+                    requestPermissions(STORAGE_PERMISSIONS, REQUEST_CODE_PERMISSION);
+                } else {
+                    Logger.d(FileUtils.getAppCacheDir(this, "hitomis"));
+                }
                 break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (REQUEST_CODE_PERMISSION == requestCode) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Logger.d(FileUtils.getAppCacheDir(this, "hitomis"));
+            } else {
+                Logger.d("没有权限");
+            }
         }
     }
 }

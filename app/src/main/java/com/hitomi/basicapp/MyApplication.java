@@ -14,6 +14,7 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
 /**
+ * 不要在 Application 对象中缓存数据，如果需要缓存全局数据，可以使用 DataManager 单例对象的形式缓存
  * Created by hitomi on 2016/12/11.
  */
 public class MyApplication extends Application {
@@ -25,7 +26,7 @@ public class MyApplication extends Application {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
         initActivityManager();
-        initXLog();
+        initLogger();
         CacheManager.init(this);
         NetworkManager.getInstance().init(this);
     }
@@ -43,7 +44,7 @@ public class MyApplication extends Application {
     /**
      * 初始化 logger 日志管理器
      */
-    private void initXLog() {
+    private void initLogger() {
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
                 .tag("Basic")
                 .build();
