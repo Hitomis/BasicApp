@@ -22,7 +22,7 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     public static final String[] STORAGE_PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final int REQUEST_CODE_PERMISSION = 233;
-    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnTitlebar, btnPercentLayout, btnMvp;
+    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnTitlebar, btnPercentLayout, btnMvp, btnMultiPage;
 
     @Override
     public int getContentViewID() {
@@ -39,6 +39,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnTitlebar = (Button) findViewById(R.id.btn_titlebar);
         btnPercentLayout = (Button) findViewById(R.id.btn_percent_layout);
         btnMvp = (Button) findViewById(R.id.btn_mvp_demo);
+        btnMultiPage = (Button) findViewById(R.id.btn_mulit_page);
     }
 
     @Override
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnTitlebar.setOnClickListener(this);
         btnPercentLayout.setOnClickListener(this);
         btnMvp.setOnClickListener(this);
+        btnMultiPage.setOnClickListener(this);
     }
 
     @Override
@@ -96,6 +98,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     Logger.d(FileUtils.getAppCacheDir(this, "hitomis"));
                 }
+                break;
+            case R.id.btn_mulit_page:
+                startActivity(new Intent(this, MultiPageActivity.class));
                 break;
         }
     }

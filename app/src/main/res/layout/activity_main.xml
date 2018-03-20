@@ -62,6 +62,12 @@
             android:layout_height="wrap_content"
             android:text="mvp 示例" />
 
+        <Button
+            android:id="@+id/btn_mulit_page"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="multi page 示例" />
+
     </LinearLayout>
 
 
