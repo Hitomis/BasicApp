@@ -22,7 +22,7 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     public static final String[] STORAGE_PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final int REQUEST_CODE_PERMISSION = 233;
-    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnTitlebar, btnPercentLayout, btnMvp, btnMultiPage;
+    private Button btnUpdate, btnCache, btnRound, btnRecycle, btnHttp, btnTitlebar, btnPercentLayout, btnMvp, btnMultiPage, btbMultiRecycler;
 
     @Override
     public int getContentViewID() {
@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnPercentLayout = (Button) findViewById(R.id.btn_percent_layout);
         btnMvp = (Button) findViewById(R.id.btn_mvp_demo);
         btnMultiPage = (Button) findViewById(R.id.btn_mulit_page);
+        btbMultiRecycler = (Button) findViewById(R.id.btn_mulit_recycler);
     }
 
     @Override
@@ -53,6 +54,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnPercentLayout.setOnClickListener(this);
         btnMvp.setOnClickListener(this);
         btnMultiPage.setOnClickListener(this);
+        btbMultiRecycler.setOnClickListener(this);
     }
 
     @Override
@@ -101,6 +103,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.btn_mulit_page:
                 startActivity(new Intent(this, MultiPageActivity.class));
+                break;
+            case R.id.btn_mulit_recycler:
+                startActivity(new Intent(this, MultiRecyclerActivity.class));
                 break;
         }
     }

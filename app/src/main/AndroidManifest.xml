@@ -56,6 +56,9 @@
         <activity
             android:name=".activity.MultiPageActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MultiRecyclerActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
